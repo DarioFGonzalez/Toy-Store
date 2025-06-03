@@ -1,0 +1,5 @@
+All rights reserved.
+
+This project was developed by [Tu Nombre Completo o Alias Profesional] as a commissioned work for [Nombre de la Juguetería o del Cliente].
+
+Unless explicitly stated otherwise, this code is not licensed for reuse, redistribution, or commercial purposes outside the intended scope of this project.
