@@ -1,0 +1,148 @@
+.imgAndUserPassContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.userAndPassword {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.formContainer {
+    display: grid;
+    grid-template-rows: auto;
+    align-items: stretch;
+    justify-content: center;
+    gap: 15px;
+
+}
+
+.formChild {
+    width: 550px;
+    background-color: #9abfcb;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid rgb(121, 121, 121);
+    border-radius: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 20px;
+}
+
+.formChild h1 {
+    border-bottom: 1px solid rgb(46, 45, 45);
+    color: rgb(46, 45, 45);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.imageContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.imageContainer input {
+    height: 220px;
+    background-color: aliceblue;
+    cursor: pointer;
+    margin-left: -228px;
+    max-width: 220px;
+    opacity: 0;
+}
+
+.imageContainer label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150%;
+    width: 220px;
+    height: 220px;
+    border: solid 2px black;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.imageContainer img {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: solid 2px rgb(46, 45, 45);
+}
+
+.imgAndButton {
+    display: flex;
+    flex-direction: column;
+}
+
+.imgAndButton button {
+    margin-bottom: -30px;
+    position: absolute;
+    border-radius: 5px;
+    border: .5px solid white;
+    background-color: rgba(0, 0, 0, 0.284);
+    color: white;
+    transition: 0.3s;
+    width: 30px;
+    height: 30px;
+}
+
+.imgAndButton button:hover {
+    background-color: rgb(255, 0, 0);
+    color: black;
+    border: .5px solid black;
+
+}
+
+.userType {
+    margin-top: -20px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    width: 100%;
+}
+
+.userType input {
+    margin-right: 3px;
+}
+
+.userTypeContainer {
+    border: 1px solid rgb(46, 45, 45);
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #6b848d;
+    color: white;
+    height: 100%;
+}
+
+.nameAndSurname {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 20px;
+}
+
+.dashNameSurname {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.passWord {
+    display: flex;
+}
+
+.faEye {
+    margin-left: -30px;
+    margin-top: 12px;
+    cursor: pointer;
+}
