@@ -1,0 +1,22 @@
+/* En tu archivo CSS para la Top Bar, por ejemplo, TopBar.module.css */
+
+.topBarFixed {
+  /* Propiedad clave: lo saca del flujo normal del documento y lo fija al viewport */
+  position: fixed; 
+
+  /* Ubicación: arriba del todo */
+  top: 0; 
+
+  /* De lado a lado: ocupa todo el ancho del navegador */
+  left: 0;
+  right: 0; 
+  /* Opcional: width: 100%; también funciona para el ancho */
+
+  /* Opcional: Estilos para que se vea bien */
+  background-color: #333; /* Un color de fondo para que se vea */
+  color: white; /* Color del texto */
+  height: 70px;
+  padding: 15px 20px; /* Espacio interno */
+  z-index: 1000; /* Importante: asegura que esté siempre por encima de otros elementos */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra suave para darle "relieve" */
+}

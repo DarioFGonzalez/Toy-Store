@@ -1,0 +1,18 @@
+.gridWrapper {
+  display: flex;
+  justify-content: center;
+  border: 1px solid #ddd;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  background-color: #fcfcfc;
+}
+
+.productGridContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 250px);
+  gap: 20px;
+  justify-items: center;
+  align-items: center;
+  min-height: 380px;
+}

@@ -17,6 +17,11 @@ module.exports = ( sequelize ) =>
                 type: DataTypes.STRING(100),
                 allowNull: false
             },
+            highlighted:
+            {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
             description:
             {
                 type: DataTypes.TEXT,

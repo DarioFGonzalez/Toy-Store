@@ -4,6 +4,10 @@
   padding: 2rem;
   text-align: center;
 }
+.general
+{
+  padding-top: 60px;
+}
 
 .logo {
   height: 6em;

@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 import Styles from "./Home.module.css";
 import { URL } from '../../types/constants';
 import type { Product } from '../../types';
-import Card from '../Card/Card';
+import Carrusel from '../Carrusel/Carrusel';
 
 const Home: React.FC = () =>
 {
   const navigate = useNavigate();
 
   const [ entries, setEntries ] = useState<Product[]>([]);
+  const [ all, setAll ] = useState<Product[]>([]);
 
   useEffect( () =>
   {
@@ -19,6 +20,7 @@ const Home: React.FC = () =>
     .then( ( { data } ) =>
     {
       setEntries(data.slice(0,4));
+      setAll( data );
     })
     .catch( ( error ) =>
     {
@@ -30,19 +32,15 @@ const Home: React.FC = () =>
 
   <div className={Styles.homeContainer}>
 
-    <div className={`container mt-01 mb-5`}>
+    <div>
       <div className={Styles.allCarrusel}>
-        <div className={"p-2"}>
+        <div>
 
-          <Carousel className={"w-5 h-2.5"} interval={2000} pause="hover">
+          <Carousel interval={2000} pause="hover">
 
             {entries.map((item, index) => (
             <Carousel.Item key={index}>
-                <img
-                className={`d-block w-100 ${Styles.carrousel}`}
-                src={item.image}
-                alt={item.name}
-                />
+                <img src={item.image} alt={item.name} />
                 <Carousel.Caption>
                   <h3> {item.name} </h3>
                   <p> {item.description} </p>
@@ -56,7 +54,8 @@ const Home: React.FC = () =>
       </div>
     </div>
 
-    { entries[0] && <Card product={ entries[0] } /> }
+    <Carrusel products={all} />
+
   </div>
   );
 };

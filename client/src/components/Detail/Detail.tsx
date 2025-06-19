@@ -84,9 +84,9 @@ const addToCart = () =>
   return (
 			<div className={style.containerDetail}>
 
-				<a onClick={handleBack} href='/home' >
+				<button onClick={handleBack}>
           <IoArrowBackCircleOutline className={style.backButton} />
-        </a>
+        </button>
 
 				<div className={style.detailContainer}>
 					<div className={style.imgContainer}>

@@ -1,0 +1,72 @@
+.sidebarContainer {
+  /* Ancho máximo de la sidebar */
+  width: 200px; 
+  /* Opcional: un padding interno para que el contenido no pegue en los bordes */
+  padding: 15px; 
+  /* Opcional: color de fondo, borde, sombra para que se vea como una columna */
+  background-color: #f0f0f0;
+  border-right: 1px solid #ccc;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  height: 100vh; /* Opcional: para que ocupe todo el alto de la pantalla */
+
+  /* ¡La magia de Flexbox para la columna! */
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column; /* Apila los ítems verticalmente */
+  align-items: center; /* Centra los botones horizontalmente dentro de la sidebar */
+  gap: 10px; /* Espacio entre cada botón (o ítem) */
+}
+
+.sidebarButton {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.sidebarButton:hover {
+  background-color: #0056b3;
+}
+
+.priceContainer {
+  display: flex; /* ¡La magia de Flexbox para ponerlos uno al lado del otro! */
+  gap: 10px; /* Espacio entre el input de mínimo, el guion y el input de máximo */
+  align-items: center; /* Opcional: alinea verticalmente los inputs y el guion si tuvieran diferente altura */
+  width: 100%; /* Para que ocupe todo el ancho disponible */
+}
+
+.priceContainer input {
+  flex: 1; /* ¡Importante! Hace que cada input de precio ocupe el espacio restante equitativamente */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 3px;
+}
+
+.priceContainer .priceSeparator {
+  /* Estilo opcional para el guion */
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #555;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Esto oculta las flechitas */
+  margin: 0; /* Esto elimina el margen extra que a veces dejan las flechitas ocultas */
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Esto cambia la apariencia del input a un campo de texto normal */
+}
+
+.errorLabel
+{
+  color: red;
+  font-weight: bold;
+}

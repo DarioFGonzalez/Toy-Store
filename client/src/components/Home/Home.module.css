@@ -5,6 +5,18 @@
   min-height: 160vh;
 }
 
+.carouselContainer {
+  display: flex; /* Muestra las tarjetas en línea */
+  overflow-x: scroll; /* Habilita el scroll horizontal */
+  scroll-behavior: smooth; /* Hace que el scroll sea suave */
+  -webkit-overflow-scrolling: touch; /* Mejora el scroll en iOS */
+  padding-bottom: 10px; /* Espacio para la barra de scroll si aparece */
+
+  /* Ocultar la barra de scroll si no quieres que se vea (Chrome/Safari) */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
 #bestSellingH1 {
   color: #020303;
   margin-top: 30px;
