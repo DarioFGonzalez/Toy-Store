@@ -21,13 +21,18 @@ const Shop: React.FC = () =>
             .catch( ( err ) =>
             {
                 console.error( err );
-                console.log( 'error al cargar productos: ', err.message )
+                console.log( 'error al cargar productos: ', err.message );
             } );
         }
         else
         {
-            setItems([]);
-            console.log(`Location search: ${location.search}`);
+            axios.get(`${URL}product${location.search}`)
+            .then( ( { data } ) => setItems( data ) )
+            .catch( ( err ) =>
+            {
+                console.error( err );
+                console.log( 'error al cargar productos filtrados: ', err.message );
+            } )
         }
     }, [location.search]);
 

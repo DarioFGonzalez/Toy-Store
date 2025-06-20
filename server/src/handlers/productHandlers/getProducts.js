@@ -4,16 +4,40 @@ const { Products } = require('../../db/db');
 
 const getProducts = async (req, res) =>
 {
-    const { name } = req.query;
+    const { name, category, minPrice, maxPrice } = req.query;
+    const whereClause = {};
+
+    if(name && name!=='')
+    {
+        whereClause.name = { [Op.iLike]: `%${name}%` };
+    }
+    if(category && category!=='')
+    {
+        whereClause.category = category;
+    }
+
+    const priceConditions = {};
+    let flag = false;
+
+    if(minPrice)
+    {
+        flag = true;
+        priceConditions[Op.gte] = Number(minPrice);
+    }
+    if(maxPrice)
+    {
+        flag = true;
+        priceConditions[Op.lte] = Number(maxPrice);
+    }
+
+    if(flag)
+    {
+        whereClause.price = priceConditions;
+    }
 
     try
     {
-        if(name)
-        {
-            const productByName = await Products.findAll( { where: { name: { [Op.iLike]: `%${name}%` } } } );
-            return res.status(200).json( productByName );
-        }    
-        const allProducts = await Products.findAll();
+        const allProducts = await Products.findAll( { where: whereClause } );
         return res.status(200).json( allProducts );
     }
     catch(error)

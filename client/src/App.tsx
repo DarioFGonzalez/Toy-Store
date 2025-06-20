@@ -8,6 +8,7 @@ import Highlight from './components/Highlight/Highlight';
 import TopBar from './components/top bar/TopBar';
 import Shop from './components/Shop/Shop';
 import './App.css';
+import Carrito from './components/Carrito/Carrito';
 
 function App()
 {
@@ -21,8 +22,8 @@ function App()
         <Route path='/home' element={ <Home />} />
         <Route path='/shop' element={ <Shop />} />
         <Route path='/detail/:id' element={ <Detail /> } />
+        <Route path='/carrito' element={ <Carrito />} />
         <Route path='/create' element={ <Create />} />
-        <Route path='/high' element={ <Highlight />} />
       </Routes>
     </div>
   )

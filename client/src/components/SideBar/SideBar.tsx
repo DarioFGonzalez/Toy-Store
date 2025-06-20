@@ -46,6 +46,7 @@ const Sidebar: React.FC = ( ) =>
 
   const limpiar = (): void =>
   {
+    setFilter( emptyFilter );
     navigate('/shop');
   }
 
@@ -68,17 +69,17 @@ const Sidebar: React.FC = ( ) =>
       <input onChange={handleChange} value={filter.name} placeholder='Nombre del producto' name={'name'}/>
       
       <div className={styles.priceContainer}>
-        <input onChange={handleChange} value={filter.minPrice}
+        <input onChange={handleChange} value={filter.minPrice || ''}
         placeholder='Min' name={'minPrice'} type='number' />
         <label className={styles.priceSeparator}> - </label>
-        <input onChange={handleChange} value={filter.maxPrice}
+        <input onChange={handleChange} value={filter.maxPrice || ''}
         placeholder='Max' name={'maxPrice'} type='number' />
       </div>
       { minmaxPrice() &&<p className={styles.errorLabel}>
         min {'<'} max </p>}
 
-      <select name='category' onChange={handleChange}>
-        <option disabled selected> Categorías </option>
+      <select value={ filter.category || '' } name='category' onChange={handleChange} >
+        <option value='' disabled selected> Categorías </option>
         <option value='peluche'> Peluche </option>
         <option value='muñeco'> Muñeco </option>
         <option value='juego de mesa'> Juego de mesa </option>

@@ -7,6 +7,7 @@ const TopBar: React.FC = () =>
         <div className={Styles.topBarFixed}>
             <a href='/home'> <button> Home </button> </a>
             <a href='/shop'> <button> SHOP </button> </a>
+            <a href='/carrito'> <button> Carrito </button> </a>
             <a href='/create'> <button> CREAR </button> </a>
         </div>
     )
