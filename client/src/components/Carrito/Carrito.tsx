@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Carrito.module.css';
 import type { CartItem } from '../../types';
+import axios from 'axios';
+import { URL } from '../../types/constants';
+import { useNavigate } from 'react-router-dom';
 
 const Carrito: React.FC = () =>
 {
+    const navigate = useNavigate();
     const [cart, setCart] = useState<CartItem[]>([]);
     const [subtotal, setSubtotal] = useState(0);
 
@@ -43,8 +47,12 @@ const Carrito: React.FC = () =>
 
     const handleCheckout = () =>
     {
-        console.log("Proceed to Checkout");
-        // navigate('/checkout');
+        axios.post(`${URL}checkout`, cart).then( ( { data } ) =>
+        {
+          console.log(data.URL);
+          window.location.replace(data.URL);
+        })
+        .catch( ( err ) => console.log( err ) );
     };
 
   const clearCart = () =>

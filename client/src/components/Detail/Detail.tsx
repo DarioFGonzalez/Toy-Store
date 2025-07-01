@@ -96,7 +96,7 @@ const addToCart = () =>
 					<div className={style.detailInfo}>
 						<div>
 							<h1 className={style.productName}>{cardDetail.name}</h1>
-							<p className={style.priceHolder}>$ {cardDetail.price}</p>
+							<p className={style.priceHolder}>$ {cardDetail.price} {'('} {cardDetail.stock} {')'}</p>
 							<p className={style.brandHolder}>{cardDetail.category}</p>
 						</div>
 
