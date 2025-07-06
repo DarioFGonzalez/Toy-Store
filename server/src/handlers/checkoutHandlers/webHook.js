@@ -1,8 +1,11 @@
 const { Op } = require('sequelize');
-const { conn, Products } = require( '../../db/db');
+const { conn, Products, Carts } = require( '../../db/db');
 
 const webHook = async ( req, res ) =>
 {
+    console.log( `req.body: ${req.body}\nreq.body.externalReference: ${req.body.externalReference}\n
+        status: ${req.body.status}` );
+    
     const {externalReference, status} = req.body;
 
     const t = await conn.transaction();
@@ -30,6 +33,8 @@ const webHook = async ( req, res ) =>
         } );
 
         await Promise.all( promises );
+
+        await Carts.update( { status: 'paid' }, { where: { id: externalReference }, transaction: t } );
 
         await t.commit();
 

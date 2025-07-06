@@ -8,7 +8,7 @@ const MP: React.FC = () =>
         const cartId = localStorage.getItem('cartId');
         if( cartId )
         {
-            axios.patch(`${URL}/webHook`, { externalReference: JSON.parse(cartId), status: status } )
+            axios.patch(`${URL}checkout`, { externalReference: JSON.parse(cartId), status: status } )
             .then( () =>
             {
                 console.log( '¡Tomada!' );
