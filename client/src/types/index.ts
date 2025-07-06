@@ -1,7 +1,33 @@
+// let OldCartItem =
+// {
+//     item: Product,
+//     quantity: number
+// }
+
+export interface Cart
+{
+    id: string,
+    status: string,
+    createdAt: string,
+    updatedAt: string,
+    products: ProductInCart[]
+}
+
+export interface ProductInCart
+{
+    id: string,
+    name: string,
+    description: string,
+    price: string,
+    image: string,
+    stock: number,
+    CartItem: CartItem
+}
+
 export interface CartItem
 {
-    item: Product,
-    quantity: number
+    quantity: number,
+    priceAtAddition: string
 }
 
 export interface CardProps

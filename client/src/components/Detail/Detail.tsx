@@ -15,64 +15,42 @@ const Detail: React.FC = () =>
   const [inputValue, setInputValue] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
 
-    useEffect(() =>
-    {
-      axios.get(`${URL}product/${id}`)
-      .then( ( { data } ) =>
-      {
-        setCardDetail( data )
-
-        const cart = localStorage.getItem("activeCarrito");
-        if(cart!==null)
-        {
-          const activeCart = JSON.parse( cart );
-          const thisItem = activeCart.find( (cartItem: CartItem) => cartItem.item.id === data.id );
-          setInputValue( thisItem.quantity );
-        }
-      })
-      .catch( ( err ) => { console.error( err ); console.log( err.message ); } )
-      
-    }, [id]);
+  useEffect(() =>
+  {
+    axios.get(`${URL}product/${id}`)
+    .then( ( { data } ) => setCardDetail( data ) )
+    .catch( ( err ) => { console.error( err ); console.log( err.message ); } )
+  }, [id]);
 
   useEffect(() => {
-    const price = cardDetail?.price || 0;
-    setTotalPrice(price * inputValue);
+    const price = Number(cardDetail?.price) * 100 || 0;
+    setTotalPrice( (price * inputValue) / 100 );
   }, [cardDetail?.price, inputValue]);
 
-const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-{
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  {
     const value = parseInt(event.target.value);
     if (!isNaN(value) && value >= 0)
     {
         setInputValue(value);
     }
-};
+  };
 
-const addToCart = () =>
-{
-  const Cart = localStorage.getItem("activeCarrito");
+  const addToCart = () =>
+  {
+    const cartId = localStorage.getItem("cartId");
 
-    if( Cart === null )
+    if( cartId === null )
     {
-      const carrito = [ { item: cardDetail, quantity: inputValue } ];
-      console.log("CARRITO: ", carrito);
-      localStorage.setItem("activeCarrito", JSON.stringify( carrito ) );
+      axios.post(`${URL}cart`, { productId: cardDetail.id, quantity: inputValue } )
+      .then( ( { data } ) => localStorage.setItem("cartId", JSON.stringify( data.id ) ) )
+      .catch( ( err ) => console.log( err ) );
     }
     else
     {
-      const activeCart = JSON.parse( Cart );
-      const itemExistente = activeCart.find( (cartItem: CartItem) => cartItem.item.id === cardDetail.id );
-      if( itemExistente )
-      {
-        const newCart = activeCart.map( (cartItem: CartItem) => cartItem.item.id === cardDetail.id
-          ? { ...cartItem, quantity: inputValue } : cartItem );
-        localStorage.setItem("activeCarrito", JSON.stringify( newCart ) );
-      }
-      else
-      {
-        const newCart = [ ...activeCart, { item: cardDetail, quantity: inputValue } ];
-        localStorage.setItem("activeCarrito", JSON.stringify( newCart ) );
-      }
+      axios.patch(`${URL}cart/${JSON.parse(cartId)}`, { productId: cardDetail.id, quantity: inputValue } )
+      .then( ( { data } ) => localStorage.setItem( 'cartId', JSON.stringify( data.id ) ) )
+      .catch( ( err ) => console.log( err ) );
     }
   };
 
@@ -82,44 +60,44 @@ const addToCart = () =>
   }
 
   return (
-			<div className={style.containerDetail}>
+    <div className={style.containerDetail}>
 
-				<button onClick={handleBack}>
-          <IoArrowBackCircleOutline className={style.backButton} />
-        </button>
+      <button onClick={handleBack}>
+        <IoArrowBackCircleOutline className={style.backButton} />
+      </button>
 
-				<div className={style.detailContainer}>
-					<div className={style.imgContainer}>
-						<img className={style.imgDetail} src={cardDetail.image} alt={cardDetail.name} />
-					</div>
+      <div className={style.detailContainer}>
+        <div className={style.imgContainer}>
+          <img className={style.imgDetail} src={cardDetail.image} alt={cardDetail.name} />
+        </div>
 
-					<div className={style.detailInfo}>
-						<div>
-							<h1 className={style.productName}>{cardDetail.name}</h1>
-							<p className={style.priceHolder}>$ {cardDetail.price} {'('} {cardDetail.stock} {')'}</p>
-							<p className={style.brandHolder}>{cardDetail.category}</p>
-						</div>
+        <div className={style.detailInfo}>
+          <div>
+            <h1 className={style.productName}>{cardDetail.name}</h1>
+            <p className={style.priceHolder}>$ {cardDetail.price} {'('} {cardDetail.stock} {')'}</p>
+            <p className={style.brandHolder}>{cardDetail.category}</p>
+          </div>
 
-						<hr />
+          <hr />
 
-            <input type='number' value={inputValue} onChange={handleInputChange} min='1' />
-            <p> SubTotal: ${totalPrice} </p>
+          <input type='number' value={inputValue} onChange={handleInputChange} min='1' />
+          <p> SubTotal: ${totalPrice} </p>
 
 
-						<div className={style.carrito}>
-							<button onClick={addToCart}> Agregar al carrito 🛒</button>
-						</div>
-					</div>
-				</div>
-        
-        <div className={style.containerReview}>
-          <div className={style.description}>
-              {cardDetail.description}
-            {/* <Reviews /> */}
+          <div className={style.carrito}>
+            <button onClick={addToCart}> Agregar al carrito 🛒</button>
           </div>
         </div>
-			</div>
-		)
+      </div>
+      
+      <div className={style.containerReview}>
+        <div className={style.description}>
+            {cardDetail.description}
+          {/* <Reviews /> */}
+        </div>
+      </div>
+    </div>
+  )
 };
 
 export default Detail;

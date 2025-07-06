@@ -1,11 +1,31 @@
+import axios from "axios";
+import { URL, LOCAL_URL } from "../../types/constants";
+
 const MP: React.FC = () =>
 {
+    const handleWebhook = ( status: string ): void =>
+    {
+        const cartId = localStorage.getItem('cartId');
+        if( cartId )
+        {
+            axios.patch(`${URL}/webHook`, { externalReference: JSON.parse(cartId), status: status } )
+            .then( () =>
+            {
+                console.log( '¡Tomada!' );
+                window.location.replace(`${LOCAL_URL}success`);
+            })
+            .catch( ( err ) =>
+            {
+                console.error( err )
+                window.location.replace(`${LOCAL_URL}failure`)
+            });
+        }
+    }
 
     return(
         <div>
-            Soy lo que sería la pasarela de pago
-            <a href='/success'> <button> PAGO SATISFACTORIO </button> </a>
-            <a href='/failure'> <button> PAGO FRACASADO </button> </a>
+            <button onClick={()=>handleWebhook('success')}> PAGO SATISFACTORIO </button>
+            <button onClick={()=>handleWebhook('failed')}> PAGO FRACASADO </button>
         </div>
     )
 }

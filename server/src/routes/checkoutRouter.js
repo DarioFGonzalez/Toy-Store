@@ -4,6 +4,6 @@ const webHook = require('../handlers/checkoutHandlers/webHook');
 const checkoutRouter = Router();
 
 checkoutRouter.post('/', createPreference );
-checkoutRouter.put('/', webHook );
+checkoutRouter.patch('/', webHook );
 
 module.exports = checkoutRouter;

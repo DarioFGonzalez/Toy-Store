@@ -3,33 +3,30 @@ const { conn, Products } = require( '../../db/db');
 
 const webHook = async ( req, res ) =>
 {
-    const items = req.body;
+    const {externalReference, status} = req.body;
 
     const t = await conn.transaction();
 
+    if(status=='failed') return res.status(500).json( { webHook: 'Payment failed' } );
+
     try
     {
-        const itemsIds = items.map( x => x.item.id );
-
-        const allTheseProducts = await Products.findAll(
-            { where:
-                { id: { [Op.in]: itemsIds } }, transaction: t
-            } );
-
-        const promises = items.map( item =>
+        const thisCart = await Carts.findByPk( externalReference, { include:
         {
-            const thisProduct = allTheseProducts.find( x => x.id === item.item.id );
-            if(!thisProduct)
+            model: Products,
+            as: 'products',
+            attributes: [ 'id', 'name', 'stock' ],
+            through: { attributes: [ 'quantity', 'priceAtAddition' ] }
+        }, transaction: t } );
+
+        const promises = thisCart.products.map( item =>
+        {
+            const newStock = item.stock - item.CartItem.quantity;
+            if( newStock < 0 )
             {
-                throw new Error(`Producto ${item.item.name} no encontrado en la DB`);
+                throw new Error(`Sin suficiente stock en producto: ${item.name}`);
             }
-            if(thisProduct.stock-item.quantity<0)
-            {
-                throw new Error(`Sin suficiente stock en producto ${item.item.name}`);
-            }
-            return Products.update(
-                { stock: thisProduct.stock - item.quantity },
-                { where: { id: thisProduct.id }, transaction: t } );
+            return Products.update( { stock: newStock }, { where: { id: item.id }, transaction: t } );
         } );
 
         await Promise.all( promises );
@@ -38,7 +35,7 @@ const webHook = async ( req, res ) =>
 
         return res.status(200).json( { success: 'Stock actualizado' } );
     }
-    catch(err)
+    catch( err )
     {
         console.error( err );
         await t.rollback();

@@ -27,7 +27,7 @@ const getCartById = async ( req, res ) =>
                 {
                     model: Products,
                     as: 'products',
-                    attributes: ['id', 'name', 'price', 'stock' ],
+                    attributes: [ 'id', 'name', 'description', 'price', 'image', 'stock' ],
                     through: { attributes: [ 'quantity', 'priceAtAddition' ] }
                 }
             ]

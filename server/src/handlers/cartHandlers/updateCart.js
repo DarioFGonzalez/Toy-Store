@@ -1,4 +1,4 @@
-const { CartItem } = require('../../db/db');
+const { CartItem, Carts, Products } = require('../../db/db');
 
 const updateCart = async ( req, res ) =>
 {
@@ -7,12 +7,73 @@ const updateCart = async ( req, res ) =>
 
     try
     {
-        const [ updatedRows, updatedData ] = await CartItem.update( { quantity: quantity },
-        { where: { cartId: id, productId: productId }, returning: true } );
+        const thisCart = await Carts.findByPk( id, { include:
+            [
+                {
+                    model: Products,
+                    as: 'products',
+                    attributes: [ 'id', 'name', 'description', 'price', 'image', 'stock' ],
+                    through: { attributes: ['quantity', 'priceAtAddition'] }
+                }
+            ]
+        } );
 
-        if(!updatedRows) throw new Error( `Error al actualizar el carrito` );
+        const itemInCart = thisCart.products.find( item => item.id === productId );
 
-        return res.status(200).json( updatedData[0] );
+        if(itemInCart)
+        {
+            if(Number(quantity)==0)
+            {
+                const deleted = await CartItem.destroy( { where: { cartId: id, productId: productId } } );
+
+                const thisCartUpdated = await thisCart.reload( { include:
+                [
+                    {
+                        model: Products,
+                        as: 'products',
+                        attributes: [ 'id', 'name', 'description', 'price', 'image', 'stock' ],
+                        through: { attributes: ['quantity', 'priceAtAddition'] }
+                    }
+                ] } );
+
+                return res.status(200).json( thisCartUpdated );
+            }
+
+            const [ updatedRows, updatedData ] = await CartItem.update( { quantity: quantity },
+            { where: { cartId: id, productId: productId }, returning: true } );
+
+            if(!updatedRows) throw new Error( `Error al actualizar el carrito` );
+
+            const thisCartUpdated = await thisCart.reload( { include:
+                [
+                    {
+                        model: Products,
+                        as: 'products',
+                        attributes: [ 'id', 'name', 'description', 'price', 'image', 'stock' ],
+                        through: { attributes: ['quantity', 'priceAtAddition'] }
+                    }
+                ]
+            } );
+
+            return res.status(200).json( thisCartUpdated );
+        }
+
+        const thisProduct = await Products.findByPk( productId );
+
+        await thisCart.addProduct( thisProduct, { through: { quantity: quantity, priceAtAddition: thisProduct.price } } );
+
+        const thisCartUpdated = await thisCart.reload( { include:
+            [
+                {
+                    model: Products,
+                    as: 'products',
+                    attributes: [ 'id', 'name', 'description', 'price', 'image', 'stock' ],
+                    through: { attributes: ['quantity', 'priceAtAddition'] }
+                }
+            ]
+        } );
+        
+        return res.status(200).json( thisCartUpdated );
     }
     catch( err )
     {

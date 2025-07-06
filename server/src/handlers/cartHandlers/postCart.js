@@ -14,7 +14,14 @@ const postCart = async ( req, res ) =>
 
         await newCart.addProduct( thisProduct, { through: { quantity: quantity, priceAtAddition: thisProduct.price } } );
 
-        return res.status(200).json( newCart );
+        const finishedCart = await Carts.findByPk( newCart.id, { include:
+            {
+                model: Products,
+                as: "products",
+                attributs: [ 'id', 'name', 'price', 'stock'],
+                through: { attributes: ['quantity', 'priceAtAddition'] }
+            } } );
+        return res.status(200).json( finishedCart );
     }
     catch( err )
     {
