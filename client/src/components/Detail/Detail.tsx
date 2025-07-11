@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Product, CartItem } from '../../types/index.js';
+import type { Product } from '../../types/index.js';
 import { emptyProduct, URL } from '../../types/constants.js';
 import { useEffect, useState } from "react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
@@ -85,7 +85,7 @@ const Detail: React.FC = () =>
 
 
           <div className={style.carrito}>
-            <button onClick={addToCart}> Agregar al carrito 🛒</button>
+            <button onClick={addToCart} disabled={cardDetail.stock<=0 || inputValue>cardDetail.stock}> Agregar al carrito 🛒</button>
           </div>
         </div>
       </div>

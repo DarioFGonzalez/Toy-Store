@@ -11,10 +11,30 @@ import PagoCorrecto from './components/MP/PagoCorrecto/PagoCorrecto';
 import PagoErroneo from './components/MP/PagoErroneo/PagoErroneo';
 import './App.css';
 import Carrito from './components/Carrito/Carrito';
+import { useEffect } from 'react';
+import { URL } from './types/constants';
+import axios from 'axios';
 
 function App()
 {
   const location = useLocation();
+
+  useEffect( () =>
+  {
+    const cartId = localStorage.getItem( 'cartId' );
+    if(cartId)
+    {
+      axios.get(`${URL}cart/${JSON.parse(cartId)}`)
+      .then( ( {data} ) =>
+      {
+        if(data.status=='purchased')
+        {
+          localStorage.removeItem( 'cartId' );
+        }
+      })
+      .catch( ( err ) => console.log( err ) );
+    }
+  }, [])
 
   return (
     <div className='general'>

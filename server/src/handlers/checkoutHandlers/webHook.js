@@ -34,7 +34,7 @@ const webHook = async ( req, res ) =>
 
         await Promise.all( promises );
 
-        await Carts.update( { status: 'paid' }, { where: { id: externalReference }, transaction: t } );
+        await Carts.update( { status: 'purchased' }, { where: { id: externalReference }, transaction: t } );
 
         await t.commit();
 

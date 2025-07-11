@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Carrito.module.css';
-import type { Cart } from '../../types';
+import type { Cart, ProductInCart } from '../../types';
 import axios from 'axios';
 import { emptyCart, URL } from '../../types/constants';
 
 const Carrito: React.FC = () =>
 {
     const [cart, setCart] = useState<Cart>(emptyCart);
+    const [sinStock, setSinStock] = useState<boolean>( false );
     const [subtotal, setSubtotal] = useState(0);
 
     useEffect((): void =>
@@ -15,7 +16,12 @@ const Carrito: React.FC = () =>
         if(cartId)
         {
           axios.get(`${URL}cart/${JSON.parse(cartId)}`)
-          .then( ( {data} ) => setCart( data ) )
+          .then( ( {data} ) =>
+            {
+              setCart( data );
+              const products = data.products;
+              products.forEach( (item: ProductInCart) => item.stock < item.CartItem.quantity ? setSinStock( true ) : '' );
+            } )
           .catch( ( err ) => console.log( err ) );
         }
     }, []);
@@ -59,6 +65,18 @@ const Carrito: React.FC = () =>
     return ( ( ( Number(number) * 100 ) * quantity ) / 100).toFixed(2);
   }
 
+  const validQuantity = ( quantity: number, difference: number, totalAmmount: number ): boolean =>
+  {
+    if(difference==-1)
+    {
+      if( quantity + difference <=0 ) return true;
+      return false;
+    }
+
+    if( quantity + difference > totalAmmount ) return true;
+    return false;
+  }
+
   return (
     <div className={styles.cartContainer}>
       <h1 className={styles.cartTitle}>Carrito de Compras</h1>
@@ -77,9 +95,11 @@ const Carrito: React.FC = () =>
                   <h2 className={styles.itemName}>{item.name}</h2>
                   <p className={styles.itemPrice}>${item.price}</p>
                   <div className={styles.quantityControl}>
-                    <button onClick={() => updateQuantity(item.id, item.CartItem.quantity - 1)}>-</button>
+                    <button onClick={() => updateQuantity(item.id, item.CartItem.quantity - 1)}
+                      disabled={validQuantity(item.CartItem.quantity, -1, item.stock)}>-</button>
                     <span className={styles.itemQuantity}>{item.CartItem.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.CartItem.quantity + 1)}>+</button>
+                    <button onClick={() => updateQuantity(item.id, item.CartItem.quantity + 1)} 
+                      disabled={validQuantity(item.CartItem.quantity, +1, item.stock)}>+</button>
                   </div>
                 </div>
                 <div className={styles.itemActions}>
@@ -92,7 +112,7 @@ const Carrito: React.FC = () =>
 
           <div className={styles.cartSummary}>
             <p className={styles.subtotal}>Subtotal ({cart.products.length} items): <span>${subtotal.toFixed(2)}</span></p>
-            <button onClick={handleCheckout} className={styles.checkoutButton}>Ir al Checkout</button>
+            <button onClick={handleCheckout} className={styles.checkoutButton} disabled={sinStock}>Ir al Checkout</button>
             <button onClick={clearCart} className={styles.clearCartButton}>Vaciar Carrito</button>
             {/* <button className={styles.continueShoppingButton}>Seguir Comprando</button> */}
           </div>

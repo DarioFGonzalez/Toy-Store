@@ -93,6 +93,11 @@
   border-color: #999;
 }
 
+.quantityControl button:disabled {
+  background-color: gray;
+  border-color: #000000;
+}
+
 .itemQuantity {
   font-size: 1rem;
   font-weight: bold;
@@ -162,8 +167,13 @@
   color: white;
 }
 
-.checkoutButton:hover {
+.checkoutButton:not(:disabled):hover {
   background-color: #218838;
+}
+
+.checkoutButton:disabled {
+  background-color: gray;
+  cursor: not-allowed;
 }
 
 .clearCartButton {
