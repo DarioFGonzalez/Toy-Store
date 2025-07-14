@@ -1,16 +1,30 @@
 const { Op } = require('sequelize');
+const { Preference }= require('mercadopago');
 const {conn, Products} = require('../../db/db');
 
 const MP_URL = 'http://localhost:5173/pasarela';
 
 const createPreference = async ( req, res ) =>
 {
-    const cart = req.body;
+    const {cart, form} = req.body;
+    const mpClient = req.mercadoPagoClient;
 
     const t = await conn.transaction();
 
     try
     {
+        const preferenceData =
+        {
+            items: [],
+            payer: { email: form.email, address: form.address, number: form.number },
+            back_urls:
+            {   success: "http://localhost:5173/success",
+                failure: "http://localhost:5173/failure"    },
+            auto_return: "approved",
+            external_reference: cart.id,
+            notification_url: "http://localhost:5000/checkout/hook"
+        }
+
         const allIds = cart.products.map( cartItem => cartItem.id );
 
         const allProducts = await Products.findAll(
@@ -27,13 +41,26 @@ const createPreference = async ( req, res ) =>
             const newStock = thisProduct.stock - productInCart.CartItem.quantity;
 
             if(newStock<0) throw new Error (`Producto ${thisProduct.name} sin stock suficiente`);
+
+            preferenceData.items.push( {
+                id: thisProduct.id,
+                title: thisProduct.name,
+                description: thisProduct.description,
+                quantity: productInCart.CartItem.quantity,
+                unit_price: thisProduct.price,
+                currency_id: "ARS"
+            } );
         })
 
-        //crear la preferencia para redirigir (por ahora, la transaction es obsoleta e ineficiente)
+        const preference = new Preference( mpClient );
+        const response = await preference.create( { body: preferenceData } );
+
+        const preferenceId = response.id;
+        const initPoint = response.init_point;
 
         await t.commit();
 
-        return res.status(200).json( { URL: `${MP_URL}` } );
+        return res.status(200).json( { URL: `${initPoint}`, PreferenceID: preferenceId } );
     }
     catch(err)
     {
