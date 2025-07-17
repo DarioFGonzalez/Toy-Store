@@ -1,20 +1,22 @@
 const { Op } = require('sequelize');
+const { Payment } = require('mercadopago')
 const { conn, Products, Carts } = require( '../../db/db');
 
 const webHook = async ( req, res ) =>
 {
-    console.log( `req.body: ${req.body}\nreq.body.externalReference: ${req.body.externalReference}\n
-        status: ${req.body.status}` );
+    const paymentId = req.query.id;
     
-    const {externalReference, status} = req.body;
+    const paymentClient = new Payment(req.mercadoPagoClient);
+    
+    const paymentData = await paymentClient.get( { id: paymentId } );
 
     const t = await conn.transaction();
 
-    if(status=='failed') return res.status(500).json( { webHook: 'Payment failed' } );
+    if(paymentData.status=='failed') return res.status(500).json( { webHook: 'Payment failed' } );
 
     try
     {
-        const thisCart = await Carts.findByPk( externalReference, { include:
+        const thisCart = await Carts.findByPk( paymentData.external_reference, { include:
         {
             model: Products,
             as: 'products',
@@ -34,7 +36,7 @@ const webHook = async ( req, res ) =>
 
         await Promise.all( promises );
 
-        await Carts.update( { status: 'purchased' }, { where: { id: externalReference }, transaction: t } );
+        await Carts.update( { status: 'purchased' }, { where: { id: paymentData.external_reference }, transaction: t } );
 
         await t.commit();
 

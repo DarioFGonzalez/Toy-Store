@@ -30,3 +30,10 @@ export const emptyProduct =
     category: '',
     stock: 0
 };
+
+export const emptyContactInfo =
+{
+    address: '',
+    number: '',
+    email: ''
+};

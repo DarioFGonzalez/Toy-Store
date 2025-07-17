@@ -45,3 +45,10 @@ export interface Product
     category: string,
     stock: number
 }
+
+export interface ContactInfo
+{
+    email: string,
+    address: string,
+    number: string
+}

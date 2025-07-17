@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Carrito.module.css';
-import type { Cart, ProductInCart } from '../../types';
+import type { Cart, ContactInfo, ProductInCart } from '../../types';
 import axios from 'axios';
-import { emptyCart, URL } from '../../types/constants';
+import { emptyCart, emptyContactInfo, URL } from '../../types/constants';
 
 const Carrito: React.FC = () =>
 {
-    const [cart, setCart] = useState<Cart>(emptyCart);
+    const [cart, setCart] = useState<Cart>( emptyCart );
+    const [ form, setForm ] = useState<ContactInfo>( emptyContactInfo );
+    const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{2,}\.(com|es|ar)$/;
+    const [ wrongEmail, setWrongEmail ] = useState<boolean>( false );
     const [sinStock, setSinStock] = useState<boolean>( false );
     const [subtotal, setSubtotal] = useState(0);
 
@@ -45,12 +48,27 @@ const Carrito: React.FC = () =>
 
   const handleCheckout = (): void =>
   {
-    axios.post(`${URL}checkout`, cart).then( ( { data } ) =>
+    console.log("Entré");
+    if( emailRegex.test(form.email) )
     {
-      alert('¡Gracias por su compra!');
-      window.location.replace(data.URL);
-    })
-    .catch( ( err ) => console.log( err ) );
+      console.log('Entré al post');
+      setWrongEmail( false );
+      axios.post(`${URL}checkout`, {cart, form}).then( ( { data } ) =>
+      {
+        alert('¡Gracias por su compra!');
+        window.location.replace(data.URL);
+      })
+      .catch( ( err ) => console.log( err ) );
+      return ;
+    }
+    setWrongEmail( true );
+    return ;
+  };
+
+  const handleChange = ( e: React.ChangeEvent<HTMLInputElement> ) =>
+  {
+    const { name, value } = e.target;
+    setForm( prev => ({ ...prev, [name]: value }) );
   };
 
   const clearCart = (): void =>
@@ -63,7 +81,7 @@ const Carrito: React.FC = () =>
   const decimalTreatment = ( number: string, quantity: number): string =>
   {
     return ( ( ( Number(number) * 100 ) * quantity ) / 100).toFixed(2);
-  }
+  };
 
   const validQuantity = ( quantity: number, difference: number, totalAmmount: number ): boolean =>
   {
@@ -75,7 +93,7 @@ const Carrito: React.FC = () =>
 
     if( quantity + difference > totalAmmount ) return true;
     return false;
-  }
+  };
 
   return (
     <div className={styles.cartContainer}>
@@ -111,10 +129,14 @@ const Carrito: React.FC = () =>
           </ul>
 
           <div className={styles.cartSummary}>
+            <label> Dirección: </label> <input value={form.address} onChange={handleChange} name='address'/> <hr/>
+            <label> Telefono: </label> <input value={form.number} onChange={handleChange} name='number'/> <hr/>
+            <label> Email: </label> <input value={form.email} onChange={handleChange} name='email'/>  <br/>
+            {wrongEmail && <label style={ { color: 'red' } }> Ingrese un Email válido, por favor. </label>}
             <p className={styles.subtotal}>Subtotal ({cart.products.length} items): <span>${subtotal.toFixed(2)}</span></p>
+            <button onClick={()=>console.log(form, "\nRegex del mail: ", emailRegex.test(form.email) )}> form </button>
             <button onClick={handleCheckout} className={styles.checkoutButton} disabled={sinStock}>Ir al Checkout</button>
             <button onClick={clearCart} className={styles.clearCartButton}>Vaciar Carrito</button>
-            {/* <button className={styles.continueShoppingButton}>Seguir Comprando</button> */}
           </div>
         </>
       )}

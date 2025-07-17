@@ -9,6 +9,6 @@ const mainRouter = Router();
 mainRouter.use( '/product', productRouter );
 mainRouter.use( '/cart', cartRouter );
 mainRouter.use( '/checkout', checkoutRouter );
-mainRouter.post( '/fill', fillUp );
+mainRouter.post( '/init', fillUp );
 
 module.exports = mainRouter;

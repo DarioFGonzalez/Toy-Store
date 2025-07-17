@@ -1,9 +1,9 @@
 const express = require("express");
 const server = express();
 const cors = require('cors');
-const { MercadoPagoConfig, Preference } = require('mercadopago');
+const { MercadoPagoConfig } = require('mercadopago');
 const mainRouter = require('./routes/mainRouter');
-const client = new MercadoPagoConfig( { acces_token: process.env.MP_ACCEST_TOKEN } );
+const client = new MercadoPagoConfig( { accessToken: process.env.MP_ACCESS_TOKEN } );
 
 server.use(express.json());
 server.use( cors() );

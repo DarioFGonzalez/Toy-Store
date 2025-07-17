@@ -1,12 +1,12 @@
 const { Op } = require('sequelize');
 const { Preference }= require('mercadopago');
-const {conn, Products} = require('../../db/db');
+const {conn, Products, Carts} = require('../../db/db');
 
-const MP_URL = 'http://localhost:5173/pasarela';
+const backendUrl = 'https://64ffe818678d.ngrok-free.app/';
 
 const createPreference = async ( req, res ) =>
 {
-    const {cart, form} = req.body;
+    const { cart, form } = req.body;
     const mpClient = req.mercadoPagoClient;
 
     const t = await conn.transaction();
@@ -16,13 +16,18 @@ const createPreference = async ( req, res ) =>
         const preferenceData =
         {
             items: [],
-            payer: { email: form.email, address: form.address, number: form.number },
+            payer: {
+                email: form.email,
+                address: { street_name: form.address },
+                phone: { number: form.number } },
             back_urls:
-            {   success: "http://localhost:5173/success",
-                failure: "http://localhost:5173/failure"    },
+            {   success: "https://localhost:5173/success",
+                failure: "https://localhost:5173/failure",
+                pending: "https://localhost:5173/pending"
+            },
             auto_return: "approved",
             external_reference: cart.id,
-            notification_url: "http://localhost:5000/checkout/hook"
+            notification_url: `${backendUrl}checkout/hook`
         }
 
         const allIds = cart.products.map( cartItem => cartItem.id );
@@ -45,9 +50,9 @@ const createPreference = async ( req, res ) =>
             preferenceData.items.push( {
                 id: thisProduct.id,
                 title: thisProduct.name,
-                description: thisProduct.description,
+                description: thisProduct.description || '',
                 quantity: productInCart.CartItem.quantity,
-                unit_price: thisProduct.price,
+                unit_price: Number(thisProduct.price),
                 currency_id: "ARS"
             } );
         })
@@ -58,9 +63,12 @@ const createPreference = async ( req, res ) =>
         const preferenceId = response.id;
         const initPoint = response.init_point;
 
+        const updateCart = await Carts.update( { preferenceId }, { where: { id: cart.id }, transaction: t } );
+        if(updateCart[0]==0) throw new Error( `No se pudo agregar el preferenceId al carrito` );
+
         await t.commit();
 
-        return res.status(200).json( { URL: `${initPoint}`, PreferenceID: preferenceId } );
+        return res.status(200).json( { URL: `${initPoint}` } );
     }
     catch(err)
     {

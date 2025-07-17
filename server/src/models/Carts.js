@@ -17,6 +17,11 @@ module.exports = ( sequelize ) =>
                 type: DataTypes.ENUM( ...status ),
                 defaultValue: 'active',
                 allowNull: false
+            },
+            preferenceId:
+            {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         }, { timestamps: true }
     );
