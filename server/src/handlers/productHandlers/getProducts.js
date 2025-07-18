@@ -4,7 +4,9 @@ const { Products } = require('../../db/db');
 
 const getProducts = async (req, res) =>
 {
-    const { name, category, minPrice, maxPrice } = req.query;
+    const { name, category, minPrice, maxPrice, page } = req.query;
+    if(!page || page==0) page = 1;
+
     const whereClause = {};
 
     if(name && name!=='')
@@ -38,7 +40,9 @@ const getProducts = async (req, res) =>
     try
     {
         const allProducts = await Products.findAll( { where: whereClause } );
-        return res.status(200).json( allProducts );
+        // wop: tengo que fijarme como pedir a la db directamente resultados de x a y, no PEDIR TODO y separarlo acá.
+        const itemsToShow = paginado( page, allProducts );
+        return res.status(200).json( itemsToShow );
     }
     catch(error)
     {
@@ -46,6 +50,15 @@ const getProducts = async (req, res) =>
         return res.status(500).json( { error_getAllProducts: error.message } );
     }
 };
+
+const paginado = ( page, data ) =>
+{
+    const itemsPerPage = 10;
+    const to = ( itemsPerPage * page ) -1;
+    const from = ( to - itemsPerPage ) + 1;
+    const segment = data.slice( from, to );
+    return segment;
+}
 
 const getProductById = async ( req, res ) =>
 {
