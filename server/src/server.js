@@ -10,6 +10,7 @@ server.use( cors() );
 server.use( (req,res,next) =>
 {
     req.mercadoPagoClient = client;
+    req.backendUrl = 'https://toy-store-zw00.onrender.com/';
     next();
 })
 server.use(mainRouter);

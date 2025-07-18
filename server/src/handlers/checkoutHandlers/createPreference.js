@@ -2,8 +2,6 @@ const { Op } = require('sequelize');
 const { Preference }= require('mercadopago');
 const {conn, Products, Carts} = require('../../db/db');
 
-const backendUrl = 'https://toy-store-zw00.onrender.com/';
-
 const createPreference = async ( req, res ) =>
 {
     const { cart, form } = req.body;
@@ -27,7 +25,7 @@ const createPreference = async ( req, res ) =>
             },
             auto_return: "approved",
             external_reference: cart.id,
-            notification_url: `${backendUrl}checkout/hook`
+            notification_url: `${req.backendUrl}checkout/hook`
         }
 
         const allIds = cart.products.map( cartItem => cartItem.id );
