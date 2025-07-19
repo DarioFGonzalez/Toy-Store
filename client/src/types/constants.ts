@@ -1,5 +1,7 @@
+const offline = false;
+
 export const URL = "https://toy-store-zw00.onrender.com/";
-export const LOCAL_URL = "https://toy-store-tau.vercel.app//";
+export const LOCAL_URL = offline ? "https://toy-store-tau.vercel.app/" : 'http://localhost:5173/';
 
 export const emptyCart =
 {

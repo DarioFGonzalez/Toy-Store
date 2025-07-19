@@ -19,9 +19,9 @@ const createPreference = async ( req, res ) =>
                 address: { street_name: form.address },
                 phone: { number: form.number } },
             back_urls:
-            {   success: "https://localhost:5173/success",
-                failure: "https://localhost:5173/failure",
-                pending: "https://localhost:5173/pending"
+            {   success: "https://toy-store-zw00.onrender.com/success",
+                failure: "https://toy-store-zw00.onrender.com/failure",
+                pending: "https://toy-store-zw00.onrender.com/pending"
             },
             auto_return: "approved",
             external_reference: cart.id,
