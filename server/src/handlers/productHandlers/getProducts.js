@@ -10,7 +10,7 @@ const getProducts = async (req, res) =>
     {
         const page = 1;
     }
-    
+
     let whereClause = {};
 
     if(name && name!=='')
