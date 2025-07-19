@@ -7,7 +7,7 @@ const getProducts = async (req, res) =>
     const { name, category, minPrice, maxPrice, page } = req.query;
     if(!page || page==0) page = 1;
 
-    const whereClause = {};
+    let whereClause = {};
 
     if(name && name!=='')
     {
@@ -18,7 +18,7 @@ const getProducts = async (req, res) =>
         whereClause.category = category;
     }
 
-    const priceConditions = {};
+    let priceConditions = {};
     let flag = false;
 
     if(minPrice)
