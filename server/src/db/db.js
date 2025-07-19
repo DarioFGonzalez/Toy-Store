@@ -1,5 +1,5 @@
 const {Sequelize} = require('sequelize');
-const productModel = require('../models/Products.js');
+const productModel = require('../models/products.js');
 const cartModel = require('../models/Carts.js');
 const cartItemModel = require('../models/CartItem.js');
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
