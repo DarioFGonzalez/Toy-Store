@@ -4,9 +4,13 @@ const { Products } = require('../../db/db');
 
 const getProducts = async (req, res) =>
 {
-    const { name, category, minPrice, maxPrice, page } = req.query;
-    if(!page || page==0) page = 1;
+    const { name, category, minPrice, maxPrice } = req.query;
 
+    if(!req.query.page || req.query.page<=0)
+    {
+        const page = 1;
+    }
+    
     let whereClause = {};
 
     if(name && name!=='')
