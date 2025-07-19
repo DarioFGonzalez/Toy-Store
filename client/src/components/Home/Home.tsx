@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import Styles from "./Home.module.css";
 import { URL } from '../../types/constants';
 import type { Product } from '../../types';
@@ -9,7 +8,6 @@ import Carrusel from '../Carrusel/Carrusel';
 
 const Home: React.FC = () =>
 {
-  const navigate = useNavigate();
 
   const [ entries, setEntries ] = useState<Product[]>([]);
   const [ all, setAll ] = useState<Product[]>([]);
@@ -61,34 +59,3 @@ const Home: React.FC = () =>
 };
 
 export default Home;
-
-/*import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import type { Product } from '../../types/index';
-import Card from '../Card/Card';
-
-const Home: React.FC = () =>
-{
-    const [ data, setData ] = useState<Product[]>( [] );
-
-    useEffect( () =>
-    {
-        axios.get(`http://localhost:5000/product`)
-        .then( ( {data} ) =>
-        {
-            setData(data)
-        } )
-        .catch( ( err ) => { console.log( err ) } );
-    }, [] );
-
-    return(
-        <div>
-            Soy el home
-            {data.map( (item, y) =>
-                <Card key={y} product={item} />
-            ) }
-        </div>
-    )
-}
-
-export default Home;*/
