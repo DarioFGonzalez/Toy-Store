@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Styles from './TopBar.module.css';
 
 const TopBar: React.FC = () =>
@@ -5,10 +6,17 @@ const TopBar: React.FC = () =>
 
     return(
         <div className={Styles.topBarFixed}>
-            <a href='/home'> <button> Home </button> </a>
-            <a href='/shop'> <button> SHOP </button> </a>
-            <a href='/carrito'> <button> Carrito </button> </a>
-            <a href='/create'> <button> CREAR </button> </a>
+            <Link className={Styles.link} to={'/home'}>
+                <button> Home </button>
+            </Link>
+
+            <Link className={Styles.link} to={'/shop'}>
+                <button> SHOP </button>
+            </Link>
+
+            <Link className={Styles.link} to={'/carrito'}>
+                <button> Carrito </button>
+            </Link>
         </div>
     )
 }
