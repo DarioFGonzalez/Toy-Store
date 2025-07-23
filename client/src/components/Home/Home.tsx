@@ -30,26 +30,18 @@ const Home: React.FC = () =>
 
   <div className={Styles.homeContainer}>
 
-    <div>
-      <div className={Styles.allCarrusel}>
-        <div>
-
-          <Carousel interval={2000} pause="hover">
-
-            {entries.map((item, index) => (
-            <Carousel.Item key={index}>
-                <img src={item.image} alt={item.name} />
-                <Carousel.Caption>
-                  <h3> {item.name} </h3>
-                  <p> {item.description} </p>
-                </Carousel.Caption>
-            </Carousel.Item>
-            ))}
-
-          </Carousel>
-
-        </div>
-      </div>
+    <div className={Styles.allCarrusel}>
+      <Carousel interval={2000} pause="hover">
+        {entries.map((item, index) => (
+        <Carousel.Item key={index}>
+            <img src={item.image} alt={item.name} />
+            <Carousel.Caption>
+              <h3> {item.name} </h3>
+              <p> {item.description} </p>
+            </Carousel.Caption>
+        </Carousel.Item>
+        ))}
+      </Carousel>
     </div>
 
     <Carrusel products={all} />

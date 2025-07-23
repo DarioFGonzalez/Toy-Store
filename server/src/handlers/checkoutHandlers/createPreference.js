@@ -9,9 +9,6 @@ const createPreference = async ( req, res ) =>
 
     const t = await conn.transaction();
 
-    const offline = false;
-    const URL = offline ? 'http://localhost:5173/' : 'https://toy-store-tau.vercel.app/';
-
     try
     {
         const preferenceData =
@@ -22,9 +19,9 @@ const createPreference = async ( req, res ) =>
                 address: { street_name: form.address },
                 phone: { number: form.number } },
             back_urls:
-            {   success: `${URL}success`,
-                failure: `${URL}failure`,
-                pending: `${URL}pending`
+            {   success: 'https://toy-store-tau.vercel.app/success',
+                failure: 'https://toy-store-tau.vercel.app/failure',
+                pending: 'https://toy-store-tau.vercel.app/pending'
             },
             auto_return: "approved",
             external_reference: cart.id,

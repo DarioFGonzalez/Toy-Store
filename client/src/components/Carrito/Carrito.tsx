@@ -11,6 +11,8 @@ const Carrito: React.FC = () =>
     const [ showExtra, setShowExtra ] = useState<boolean>( false );
     const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{2,}\.(com|es|ar)$/;
     const [ wrongEmail, setWrongEmail ] = useState<boolean>( false );
+    const [ noAddress, setNoAddress ] = useState<boolean>( false );
+    const [ noNumber, setNoNumber ] = useState<boolean>( false );
     const [sinStock, setSinStock] = useState<boolean>( false );
     const [subtotal, setSubtotal] = useState(0);
 
@@ -49,21 +51,25 @@ const Carrito: React.FC = () =>
 
   const handleCheckout = (): void =>
   {
-    console.log("Entré");
-    if( emailRegex.test(form.email) )
+    setWrongEmail( !emailRegex.test(form.email) );
+    if( showExtra )
     {
-      console.log('Entré al post');
-      setWrongEmail( false );
-      axios.post(`${URL}checkout`, {cart, form}).then( ( { data } ) =>
-      {
-        alert('¡Gracias por su compra!');
-        window.location.replace(data.URL);
-      })
-      .catch( ( err ) => console.log( err ) );
-      return ;
+      setNoAddress( form.address=='' ? true : false );
+      setNoNumber( form.number=='' ? true : false );
     }
-    setWrongEmail( true );
-    return ;
+    
+    if( (showExtra && (form.address=='' || form.number=='') ) || !emailRegex.test(form.email) ) return ;
+
+    setWrongEmail( false );
+    setNoAddress( false );
+    setNoNumber( false );
+    
+    axios.post(`${URL}checkout`, {cart, form}).then( ( { data } ) =>
+    {
+      alert('¡Gracias por su compra!');
+      window.location.replace(data.URL);
+    })
+    .catch( ( err ) => console.log( err ) );
   };
 
   const handleChange = ( e: React.ChangeEvent<HTMLInputElement> ) =>
@@ -130,13 +136,55 @@ const Carrito: React.FC = () =>
           </ul>
 
           <div className={styles.cartSummary}>
-            <input type='checkbox' onClick={()=>setShowExtra(prev => !prev)}/>
-            { showExtra &&
-              (<> <label> Dirección: </label> <input value={form.address} onChange={handleChange} name='address'/> <hr/>
-              <label> Telefono: </label> <input value={form.number} onChange={handleChange} name='number'/> <hr/> </>)
-            }
-            <label> Email: </label> <input value={form.email} onChange={handleChange} name='email'/>  <br/>
-            {wrongEmail && <label style={ { color: 'red' } }> Ingrese un Email válido, por favor. </label>}
+            <div className={styles.shippingToggle}>
+              <input type='checkbox' id="showShippingInfo" onClick={()=>setShowExtra(prev => !prev)}/>
+              <label htmlFor="showShippingInfo">Quiero ingresar datos de envío</label>
+            </div>
+
+            { showExtra && (
+              <div className={styles.shippingInfoFields}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="address">Dirección:</label>
+                  <input
+                    type="text"
+                    id="address"
+                    value={form.address}
+                    onChange={handleChange}
+                    name='address'
+                    className={styles.inputField}
+                  />
+                  {noAddress && <p className={styles.errorMessage}>Ingrese una dirección de entrega.</p>}
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="number">Teléfono:</label>
+                  <input
+                    type="text"
+                    id="number"
+                    value={form.number}
+                    onChange={handleChange}
+                    name='number'
+                    className={styles.inputField}
+                  />
+                  {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
+                </div>
+              </div>
+            )}
+            
+            <div className={styles.formGroup}>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                id="email"
+                value={form.email}
+                onChange={handleChange}
+                name='email'
+                className={styles.inputField}
+              />
+            </div>
+            {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
+            
+            <hr className={styles.summarySeparator}/>
+
             <p className={styles.subtotal}>Subtotal ({cart.products.length} items): <span>${subtotal.toFixed(2)}</span></p>
             <button onClick={handleCheckout} className={styles.checkoutButton} disabled={sinStock}>Ir al Checkout</button>
             <button onClick={clearCart} className={styles.clearCartButton}>Vaciar Carrito</button>
