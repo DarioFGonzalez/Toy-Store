@@ -43,13 +43,21 @@ const Detail: React.FC = () =>
     if( cartId === null )
     {
       axios.post(`${URL}cart`, { productId: cardDetail.id, quantity: inputValue } )
-      .then( ( { data } ) => localStorage.setItem("cartId", JSON.stringify( data.id ) ) )
+      .then( ( { data } ) =>
+        {
+          localStorage.setItem("cartId", JSON.stringify( data.id ) );
+          alert('¡Carrito creado!');
+        })
       .catch( ( err ) => console.log( err ) );
     }
     else
     {
       axios.patch(`${URL}cart/${JSON.parse(cartId)}`, { productId: cardDetail.id, quantity: inputValue } )
-      .then( ( { data } ) => localStorage.setItem( 'cartId', JSON.stringify( data.id ) ) )
+      .then( ( { data } ) =>
+        {
+          localStorage.setItem( 'cartId', JSON.stringify( data.id ) );
+          alert('¡Item agregado!');
+        })
       .catch( ( err ) => console.log( err ) );
     }
   };

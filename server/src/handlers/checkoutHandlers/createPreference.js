@@ -9,7 +9,7 @@ const createPreference = async ( req, res ) =>
 
     const t = await conn.transaction();
 
-    const offline = true;
+    const offline = false;
     const URL = offline ? 'http://localhost:5173/' : 'https://toy-store-tau.vercel.app/';
 
     try
