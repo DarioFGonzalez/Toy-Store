@@ -4,16 +4,26 @@ const cartModel = require('../models/Carts.js');
 const cartItemModel = require('../models/CartItem.js');
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
-    logging: false,
-    native: false,
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    }
-});
+const isProduction = process.env.NODE_ENV === 'production' || DB_HOST !== 'localhost';
+let sequelize;
+
+if (isProduction) {
+    sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
+        logging: false,
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        },
+        native: false,
+    });
+} else {
+    sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
+        logging: false,
+        native: false,
+    });
+}
 
 sequelize.authenticate()
 .then( ()=>

@@ -6,8 +6,7 @@ const getProducts = async (req, res) =>
 {
     const { name, category, minPrice, maxPrice } = req.query;
     let { page } = req.query;
-
-    if( !page || page<=0 ) page = 1;
+    const limit = 8;
 
     let whereClause = {};
 
@@ -41,10 +40,32 @@ const getProducts = async (req, res) =>
 
     try
     {
-        const allProducts = await Products.findAll( { where: whereClause } );
+        // const allProducts = await Products.findAll( { where: whereClause } );
+        
+        
         // wop: tengo que fijarme como pedir a la db directamente resultados de x a y, no PEDIR TODO y separarlo acá.
-        const itemsToShow = paginado( page, allProducts );
-        return res.status(200).json( itemsToShow );
+        if(page)
+        {
+            const offset = (page -1) * limit;
+
+            const { count, rows } = await Products.findAndCountAll({
+                where: whereClause,
+                order: [['name', 'ASC']],
+                limit: limit,
+                offset: offset
+            });
+
+            const totalPages = Math.ceil( count / limit );
+
+            return res.status(200).json({
+                totalPages: totalPages,
+                actualPage: page,
+                products: rows
+            });
+        }
+        const allProducts = await Products.findAll();
+
+        return res.status(200).json( allProducts );
     }
     catch(error)
     {
@@ -55,9 +76,9 @@ const getProducts = async (req, res) =>
 
 const paginado = ( page, data ) =>
 {
-    const itemsPerPage = 10;
-    const to = ( itemsPerPage * page ) -1;
-    const from = ( to - itemsPerPage ) + 1;
+    const itemsPerPage = 8;
+    const to = ( itemsPerPage * page ) ;
+    const from = ( to - itemsPerPage ) ;
     const segment = data.slice( from, to );
     return segment;
 }

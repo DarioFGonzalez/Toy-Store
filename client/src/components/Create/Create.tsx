@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, {useState} from 'react';
 import { Form } from 'react-bootstrap';
 import styles from './Create.module.css';
-import { formProduct } from '../../types/constants';
+import { formProduct, URL } from '../../types/constants';
 
 const Create: React.FC = () =>
 {
@@ -41,7 +41,11 @@ const Create: React.FC = () =>
 
         try
         {
-            axios.post('http://localhost:5000/product', completedForm)
+            axios.post(`${URL}product`, completedForm)
+			.then( ( { data } ) =>
+			{
+				console.log( data );
+			})
             alert('¡Usuario creado!')
 
             setForm(formProduct);

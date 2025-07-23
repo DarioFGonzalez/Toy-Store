@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const { Preference }= require('mercadopago');
-const {conn, Products, Carts} = require('../../db/db');
+const { conn, Products, Carts } = require('../../db/db');
 
 const createPreference = async ( req, res ) =>
 {
@@ -8,6 +8,9 @@ const createPreference = async ( req, res ) =>
     const mpClient = req.mercadoPagoClient;
 
     const t = await conn.transaction();
+
+    const offline = true;
+    const URL = offline ? 'http://localhost:5173/' : 'https://toy-store-tau.vercel.app/';
 
     try
     {
@@ -19,14 +22,14 @@ const createPreference = async ( req, res ) =>
                 address: { street_name: form.address },
                 phone: { number: form.number } },
             back_urls:
-            {   success: "https://toy-store-zw00.onrender.com/success",
-                failure: "https://toy-store-zw00.onrender.com/failure",
-                pending: "https://toy-store-zw00.onrender.com/pending"
+            {   success: `${URL}success`,
+                failure: `${URL}failure`,
+                pending: `${URL}pending`
             },
             auto_return: "approved",
             external_reference: cart.id,
-            notification_url: `${req.backendUrl}checkout/hook`
-        }
+            notification_url: 'https://toy-store-zw00.onrender.com/checkout/hook'
+        };
 
         const allIds = cart.products.map( cartItem => cartItem.id );
 

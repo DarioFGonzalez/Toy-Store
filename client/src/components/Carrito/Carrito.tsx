@@ -8,6 +8,7 @@ const Carrito: React.FC = () =>
 {
     const [cart, setCart] = useState<Cart>( emptyCart );
     const [ form, setForm ] = useState<ContactInfo>( emptyContactInfo );
+    const [ showExtra, setShowExtra ] = useState<boolean>( false );
     const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{2,}\.(com|es|ar)$/;
     const [ wrongEmail, setWrongEmail ] = useState<boolean>( false );
     const [sinStock, setSinStock] = useState<boolean>( false );
@@ -129,12 +130,14 @@ const Carrito: React.FC = () =>
           </ul>
 
           <div className={styles.cartSummary}>
-            <label> Dirección: </label> <input value={form.address} onChange={handleChange} name='address'/> <hr/>
-            <label> Telefono: </label> <input value={form.number} onChange={handleChange} name='number'/> <hr/>
+            <input type='checkbox' onClick={()=>setShowExtra(prev => !prev)}/>
+            { showExtra &&
+              (<> <label> Dirección: </label> <input value={form.address} onChange={handleChange} name='address'/> <hr/>
+              <label> Telefono: </label> <input value={form.number} onChange={handleChange} name='number'/> <hr/> </>)
+            }
             <label> Email: </label> <input value={form.email} onChange={handleChange} name='email'/>  <br/>
             {wrongEmail && <label style={ { color: 'red' } }> Ingrese un Email válido, por favor. </label>}
             <p className={styles.subtotal}>Subtotal ({cart.products.length} items): <span>${subtotal.toFixed(2)}</span></p>
-            <button onClick={()=>console.log(form, "\nRegex del mail: ", emailRegex.test(form.email) )}> form </button>
             <button onClick={handleCheckout} className={styles.checkoutButton} disabled={sinStock}>Ir al Checkout</button>
             <button onClick={clearCart} className={styles.clearCartButton}>Vaciar Carrito</button>
           </div>

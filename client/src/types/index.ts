@@ -1,9 +1,3 @@
-// let OldCartItem =
-// {
-//     item: Product,
-//     quantity: number
-// }
-
 export interface Cart
 {
     id: string,
@@ -51,4 +45,10 @@ export interface ContactInfo
     email: string,
     address: string,
     number: string
+}
+
+export interface PaginadoProps
+{
+    currentPage: number,
+    totalPages: number
 }
