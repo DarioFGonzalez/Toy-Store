@@ -19,7 +19,7 @@ const createPreference = async ( req, res ) =>
                 address: { street_name: form.address },
                 phone: { number: form.number } },
             back_urls:
-            {   success: 'https://toy-store-tau.vercel.app/success',
+            {   success: 'https://toy-store-tau.vercel.app/home',
                 failure: 'https://toy-store-tau.vercel.app/failure',
                 pending: 'https://toy-store-tau.vercel.app/pending'
             },
