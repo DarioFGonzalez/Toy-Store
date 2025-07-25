@@ -3,7 +3,14 @@
   background-position: center;
   background-size: cover;
   min-height: 160vh;
-  padding-top: 50px;
+}
+
+.allCarrusel {
+  max-width: 960px;
+  margin: 0 auto 50px auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
 .carouselContainer {
@@ -113,14 +120,6 @@
 
 .productsButtonContainer button:hover {
     background-color: #383838;
-}
-
-.allCarrusel {
-  max-width: 960px;
-  margin: 0 auto 50px auto;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
 .allCarrusel img {

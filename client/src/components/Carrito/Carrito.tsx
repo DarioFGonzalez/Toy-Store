@@ -153,8 +153,8 @@ const Carrito: React.FC = () =>
                     name='address'
                     className={styles.inputField}
                   />
-                  {noAddress && <p className={styles.errorMessage}>Ingrese una dirección de entrega.</p>}
                 </div>
+                {noAddress && <p className={styles.errorMessage}>Ingrese una dirección de entrega.</p>}
                 <div className={styles.formGroup}>
                   <label htmlFor="number">Teléfono:</label>
                   <input
@@ -165,8 +165,8 @@ const Carrito: React.FC = () =>
                     name='number'
                     className={styles.inputField}
                   />
-                  {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
                 </div>
+                {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
               </div>
             )}
             

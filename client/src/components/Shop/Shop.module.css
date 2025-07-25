@@ -1,17 +1,18 @@
-.generalContainer {
-  display: flex; /* ¡Convierte el contenedor en Flexbox! */
-  flex-direction: row; /* Coloca los elementos (columnas) uno al lado del otro */
-  min-height: 100vh; /* Opcional: Asegura que ocupe al menos toda la altura de la ventana */
-  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+.shopPageWrapper {
+
 }
 
-/* Estilos para el área de contenido principal a la derecha de la Sidebar */
+.generalContainer {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+}
+
 .mainContentArea {
-  flex-grow: 1; /* ¡Importante! Hace que esta área ocupe todo el espacio restante */
-  padding: 20px; /* Opcional: padding interno para el contenido */
-  overflow-y: auto; /* Permite scroll solo en esta área si el contenido es largo */
-  /* Si tenés una TopBar fija, aquí iría el padding-top */
-  /* padding-top: 60px; */ 
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
 }
 
 .gridWrapper {

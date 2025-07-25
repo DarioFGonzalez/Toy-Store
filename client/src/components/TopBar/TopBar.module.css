@@ -1,0 +1,27 @@
+.TopBarContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-color: #8A2BE2;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 10px;
+  color: white;
+  font-size: 1.2em;
+}
+
+.TopBarContainer a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+.TopBarContainer a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
