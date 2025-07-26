@@ -1,18 +1,38 @@
 .shopPageWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex-grow: 1; /* Permite que este contenedor ocupe el espacio vertical restante dentro de page-content-wrapper */
+}
 
+.contentCenteringContainer {
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* Apila generalContainer y Paginado */
+  align-items: center;
+  flex-grow: 1; /* Se estira verticalmente dentro de shopPageWrapper */
 }
 
 .generalContainer {
   display: flex;
-  flex-direction: row;
-  min-height: 100vh;
+  flex-direction: row; /* SideBar y productsAndHighlightContainer al lado */
   width: 100%;
+  flex-grow: 1; /* Permite que este contenedor se estire dentro de contentCenteringContainer */
+  min-height: 100%; /* CLAVE: Da una altura de referencia a sus hijos flex */
+  align-items: stretch; /* CLAVE: Hace que los hijos flex se estiren verticalmente para llenar el contenedor */
+  margin-bottom: 20px; /* Espacio antes del paginado */
 }
 
-.mainContentArea {
-  flex-grow: 1;
-  padding: 20px;
-  overflow-y: auto;
+.productsAndHighlightContainer { 
+  flex-grow: 1; /* Permite que esta columna ocupe el espacio restante horizontalmente */
+  padding-left: 20px; 
+  box-sizing: border-box;
+  display: flex; 
+  flex-direction: column; /* Para que sus hijos (Highlight/gridWrapper) se apilen */
+  min-height: 100%; /* Se estira a la altura del padre generalContainer */
 }
 
 .gridWrapper {
@@ -20,8 +40,42 @@
   justify-content: center;
   border: 1px solid #ddd;
   padding: 20px;
-  width: 750px;
+  width: 100%;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
   background-color: #fcfcfc;
+  box-sizing: border-box;
+  min-height: 300px; /* Altura mínima para el área de productos */
+  flex-grow: 1; /* Asegura que el gridWrapper ocupe el espacio dentro de productsAndHighlightContainer */
+}
+
+/* Estilos para el paginado */
+.contentCenteringContainer > div:last-child {
+  margin-top: auto; /* Empuja el paginado al final del contenedor si el contenido es corto */
+}
+
+/* Media Queries para Responsive */
+@media (max-width: 768px) {
+  .generalContainer {
+    flex-direction: column;
+    align-items: center;
+    min-height: auto; /* En móvil, no necesitamos que se estire a la altura total, solo al contenido */
+    margin-bottom: 0; 
+  }
+
+  .contentCenteringContainer {
+    padding: 10px;
+    min-height: auto; 
+  }
+
+  .productsAndHighlightContainer { 
+    padding-left: 0;
+    padding-top: 20px;
+    min-height: auto; 
+  }
+
+  .gridWrapper {
+    width: 100%;
+    padding: 10px;
+  }
 }

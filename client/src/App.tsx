@@ -1,17 +1,17 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Carrito from './components/Carrito/Carrito';
 import Create from './components/Create/Create';
 import Detail from './components/Detail/Detail';
 import Home from './components/Home/Home';
-import TopBar from './components/TopBar/TopBar';
-import Shop from './components/Shop/Shop';
 import MP from './components/MP/MP';
 import PagoCorrecto from './components/MP/PagoCorrecto/PagoCorrecto';
 import PagoErroneo from './components/MP/PagoErroneo/PagoErroneo';
-import Carrito from './components/Carrito/Carrito';
-import { useEffect } from 'react';
+import Shop from './components/Shop/Shop';
+import TopBar from './components/TopBar/TopBar';
 import { URL } from './types/constants';
-import axios from 'axios';
 
 function App() {
 

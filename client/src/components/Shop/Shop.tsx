@@ -1,12 +1,12 @@
-import SideBar from '../SideBar/SideBar';
-import Paginado from '../Paginado/Paginado';
-import Styles from './Shop.module.css';
-import Highlight from '../Highlight/Highlight';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
-import { URL } from '../../types/constants';
 import type { Product } from '../../types';
+import { URL } from '../../types/constants';
+import Highlight from '../Highlight/Highlight';
+import Paginado from '../Paginado/Paginado';
+import SideBar from '../SideBar/SideBar';
+import Styles from './Shop.module.css';
 
 const Shop: React.FC = () => {
     const location = useLocation();
@@ -35,14 +35,16 @@ const Shop: React.FC = () => {
 
     return (
         <div className={Styles.shopPageWrapper}>
-            <div className={Styles.generalContainer}>
-                <SideBar />
-                <div>
-                    {items.length > 0 && <Highlight items={items} />}
-                    {items.length === 0 && <div className={Styles.gridWrapper}>Sin coincidencias</div>}
+            <div className={Styles.contentCenteringContainer}>
+                <div className={Styles.generalContainer}>
+                    <SideBar />
+                    <div className={Styles.productsAndHighlightContainer}>
+                        {items.length > 0 && <Highlight items={items} />}
+                        {items.length === 0 && <div className={Styles.gridWrapper}>Sin coincidencias</div>}
+                    </div>
                 </div>
+                <Paginado totalPages={totalPages} currentPage={currentPage} />
             </div>
-            <Paginado totalPages={totalPages} currentPage={currentPage} />
         </div>
     );
 }

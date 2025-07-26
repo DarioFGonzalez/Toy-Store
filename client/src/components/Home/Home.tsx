@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
-import Styles from "./Home.module.css";
-import { URL } from '../../types/constants';
 import type { Product } from '../../types';
+import { URL } from '../../types/constants';
 import Carrusel from '../Carrusel/Carrusel';
+import Styles from "./Home.module.css";
 
 const Home: React.FC = () => {
   const [entries, setEntries] = useState<Product[]>([]);

@@ -1,6 +1,6 @@
 import React from 'react';
-import Styles from './TopBar.module.css';
 import { Link } from 'react-router-dom';
+import Styles from './TopBar.module.css';
 
 const TopBar: React.FC = () => {
   return (
