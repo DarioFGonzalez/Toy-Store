@@ -12,6 +12,7 @@ import PagoErroneo from './components/MP/PagoErroneo/PagoErroneo';
 import Shop from './components/Shop/Shop';
 import TopBar from './components/TopBar/TopBar';
 import { URL } from './types/constants';
+import AdminLogin from './components/auth/AdminLogin';
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
             <Route path='/' element={<Navigate to="/home" replace />} />
             <Route path='/home' element={<Home />} />
             <Route path='/shop' element={<Shop />} />
+            <Route path='/auth' element={<AdminLogin />} />
             <Route path='/detail/:id' element={<Detail />} />
             <Route path='/carrito' element={<Carrito />} />
             <Route path='/create' element={<Create />} />
