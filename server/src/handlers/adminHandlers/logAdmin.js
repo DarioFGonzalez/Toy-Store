@@ -3,9 +3,10 @@ const jwt = require('jsonwebtoken');
 const logAdmin = async ( req, res ) =>
 {
     const { password } = req.body;
+    
     if(password === process.env.ADMIN_SECRET)
     {
-        const JWT_SECRET = process.env.JWT_SECRET;
+        const JWT_SECRET = process.env.SECRET_WORD;
         const payload =
         {
             role: 'admin'
