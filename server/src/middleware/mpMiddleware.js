@@ -3,8 +3,8 @@ const crypto = require('crypto');
 const mpMiddleware = ( req, res, next ) =>
 {
     //WOP
-    console.log(`Body de la solicitud: ${req.body}.`);
-    console.log(`Headers de la solicitud: ${req.headers}.`);
+    console.log( "Body de la solicitud: ", JSON.stringify(req.body, null, 2) );
+    console.log( "Headers de la solicitud: ", JSON.stringify(req.headers, null, 2) );
     //
 
     const secret = process.env.MP_CLIENT_SECRET;
