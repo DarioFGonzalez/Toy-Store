@@ -2,6 +2,11 @@ const crypto = require('crypto');
 
 const mpMiddleware = ( req, res, next ) =>
 {
+    //WOP
+    console.log(`Body de la solicitud: ${req.body}.`);
+    console.log(`Headers de la solicitud: ${req.headers}.`);
+    //
+
     const secret = process.env.MP_CLIENT_SECRET;
     if(!secret) return res.status(500).json( { error: 'Error de configuración de servidor' } );
     
