@@ -8,9 +8,9 @@ const checkToken = require('../middleware/checkToken');
 const productRouter = Router();
 
 productRouter.get( '/:id', getProductById );
+productRouter.get( '/', getProducts );
 
 productRouter.use( checkToken );
-productRouter.get( '/', getProducts );
 
 productRouter.post( '/', postProduct );
 productRouter.put( '/:id', updateProduct );
