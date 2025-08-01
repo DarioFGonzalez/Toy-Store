@@ -31,6 +31,7 @@ const mpMiddleware = ( req, res, next ) =>
 
     if( generatedSignature === recievedSignature )
     {
+        console.log(`Acceso concedido. Identidad MP-Webhook confirmada.`);
         next();
     }
     else

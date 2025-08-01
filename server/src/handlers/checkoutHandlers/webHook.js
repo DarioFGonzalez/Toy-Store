@@ -40,6 +40,8 @@ const webHook = async ( req, res ) =>
 
         await t.commit();
 
+        console.log("Terminé, teóricamente, de descontar stock y archivar el carrito");
+
         return res.status(200).json( { success: 'Stock actualizado' } );
     }
     catch( err )
