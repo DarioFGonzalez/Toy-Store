@@ -6,11 +6,13 @@ const webHook = async ( req, res ) =>
 {
     console.log('Inicio de comunicación con el webhook');
     const paymentId = req.query.id;
+    console.log("El paymentId es: ", paymentId);
     
     const paymentClient = new Payment(req.mercadoPagoClient);
     
     const paymentData = await paymentClient.get( { id: paymentId } );
-
+    console.log("La data del pago es: ", JSON.stringify(paymentData));
+    
     const t = await conn.transaction();
 
     if(paymentData.status=='failed') return res.status(500).json( { webHook: 'Payment failed' } );
