@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Carrito from './components/Carrito/Carrito';
@@ -13,12 +13,18 @@ import Shop from './components/Shop/Shop';
 import TopBar from './components/TopBar/TopBar';
 import { URL } from './types/constants';
 import AdminLogin from './components/auth/AdminLogin';
+import Dashboard from './components/Dashboard/Dashboard';
 
-function App() {
+function App()
+{
+  const [ isAdmin, setIsAdmin ] = useState<boolean>(false);
 
   useEffect(() => {
     const cartId = localStorage.getItem('cartId');
-    if (cartId) {
+    const adminToken = localStorage.getItem('adminToken');
+
+    if(cartId)
+    {
       axios.get(`${URL}cart/${JSON.parse(cartId)}`)
         .then(({ data }) => {
           if (data.status === 'purchased') {
@@ -29,6 +35,15 @@ function App() {
           console.log(err);
         });
     }
+    if(adminToken)
+    {
+      setIsAdmin(true);
+    }
+    else
+    {
+      setIsAdmin(false);
+    }
+
   }, []);
 
   return (
@@ -37,10 +52,11 @@ function App() {
       <div className='main-content-area'>
         <div className='page-content-wrapper'>
           <Routes>
-            <Route path='/' element={<Navigate to="/home" replace />} />
+            <Route path='*' element={<Navigate to="/home" replace />} />
             <Route path='/home' element={<Home />} />
             <Route path='/shop' element={<Shop />} />
             <Route path='/auth' element={<AdminLogin />} />
+            { isAdmin && <Route path='/dashboard' element={<Dashboard />} /> }
             <Route path='/detail/:id' element={<Detail />} />
             <Route path='/carrito' element={<Carrito />} />
             <Route path='/create' element={<Create />} />

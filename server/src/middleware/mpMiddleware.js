@@ -36,7 +36,8 @@ const mpMiddleware = ( req, res, next ) =>
     }
     else
     {
-        console.error( "Firma de webhook de MercadoPago inválida." );
+        console.error( "|||||| Firma de webhook de MercadoPago inválida ||||||" );
+        console.error( `req.body: ${JSON.stringify(req.body)}\nreq.headers: ${JSON.stringify(req.headers)}\ngeneratedSignature: ${generatedSignature} recievedSignature: ${recievedSignature}`);
         return res.status(401).json( { error: 'Firma de webhook inválida. Acceso denegado.' } );
     }
 }
