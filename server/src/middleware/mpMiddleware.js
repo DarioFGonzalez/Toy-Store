@@ -23,7 +23,7 @@ const mpMiddleware = ( req, res, next ) =>
 
     if(!timestamp || !recievedSignature) return res.status(401).json( { error: 'Formato de firma inválido.' } );
 
-    const template = `id:${req.body.data.id};request-id:${req.headers['x-request-id']};ts:${timestamp};`;
+    const template = `id:${id};request-id:${req.headers['x-request-id']};ts:${timestamp};`;
 
     const hmac = crypto.createHmac( 'sha256', secret );
     hmac.update( template );
