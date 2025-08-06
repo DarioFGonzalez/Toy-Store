@@ -40,6 +40,11 @@ export interface Product
     stock: number
 }
 
+export interface ProductCardProps
+{
+    item: Product; 
+}
+
 export interface ContactInfo
 {
     email: string,

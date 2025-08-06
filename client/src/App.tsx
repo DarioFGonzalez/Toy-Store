@@ -15,16 +15,20 @@ import { URL } from './types/constants';
 import AdminLogin from './components/auth/AdminLogin';
 import Dashboard from './components/Dashboard/Dashboard';
 
-function App()
-{
-  const [ isAdmin, setIsAdmin ] = useState<boolean>(false);
+function App() {
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // Estado de carga
 
   useEffect(() => {
-    const cartId = localStorage.getItem('cartId');
-    const adminToken = localStorage.getItem('adminToken');
+    // Lógica para verificar el token de administrador al inicio
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      setIsAdmin(true);
+    }
+    setIsLoading(false);
 
-    if(cartId)
-    {
+    const cartId = localStorage.getItem('cartId');
+    if (cartId) {
       axios.get(`${URL}cart/${JSON.parse(cartId)}`)
         .then(({ data }) => {
           if (data.status === 'purchased') {
@@ -35,16 +39,11 @@ function App()
           console.log(err);
         });
     }
-    if(adminToken)
-    {
-      setIsAdmin(true);
-    }
-    else
-    {
-      setIsAdmin(false);
-    }
-
   }, []);
+
+  if (isLoading) {
+    return <div>Cargando aplicación...</div>;
+  }
 
   return (
     <div className='app-container-wrapper'>

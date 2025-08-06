@@ -1,11 +1,23 @@
+import type React from 'react';
+import DashboardSideBar from './DashboardSideBar/DashboardSideBar';
+import ProductDashboard from './ProductsDashboard/ProductsDashboard';
+import { useState } from 'react';
+import styles from './Dashboard.module.css';
+
 const Dashboard: React.FC = () =>
 {
+    const [content, setContent] = useState<string>('products');
 
-    return(
-        <div>
-            Soy la Dashboard
+    return (
+        <div className={styles.dashboardContainer}>
+            <div className={styles.sidebar}>
+                <DashboardSideBar setContent={setContent} />
+            </div>
+            <div className={styles.mainContent}>
+                { content === 'products' && <ProductDashboard /> }
+            </div>
         </div>
-    )
-}
+    );
+};
 
 export default Dashboard;

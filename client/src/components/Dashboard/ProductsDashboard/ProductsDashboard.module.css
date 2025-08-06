@@ -1,0 +1,31 @@
+.dashboardContainer {
+  height: 655px; /* Altura total de 655px como pediste */
+  display: flex;
+  flex-direction: column; /* Apila los hijos verticalmente */
+  border: 1px solid #ddd; /* Borde para visualizar el contenedor */
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.searchBarContainer {
+  padding: 10px 15px; /* Espaciado alrededor de la barra de búsqueda */
+  border-bottom: 1px solid #ddd; /* Línea divisoria */
+}
+
+.searchBar {
+  width: 100%; /* El input ocupa todo el ancho del contenedor */
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.cardsContainer {
+  flex-grow: 1; /* Ocupa el espacio restante */
+  overflow-y: auto; /* Permite el scroll vertical si el contenido es demasiado largo */
+  padding: 15px;
+  display: grid;
+  gap: 10px; /* Espacio entre las tarjetas */
+  grid-template-columns: 1fr; /* Una columna para las tarjetas */
+}
