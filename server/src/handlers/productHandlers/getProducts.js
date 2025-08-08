@@ -40,10 +40,6 @@ const getProducts = async (req, res) =>
 
     try
     {
-        // const allProducts = await Products.findAll( { where: whereClause } );
-        
-        
-        // wop: tengo que fijarme como pedir a la db directamente resultados de x a y, no PEDIR TODO y separarlo acá.
         if(page)
         {
             const offset = (page -1) * limit;

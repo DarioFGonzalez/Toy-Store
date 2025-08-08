@@ -30,6 +30,7 @@ const Home: React.FC = () => {
               <img src={item.image} alt={item.name} />
               <Carousel.Caption>
                 <h3>{item.name}</h3>
+                <button onClick={()=>console.log(item)}> INFO </button>
                 <p>{item.description}</p>
               </Carousel.Caption>
             </Carousel.Item>

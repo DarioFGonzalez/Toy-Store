@@ -14,7 +14,7 @@ const Carrusel: React.FC<CarruselProps> = ( { products } ) =>
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: -300, // Ajusta este valor según el ancho de tus tarjetas + margen
+        left: -300,
         behavior: 'smooth'
       });
     }
@@ -23,21 +23,21 @@ const Carrusel: React.FC<CarruselProps> = ( { products } ) =>
   const scrollRight = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({
-        left: 300, // Ajusta este valor según el ancho de tus tarjetas + margen
+        left: 300,
         behavior: 'smooth'
       });
     }
   };
 
   return (
-    <div className="carousel-wrapper"> {/* Contenedor para el carrusel completo con flechas */}
+    <div className="carousel-wrapper"> 
       <h2>Productos Destacados</h2>
       <div className="carousel-controls">
         <button onClick={scrollLeft} className="carousel-arrow left">&lt;</button>
         <div className="carousel-container" ref={scrollContainerRef}>
           {products.map(product => (
             <div key={product.id} className="carousel-card-item">
-              <Card product={product} /> {/* Pasa la data a tu CardComponent */}
+              <Card product={product} />
             </div>
           ))}
         </div>
