@@ -30,6 +30,7 @@ export const emptyProduct =
     price: 0,
     image: '',
     category: '',
+    visible: true,
     stock: 0
 };
 
