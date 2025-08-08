@@ -3,7 +3,7 @@ const server = require('./src/server');
 const { conn } = require('./src/db/db');
 const { PORT } = process.env;
 
-conn.sync( {force: true} ).then( () =>
+conn.sync( {force: false} ).then( () =>
 {
     server.listen( PORT, () => { console.log( `server levantado en puerto ${PORT}` ) } );
 })
