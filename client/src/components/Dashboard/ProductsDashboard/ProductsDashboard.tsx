@@ -28,7 +28,7 @@ const ProductDashboard: React.FC = () =>
         />
       </div>
       <div className={styles.cardsContainer}>
-        {products?.map( item => <ProductCard item={item} /> )}
+        {products?.map( (item, y) => <ProductCard item={item} key={y}/> )}
         {products.length<=0 && <label> Sin items que mostrar </label>}
       </div>
     </div>

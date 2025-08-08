@@ -85,3 +85,24 @@
     gap: 10px;
   }
 }
+
+.visibleActions {
+  display: flex;
+  flex-direction: column; /* Apila las opciones de radio una sobre otra */
+  gap: 8px; /* Espaciado entre las opciones */
+  text-align: left;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center; /* Centra el texto y el input verticalmente */
+  gap: 5px; /* Espacio entre el radio button y el texto */
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+}
+
+.radioLabel input[type="radio"] {
+  accent-color: #007bff;
+}
+

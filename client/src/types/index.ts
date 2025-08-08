@@ -37,6 +37,7 @@ export interface Product
     price: number,
     image: string,
     category: string,
+    visible: boolean,
     stock: number
 }
 

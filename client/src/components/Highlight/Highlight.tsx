@@ -14,7 +14,7 @@ const Highlight: React.FC<HighLightProps> = ( {items} ) =>
         <div className='gridWrapper'>
             <div className="productGridContainer">
 
-                { items?.map( (item, index) => <Card product={item} key={index} /> ) }
+                { items?.map( (item, index) => (item.visible && <Card product={item} key={index} />) ) }
 
             </div>
         </div>

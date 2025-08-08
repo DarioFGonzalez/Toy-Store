@@ -41,7 +41,8 @@ const Create: React.FC = () =>
 
         try
         {
-            axios.post(`${URL}product`, completedForm)
+			const adminToken = localStorage.getItem( 'adminToken' );
+            axios.post(`${URL}product`, completedForm, { headers: { 'Authorization': `Bearer ${adminToken}` } } )
 			.then( ( { data } ) =>
 			{
 				console.log( data );

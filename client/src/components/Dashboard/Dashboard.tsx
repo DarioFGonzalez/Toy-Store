@@ -3,6 +3,7 @@ import DashboardSideBar from './DashboardSideBar/DashboardSideBar';
 import ProductDashboard from './ProductsDashboard/ProductsDashboard';
 import { useState } from 'react';
 import styles from './Dashboard.module.css';
+import Create from '../Create/Create';
 
 const Dashboard: React.FC = () =>
 {
@@ -15,6 +16,7 @@ const Dashboard: React.FC = () =>
             </div>
             <div className={styles.mainContent}>
                 { content === 'products' && <ProductDashboard /> }
+                { content === 'create' && <Create />}
             </div>
         </div>
     );

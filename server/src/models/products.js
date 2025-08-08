@@ -42,6 +42,11 @@ module.exports = ( sequelize ) =>
                 type: DataTypes.ENUM( ...categories ),
                 defaultValue: 'otros'
             },
+            visible:
+            {
+                type: DataTypes.BOOLEAN,
+                defaultValue: true
+            },
             stock:
             {
                 type: DataTypes.INTEGER,
