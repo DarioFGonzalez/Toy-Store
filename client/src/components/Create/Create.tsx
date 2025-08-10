@@ -7,22 +7,24 @@ import { formProduct, URL } from '../../types/constants';
 const Create: React.FC = () =>
 {
 	const [form, setForm] = useState(formProduct)
-	const [errores, setErrores] = useState(formProduct)
+	const [ images, setImages ] = useState<File[]>( [] );
+	const [ previewImages, setPreviewImages ] = useState<string[]>( [] );
+	const [ errores, setErrores ] = useState(formProduct);
 
 	const handleSubmit = ( e: React.FormEvent<HTMLFormElement> ) =>
     {
-		e.preventDefault()
+		e.preventDefault();
 
         let completedForm = {};
 
-        if(form.image!=='')
+        if(images.length>0)
         {
             completedForm =
             {
                 name: form.name,
                 description: form.description,
                 price: form.price,
-                image: form.image,
+                imageUrl: images,
                 category: form.category,
                 stock: form.stock
             }
@@ -77,6 +79,37 @@ const Create: React.FC = () =>
 		}))
 	}
 
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	if (!e.target.files) {
+		return;
+	}
+	
+	const files = Array.from(e.target.files);
+	
+	if (files.length > 5) {
+		alert('Solo puedes subir hasta 5 imágenes.');
+		setImages( [] );
+		setPreviewImages ( [] );
+		return;
+	}
+
+	setImages(files);	
+	
+	const urls = files.map(file => {
+		return new Promise((resolve) => {
+		const reader = new FileReader();
+		reader.onload = (event) => {
+			event.target!==null && resolve(event.target.result);
+		};
+		reader.readAsDataURL(file);
+		});
+	});
+
+	Promise.all(urls).then(results => {
+		setPreviewImages(results as string[]);
+	});
+	};
+
 	return (
 		<div className={styles.formContainer}>
 			<form className={`${styles.formChild}`} onSubmit={handleSubmit}>
@@ -92,7 +125,9 @@ const Create: React.FC = () =>
 				</div>
 
                 <div>
-					<Form.Control name='image' placeholder='URL Imagen' value={form.image} onChange={handleChange} />
+					<input type="file" multiple onChange={handleFileChange} accept="image/*"/>
+					{ previewImages.length>0 && previewImages.map( (item, y) =>
+					<img src={item} style={{ width: '150px', height: '150px', objectFit: 'cover' }} key={y} />) }				
 				</div>
 
 				<div>
@@ -114,6 +149,10 @@ const Create: React.FC = () =>
 					<Form.Control name='description' placeholder='Descripción' value={form.description} onChange={handleChange} />
 					{errores.description && <p>{errores.description}</p>}
 				</div>
+
+				<button type='button' onClick={ ()=> console.log( images ) }>
+					Imagenes cargadas so far
+				</button>
 
 				<button className='btn btn-primary mb-3' type='submit'>
 					Crear

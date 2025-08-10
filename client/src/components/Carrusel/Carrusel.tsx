@@ -1,12 +1,9 @@
 import Card from '../Card/Card';
-import type { Product } from '../../types';
+import type { CarruselProps } from '../../types/index';
 import './Carrusel.css';
 import React from 'react';
 
-interface CarruselProps
-{
-    products: Product[]
-}
+
 const Carrusel: React.FC<CarruselProps> = ( { products } ) =>
 {
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);

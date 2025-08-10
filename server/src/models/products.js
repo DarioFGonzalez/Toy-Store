@@ -32,10 +32,11 @@ module.exports = ( sequelize ) =>
                 type: DataTypes.DECIMAL(10,2),
                 allowNull: false
             },
-            image:
+            imageUrl:
             {
-                type: DataTypes.STRING,
-                defaultValue: 'https://vectorseek.com/wp-content/uploads/2023/08/Minimalist-Reptar-Logo-Vector.svg-.png'
+                type: DataTypes.ARRAY(DataTypes.STRING),
+                defaultValue: () =>
+                    Array.from( { length: 5 }, () => 'https://vectorseek.com/wp-content/uploads/2023/08/Minimalist-Reptar-Logo-Vector.svg-.png' )
             },
             category:
             {

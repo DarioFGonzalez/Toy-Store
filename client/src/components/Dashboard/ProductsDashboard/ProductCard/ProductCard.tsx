@@ -21,7 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ( { item } ) =>
 
   return (
     <div className={styles.card}>
-      <img src={product.image} alt={product.name} className={styles.cardImage} />
+      <img src={product.imageUrl[0]} alt={product.name} className={styles.cardImage} />
       <span className={styles.cardName}>{product.name}</span>
       <span className={styles.cardStock}>Stock: {product.stock}</span>
       

@@ -6,7 +6,8 @@ import { URL } from '../../types/constants';
 import Carrusel from '../Carrusel/Carrusel';
 import Styles from "./Home.module.css";
 
-const Home: React.FC = () => {
+const Home: React.FC = () =>
+{
   const [entries, setEntries] = useState<Product[]>([]);
   const [all, setAll] = useState<Product[]>([]);
 
@@ -27,7 +28,7 @@ const Home: React.FC = () => {
         <Carousel interval={2000} pause="hover">
           {entries.map((item, index) => (
             <Carousel.Item key={index}>
-              <img src={item.image} alt={item.name} />
+              <img src={item.imageUrl[0]} alt={item.name} />
               <Carousel.Caption>
                 <h3>{item.name}</h3>
                 <button onClick={()=>console.log(item)}> INFO </button>

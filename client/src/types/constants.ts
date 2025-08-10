@@ -17,7 +17,7 @@ export const formProduct =
     name: '',
     description: '',
     price: 0,
-    image: '',
+    imageUrl: [],
     category: '',
     stock: 0
 };
@@ -28,7 +28,7 @@ export const emptyProduct =
     name: '',
     description: '',
     price: 0,
-    image: '',
+    imageUrl: [],
     category: '',
     visible: true,
     stock: 0

@@ -13,7 +13,7 @@ export interface ProductInCart
     name: string,
     description: string,
     price: string,
-    image: string,
+    imageUrl: string[],
     stock: number,
     CartItem: CartItem
 }
@@ -35,7 +35,7 @@ export interface Product
     name: string,
     description: string,
     price: number,
-    image: string,
+    imageUrl: string[],
     category: string,
     visible: boolean,
     stock: number
@@ -44,6 +44,11 @@ export interface Product
 export interface ProductCardProps
 {
     item: Product; 
+}
+
+export interface CarruselProps
+{
+    products: Product[]
 }
 
 export interface ContactInfo
