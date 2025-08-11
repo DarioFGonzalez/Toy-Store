@@ -17,7 +17,6 @@
     align-items: stretch;
     justify-content: center;
     gap: 15px;
-
 }
 
 .formChild {
@@ -100,7 +99,6 @@
     background-color: rgb(255, 0, 0);
     color: black;
     border: .5px solid black;
-
 }
 
 .userType {
@@ -145,4 +143,63 @@
     margin-left: -30px;
     margin-top: 12px;
     cursor: pointer;
+}
+
+.imagePreviewGrid {
+    display: grid;
+    grid-template-columns: 250px 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+}
+
+.imagePreviewGrid > div:first-child {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+}
+
+.previewContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.mainImage {
+    width: 250px;
+    height: 300px;
+}
+
+.previewContainer button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    z-index: 10;
+}
+
+.previewContainer button:hover {
+    background-color: #dc3545;
+}
+
+.previewContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.mainImage img {
+    border-color: #d9ff00;
 }

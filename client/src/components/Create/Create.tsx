@@ -110,6 +110,31 @@ const Create: React.FC = () =>
 	});
 	};
 
+	const handleImageOrder = ( index: number ): void =>
+	{
+		if(index===0) return ;
+
+		const tempImages = [ ...images ];
+		const tempPreviews = [ ...previewImages ];
+
+		const tempImages0 = tempImages[0];
+		tempImages[0] = tempImages[index];
+		tempImages[index] = tempImages0;
+
+		const tempPreviews0 = tempPreviews[0];
+		tempPreviews[0] = tempPreviews[index];
+		tempPreviews[index] = tempPreviews0;
+
+		setImages( tempImages );
+		setPreviewImages( tempPreviews );
+	}
+
+	const excludeImage = ( index: number ): void =>
+	{
+		setImages( prev => prev.filter( (_, y) => index!==y ) );
+		setPreviewImages( prev => prev.filter( (_, y) => index!==y ) );
+	}
+
 	return (
 		<div className={styles.formContainer}>
 			<form className={`${styles.formChild}`} onSubmit={handleSubmit}>
@@ -126,8 +151,23 @@ const Create: React.FC = () =>
 
                 <div>
 					<input type="file" multiple onChange={handleFileChange} accept="image/*"/>
-					{ previewImages.length>0 && previewImages.map( (item, y) =>
-					<img src={item} style={{ width: '150px', height: '150px', objectFit: 'cover' }} key={y} />) }				
+					{previewImages.length > 0 && 
+						<div className={styles.imagePreviewGrid}>
+						{previewImages.map((item, index) => (
+							<div key={index} 
+								className={`${styles.previewContainer} ${index === 0 ? styles.mainImage : ''}`}>
+							<img
+								src={item}
+								alt={`Preview ${index}`}
+								onClick={() => handleImageOrder(index)}
+							/>
+							<button type="button" onClick={() => excludeImage(index)}>
+								&times;
+							</button>
+							</div>
+						))}
+						</div>
+					}
 				</div>
 
 				<div>
@@ -149,10 +189,6 @@ const Create: React.FC = () =>
 					<Form.Control name='description' placeholder='Descripción' value={form.description} onChange={handleChange} />
 					{errores.description && <p>{errores.description}</p>}
 				</div>
-
-				<button type='button' onClick={ ()=> console.log( images ) }>
-					Imagenes cargadas so far
-				</button>
 
 				<button className='btn btn-primary mb-3' type='submit'>
 					Crear
