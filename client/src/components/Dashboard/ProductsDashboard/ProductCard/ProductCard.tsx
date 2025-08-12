@@ -22,11 +22,18 @@ const ProductCard: React.FC<ProductCardProps> = ( { item } ) =>
 
   const handleUpdate = ( e: React.KeyboardEvent<HTMLInputElement> ) =>
   {
-    if(e.key!=='Enter') return;
-
+    
     e.preventDefault();
     const fieldName = e.currentTarget.name;
     const fieldValue = e.currentTarget.value;
+    
+    if(e.key=="Escape")
+    {
+      setEdit( ( prevInfo ) => ( { ...prevInfo, [fieldName]: false } ) );
+      return;
+    }
+
+    if(e.key!=="Enter") return;
 
     axios.put( `${URL}product/${product.id}`, { [fieldName]: fieldValue }, { headers: { 'Authorization': `Bearer ${adminToken}` } } )
     .then( ( { data } ) => setProduct( data ) )
@@ -68,7 +75,7 @@ const ProductCard: React.FC<ProductCardProps> = ( { item } ) =>
         </label>
       </div>
 
-      <button className={styles.modifyButton}>Modificar</button>
+      <button className={styles.modifyButton} onClick={()=>console.log(product)}>Modificar</button>
     </div>
   );
 };

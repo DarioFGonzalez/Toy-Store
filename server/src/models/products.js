@@ -36,7 +36,7 @@ module.exports = ( sequelize ) =>
             {
                 type: DataTypes.ARRAY(DataTypes.STRING),
                 defaultValue: () =>
-                    Array.from( { length: 5 }, () => 'https://vectorseek.com/wp-content/uploads/2023/08/Minimalist-Reptar-Logo-Vector.svg-.png' )
+                    Array.from( { length: 5 }, () => 'https://res.cloudinary.com/violetastore/image/upload/v1755013343/mbg8rgsm0ysgikiwaoko.png' )
             },
             category:
             {
