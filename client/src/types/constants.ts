@@ -45,5 +45,6 @@ export const emptyEditForm =
 {
     name: false,
     stock: false,
-    price: false
+    price: false,
+    detail: false
 }

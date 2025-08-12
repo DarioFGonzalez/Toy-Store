@@ -1,108 +1,134 @@
 .card {
-  display: grid;
-  grid-template-columns: 80px 1fr 100px 150px 100px; 
-  align-items: center;
-  gap: 20px;
-  padding: 10px 15px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.2s ease-in-out;
-  cursor: pointer;
+    display: grid;
+    grid-template-columns: 80px 1fr 100px 100px 150px 100px;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease-in-out;
+    cursor: pointer;
 }
 
 .card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cardImage {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 4px;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
 }
 
 .cardName {
-  font-weight: bold;
-  font-size: 1rem;
-  color: #333;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #333;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .cardStock {
-  color: #666;
+    color: #666;
+}
+
+.detailsButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.detailsButton:hover {
+    background-color: #0056b3;
 }
 
 .visibleActions {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 .visibleButton {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .visibleOn {
-  color: green;
-  background-color: #e6f7e6;
-  border-color: green;
+    color: green;
+    background-color: #e6f7e6;
+    border-color: green;
 }
 
 .visibleOff {
-  color: red;
-  background-color: #f7e6e6;
-  border-color: red;
+    color: red;
+    background-color: #f7e6e6;
+    border-color: red;
 }
 
 .modifyButton {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 .modifyButton:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 @media (max-width: 768px) {
-  .card {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
+    .card {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
 }
 
 .visibleActions {
-  display: flex;
-  flex-direction: column; /* Apila las opciones de radio una sobre otra */
-  gap: 8px; /* Espaciado entre las opciones */
-  text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
 }
 
 .radioLabel {
-  display: flex;
-  align-items: center; /* Centra el texto y el input verticalmente */
-  gap: 5px; /* Espacio entre el radio button y el texto */
-  font-size: 0.9rem;
-  color: #555;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    color: #555;
+    cursor: pointer;
 }
 
 .radioLabel input[type="radio"] {
-  accent-color: #007bff;
+    accent-color: #007bff;
 }
 
+.modalDialog {
+    width: 80vw;
+    max-width: 600px;
+}
+
+.modalTextarea {
+    width: 100%;
+    height: 200px;
+    resize: vertical;
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}

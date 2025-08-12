@@ -68,5 +68,6 @@ export interface editForm
 {
     name: boolean,
     stock: boolean,
-    price: boolean
+    price: boolean,
+    detail: boolean
 }
