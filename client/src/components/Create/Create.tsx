@@ -11,46 +11,47 @@ const Create: React.FC = () =>
 	const [ previewImages, setPreviewImages ] = useState<string[]>( [] );
 	const [ errores, setErrores ] = useState(formProduct);
 
-	const handleSubmit = ( e: React.FormEvent<HTMLFormElement> ) =>
+	const handleSubmit = async ( e: React.FormEvent<HTMLFormElement> ) =>
     {
 		e.preventDefault();
 
         let completedForm = {};
 
-        if(images.length>0)
-        {
-            completedForm =
-            {
-                name: form.name,
-                description: form.description,
-                price: form.price,
-                imageUrl: images,
-                category: form.category,
-                stock: form.stock
-            }
-        }
-        else
-        {
-            completedForm =
-            {
-                name: form.name,
-                description: form.description,
-                price: form.price,
-                category: form.category,
-                stock: form.stock
-            }
-        }
-
-        try
-        {
-			const adminToken = localStorage.getItem( 'adminToken' );
-            axios.post(`${URL}product`, completedForm, { headers: { 'Authorization': `Bearer ${adminToken}` } } )
-			.then( ( { data } ) =>
+		try
+		{
+			if(images.length>0)
 			{
-				console.log( data );
-			})
-            alert('¡Usuario creado!')
+				const uploadedImages = await handleImagesUpload();
+				completedForm =
+				{
+					name: form.name,
+					description: form.description,
+					price: form.price,
+					imageUrl: uploadedImages,
+					category: form.category,
+					stock: form.stock
+				}
+			}
+			else
+			{
+				completedForm =
+				{
+					name: form.name,
+					description: form.description,
+					price: form.price,
+					category: form.category,
+					stock: form.stock
+				}
+			}
 
+			const adminToken = localStorage.getItem( 'adminToken' );
+
+			await axios.post(`${URL}product`, completedForm, { headers: { 'Authorization': `Bearer ${adminToken}` } } );
+            
+            alert('¡Artículo creado!');
+
+			setImages( [] );
+			setPreviewImages( [] );
             setForm(formProduct);
             setErrores(formProduct);
         }
@@ -60,6 +61,23 @@ const Create: React.FC = () =>
             alert('¡Ocurrió un error!')
         }
 
+	}
+
+	const handleImagesUpload = async (): Promise<string[]> =>
+	{
+		const promises = images.map( file =>
+		{
+			const formData = new FormData();
+			formData.append( 'file', file );
+			formData.append( 'upload_preset', 'violeta_store' );
+			return axios.post(`https://api.cloudinary.com/v1_1/violetastore/upload`, formData);
+		} );
+
+		const responses = await Promise.all( promises );
+
+		const URLs = responses.map( url => url.data.secure_url );
+
+		return URLs;
 	}
 
 	const handleChange = ( e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> ) =>

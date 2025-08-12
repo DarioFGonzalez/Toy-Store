@@ -28,8 +28,6 @@
   padding: 10px;
 }
 
-
-
 .detailContainer {
   display: flex;
   align-items: center;
@@ -39,12 +37,16 @@
 
 .imgContainer {
   flex: 2;
+  position: relative;
+  padding: 10px;
+  /* ¡Altura fija para el contenedor del carrusel! */
+  height: 465px; 
 }
 
-.imgDetail {
-  width: 465px;
-  height: 465px;
-  object-fit: fill;
+.carouselImg {
+  width: 100%;
+  height: 100%; 
+  object-fit: cover;
   border-radius: 10px;
 }
 
@@ -107,6 +109,10 @@
   border-color: #9abfcb;
 }
 
+.sizeSelect button:active {
+  transform: scale(0.9);
+}
+
 .select {
   display: "flex";
   text-align: center;
@@ -114,6 +120,7 @@
   align-items: "center";
   border: 1px solid black !important;
 }
+
 .cantidad {
   align-items: center;
   margin: auto;
@@ -196,7 +203,4 @@
   border: solid rgb(209, 209, 209) 0.5px;
   display: grid;
   grid-template-columns: 1fr;
-  
 }
-
-/* Colores principales: #9ABFCB #0A202E */

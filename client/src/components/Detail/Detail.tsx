@@ -5,21 +5,22 @@ import { useEffect, useState } from "react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import React from 'react';
 import { useParams } from "react-router-dom";
+import { Carousel } from 'react-bootstrap';
 import style from "./Detail.module.css"
 
 const Detail: React.FC = () =>
 {
   const { id } = useParams();
 
-  const [cardDetail, setCardDetail] = useState<Product>( emptyProduct );
+  const [cardDetail, setCardDetail] = useState<Product>(emptyProduct);
   const [inputValue, setInputValue] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() =>
   {
     axios.get(`${URL}product/${id}`)
-    .then( ( { data } ) => setCardDetail( data ) )
-    .catch( ( err ) => { console.error( err ); console.log( err.message ); } )
+      .then( ( { data } ) => setCardDetail( data ) )
+      .catch( ( err ) => { console.error( err ); console.log( err.message ); } )
   }, [id]);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const Detail: React.FC = () =>
     const value = parseInt(event.target.value);
     if (!isNaN(value) && value >= 0)
     {
-        setInputValue(value);
+      setInputValue(value);
     }
   };
 
@@ -43,22 +44,22 @@ const Detail: React.FC = () =>
     if( cartId === null )
     {
       axios.post(`${URL}cart`, { productId: cardDetail.id, quantity: inputValue } )
-      .then( ( { data } ) =>
+        .then( ( { data } ) =>
         {
           localStorage.setItem("cartId", JSON.stringify( data.id ) );
           alert('¡Carrito creado!');
         })
-      .catch( ( err ) => console.log( err ) );
+        .catch( ( err ) => console.log( err ) );
     }
     else
     {
       axios.patch(`${URL}cart/${JSON.parse(cartId)}`, { productId: cardDetail.id, quantity: inputValue } )
-      .then( ( { data } ) =>
+        .then( ( { data } ) =>
         {
           localStorage.setItem( 'cartId', JSON.stringify( data.id ) );
           alert('¡Item agregado!');
         })
-      .catch( ( err ) => console.log( err ) );
+        .catch( ( err ) => console.log( err ) );
     }
   };
 
@@ -69,14 +70,25 @@ const Detail: React.FC = () =>
 
   return (
     <div className={style.containerDetail}>
-
       <button onClick={handleBack}>
         <IoArrowBackCircleOutline className={style.backButton} />
       </button>
 
       <div className={style.detailContainer}>
         <div className={style.imgContainer}>
-          <img className={style.imgDetail} src={cardDetail.image} alt={cardDetail.name} />
+          <Carousel slide={false} interval={10000} pause="hover">
+            {cardDetail.imageUrl && cardDetail.imageUrl.map( (item, index) => {
+              const transformedUrl = item.replace(
+                '/upload/',
+                '/upload/w_465,h_465,c_fill,f_auto,q_auto/'
+              );
+              return (
+                <Carousel.Item key={index} style={{ height: '465px' }}>
+                  <img className={style.carouselImg} src={transformedUrl} alt={cardDetail.name} />
+                </Carousel.Item>
+              );
+            })}
+          </Carousel>
         </div>
 
         <div className={style.detailInfo}>
@@ -90,7 +102,6 @@ const Detail: React.FC = () =>
 
           <input type='number' value={inputValue} onChange={handleInputChange} min='1' />
           <p> SubTotal: ${totalPrice} </p>
-
 
           <div className={style.carrito}>
             <button onClick={addToCart} disabled={cardDetail.stock<=0 || inputValue>cardDetail.stock}> Agregar al carrito 🛒</button>

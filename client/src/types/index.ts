@@ -63,3 +63,9 @@ export interface PaginadoProps
     currentPage: number,
     totalPages: number
 }
+
+export interface editForm
+{
+    name: boolean,
+    stock: boolean
+}

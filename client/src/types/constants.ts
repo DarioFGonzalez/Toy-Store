@@ -1,4 +1,4 @@
-const offline = false;
+const offline = true;
 
 export const URL = offline ? 'http://localhost:5000/' : "https://toy-store-zw00.onrender.com/";
 export const LOCAL_URL = offline ? 'http://localhost:5173/' : "https://toy-store-tau.vercel.app/";
@@ -40,3 +40,9 @@ export const emptyContactInfo =
     number: '',
     email: ''
 };
+
+export const emptyEditForm =
+{
+    name: false,
+    stock: false
+}
