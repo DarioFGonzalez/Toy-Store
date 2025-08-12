@@ -44,5 +44,6 @@ export const emptyContactInfo =
 export const emptyEditForm =
 {
     name: false,
-    stock: false
+    stock: false,
+    price: false
 }

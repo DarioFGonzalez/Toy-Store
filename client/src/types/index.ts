@@ -67,5 +67,6 @@ export interface PaginadoProps
 export interface editForm
 {
     name: boolean,
-    stock: boolean
+    stock: boolean,
+    price: boolean
 }
