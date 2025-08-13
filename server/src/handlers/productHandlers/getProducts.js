@@ -4,9 +4,23 @@ const { Products } = require('../../db/db');
 
 const getProducts = async (req, res) =>
 {
-    const { name, category, minPrice, maxPrice } = req.query;
+    const { name, category, minPrice, maxPrice, highlighted } = req.query;
     let { page } = req.query;
     const limit = 8;
+    
+    if(highlighted)
+    {
+        try
+        {
+            const highlightedItems = await Products.findAll( { where: { highlighted: true } });
+            return res.status(200).json( highlightedItems );
+        }
+        catch(err)
+        {
+            console.error( err );
+            res.status(500).json( { fetchHighlighted: err.message } );
+        }
+    }
 
     let whereClause = {};
 

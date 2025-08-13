@@ -1,127 +1,46 @@
-.card {
-    display: grid;
-    grid-template-columns: 80px 1fr 100px 100px 100px 150px 100px;
-    align-items: center;
-    gap: 20px;
-    padding: 10px 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: box-shadow 0.2s ease-in-out;
-    cursor: pointer;
-}
-
-.card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.cardImage {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.cardName {
-    font-weight: bold;
-    font-size: 1rem;
-    color: #333;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.cardStock {
-    color: #666;
-}
-
-.detailsButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.detailsButton:hover {
-    background-color: #0056b3;
-}
-
-.visibleActions {
-    display: flex;
-    gap: 10px;
-}
-
-.visibleButton {
+.tableImage {
     width: 40px;
     height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.tableInput {
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.visibleOn {
-    color: green;
-    background-color: #e6f7e6;
-    border-color: green;
-}
-
-.visibleOff {
-    color: red;
-    background-color: #f7e6e6;
-    border-color: red;
-}
-
-.modifyButton {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.modifyButton:hover {
-    background-color: #0056b3;
-}
-
-@media (max-width: 768px) {
-    .card {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-}
-
-.visibleActions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    text-align: left;
-}
-
-.radioLabel {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+.visibleLabel {
+    margin-right: 10px;
     font-size: 0.9rem;
-    color: #555;
-    cursor: pointer;
 }
 
-.radioLabel input[type="radio"] {
-    accent-color: #007bff;
+.favoriteCheckbox {
+    margin-right: 5px;
+}
+
+.favoriteLabel {
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #555;
 }
 
 .modalDialog {
-    width: 80vw;
-    max-width: 600px;
+    max-width: 90vw;
+    width: auto !important;
+}
+
+.modalBody {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
 }
 
 .modalTextarea {
@@ -131,94 +50,37 @@
     border-radius: 5px;
     padding: 10px;
     border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 1rem;
+    font-family: sans-serif;
 }
 
-.favoriteButtonContainer {
-    grid-column: 3;
+.modalHeader {
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
 }
 
-.favoriteInput {
-    display: none;
+.modalTitle {
+    margin-bottom: 0;
+    line-height: 1.5;
+    font-size: 1.25rem;
+    font-weight: 500;
 }
 
-.favoriteLabel {
-    background-color: rgb(36, 36, 36);
+.modalHeader .btn-close {
+    padding: 0.5rem 0.5rem;
+    margin: -0.5rem -0.5rem -0.5rem auto;
+}
+
+.modalFooter {
     display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 10px 15px 10px 10px;
-    cursor: pointer;
-    user-select: none;
-    border-radius: 10px;
-    box-shadow: rgba(46, 46, 46, 0.2) 0px 8px 24px;
-    color: rgb(255, 255, 255);
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+    justify-content: flex-end;
+    gap: 0.5rem;
 }
 
-.favoriteSvg {
-    stroke-linejoin: round;
-    stroke-linecap: round;
-    stroke-width: 2;
-    stroke: currentColor;
-    fill: none;
-    width: 24px;
-    height: 24px;
-    transition: all 0.5s;
-}
-
-.favoriteInput:checked + .favoriteLabel .favoriteSvg {
-    fill: hsl(0deg 100% 50%);
-    stroke: hsl(0deg 100% 50%);
-    animation: heartButton 1s;
-}
-
-@keyframes heartButton {
-    0% {
-        transform: scale(1);
-    }
-    25% {
-        transform: scale(1.3);
-    }
-    50% {
-        transform: scale(1);
-    }
-    75% {
-        transform: scale(1.3);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-.favoriteAction {
-    position: relative;
-    overflow: hidden;
-    display: grid;
-}
-
-.option1, .option2 {
-    grid-column-start: 1;
-    grid-column-end: 1;
-    grid-row-start: 1;
-    grid-row-end: 1;
-    transition: all 0.5s;
-}
-
-.option1 {
-    transform: translate(0px, 0%);
-    opacity: 1;
-}
-
-.favoriteInput:checked + .favoriteLabel .option1 {
-    transform: translate(0px, -100%);
-    opacity: 0;
-}
-
-.option2 {
-    transform: translate(0px, 100%);
-    opacity: 0;
-}
-
-.favoriteInput:checked + .favoriteLabel .option2 {
-    transform: translate(0px, 0%);
-    opacity: 1;
+.modalFooter span {
+    font-size: 0.9rem;
+    color: #6c757d;
 }

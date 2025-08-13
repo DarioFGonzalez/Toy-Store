@@ -15,6 +15,7 @@ export const emptyCart =
 export const formProduct =
 {
     name: '',
+    highlighted: false,
     description: '',
     price: 0,
     imageUrl: [],
@@ -25,6 +26,7 @@ export const formProduct =
 export const emptyProduct =
 {
     id: '',
+    highlighted: false,
     name: '',
     description: '',
     price: 0,

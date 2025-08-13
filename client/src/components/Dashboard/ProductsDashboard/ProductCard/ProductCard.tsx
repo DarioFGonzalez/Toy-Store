@@ -1,16 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import styles from './ProductCard.module.css';
 import type { editForm, Product, ProductCardProps } from '../../../../types';
 import axios from 'axios';
 import { emptyEditForm, URL } from '../../../../types/constants';
+import { Button } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
 
-const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
+interface Props extends ProductCardProps {
+    isTableRow?: boolean;
+}
+
+const ProductCard: React.FC<Props> = ({ item, isTableRow }) => {
     const [product, setProduct] = useState<Product>(item);
     const [edit, setEdit] = useState<editForm>(emptyEditForm);
     const [descriptionValue, setDescriptionValue] = useState(item.description || '');
-    const [isFavorite, setIsFavorite] = useState(false);
 
     const nameInputRef = useRef<HTMLInputElement>(null);
     const stockInputRef = useRef<HTMLInputElement>(null);
@@ -57,7 +60,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
 
         const fieldValue = e.currentTarget.value;
         const valueToUpdate = (fieldName === 'stock' || fieldName === 'price') ? Number(fieldValue) : fieldValue;
-
         axios.put(`${URL}product/${product.id}`, { [fieldName]: valueToUpdate }, { headers: { 'Authorization': `Bearer ${adminToken}` } })
             .then(({ data }) => setProduct(data))
             .catch((err) => console.log(err.message));
@@ -72,69 +74,65 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         }
     };
 
+    const handleFavorite = () =>
+    {
+        axios.put(`${URL}product/${product.id}`, { highlighted: !product.highlighted }, { headers: { 'Authorization': `Bearer ${adminToken}` } } )
+        .then( ( { data } ) => setProduct( data ) )
+        .catch( ( err ) => console.log( err ) );
+    }
+
+    if (!isTableRow) {
+        return <></>;
+    }
+
     return (
-        <div className={styles.card}>
-            <img src={product.imageUrl[0]} alt={product.name} className={styles.cardImage} onClick={() => console.log(product)} />
-
-            <div className={styles.favoriteButtonContainer}>
+        <tr key={product.id}>
+            <td><img onClick={()=>console.log(product)} src={product.imageUrl?.[0]} alt={product.name} className={styles.tableImage} /></td>
+            <td onClick={() => setEdit(prevInfo => ({ ...prevInfo, name: true }))}>
+                {edit.name ? (
+                    <input ref={nameInputRef} placeholder={product.name} onKeyDown={handleUpdate} name='name' defaultValue={product.name} className={styles.tableInput} />
+                ) : (
+                    <span>{product.name}</span>
+                )}
+            </td>
+            <td onClick={() => setEdit(prevInfo => ({ ...prevInfo, stock: true }))}>
+                {edit.stock ? (
+                    <input ref={stockInputRef} type='number' placeholder={product.stock.toString()} onKeyDown={handleUpdate} name='stock' defaultValue={product.stock} className={styles.tableInput} />
+                ) : (
+                    <span>{product.stock}</span>
+                )}
+            </td>
+            <td onClick={() => setEdit(prevInfo => ({ ...prevInfo, price: true }))}>
+                {edit.price ? (
+                    <input ref={priceInputRef} type='number' placeholder={product.price.toString()} onKeyDown={handleUpdate} name='price' defaultValue={product.price} className={styles.tableInput} />
+                ) : (
+                    <span>$ {product.price}</span>
+                )}
+            </td>
+            <td>
+                <label className={styles.visibleLabel}>
+                    <input type="radio" name={`visibility-${product.id}`} value="true" checked={product.visible} onChange={handleVisibilityChange} /> Sí
+                </label>
+                <label className={styles.visibleLabel}>
+                    <input type="radio" name={`visibility-${product.id}`} value="false" checked={!product.visible} onChange={handleVisibilityChange} /> No
+                </label>
+            </td>
+            <td>
                 <input
-                    value="favorite-button"
-                    name="favorite-checkbox"
-                    id={`favorite-${item.id}`}
-                    checked={isFavorite}
                     type="checkbox"
-                    onChange={() => setIsFavorite(!isFavorite)}
-                    className={styles.favoriteInput}
+                    id={`favorite-${item.id}`}
+                    checked={product.highlighted}
+                    onChange={handleFavorite}
+                    className={styles.favoriteCheckbox}
                 />
-                <label className={styles.favoriteLabel} htmlFor={`favorite-${item.id}`}>
-                    <svg
-                        className={styles.favoriteSvg}
-                        strokeLinejoin="round"
-                        strokeLinecap="round"
-                        strokeWidth="2"
-                        stroke="currentColor"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        height="24"
-                        width="24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-                        ></path>
-                    </svg>
-                    <div className={styles.favoriteAction}>
-                        <span className={styles.option1}>Add to Favorites</span>
-                        <span className={styles.option2}>Added to Favorites</span>
-                    </div>
+                <label htmlFor={`favorite-${item.id}`} className={styles.favoriteLabel}>
+                    🤍
                 </label>
-            </div>
-
-            {!edit.name && <span onClick={() => setEdit(prevInfo => ({ ...prevInfo, name: true }))} className={styles.cardName}>{product.name}</span>}
-            {edit.name && <input ref={nameInputRef} placeholder={product.name} onKeyDown={handleUpdate} name='name' defaultValue={product.name} />}
-
-            {!edit.stock && <span onClick={() => setEdit(prevInfo => ({ ...prevInfo, stock: true }))} className={styles.cardStock}>Stock: {product.stock}</span>}
-            {edit.stock && <input ref={stockInputRef} type='number' placeholder={product.stock.toString()} onKeyDown={handleUpdate} name='stock' defaultValue={product.stock} />}
-
-            {!edit.price && <span onClick={() => setEdit(prevInfo => ({ ...prevInfo, price: true }))} className={styles.cardStock}>Precio: {product.price}</span>}
-            {edit.price && <input ref={priceInputRef} type='number' placeholder={product.price.toString()} onKeyDown={handleUpdate} name='price' defaultValue={product.price} />}
-
-            <Button variant='primary' onClick={() => handleShow(true)} className={styles.detailsButton}>
-                Detalles
-            </Button>
-
-            <div className={styles.visibleActions}>
-                <label className={styles.radioLabel}>
-                    <input type="radio" name={`visibility-${product.id}`} value="true" checked={product.visible} onChange={handleVisibilityChange} />
-                    Visible
-                </label>
-                <label className={styles.radioLabel}>
-                    <input type="radio" name={`visibility-${product.id}`} value="false" checked={!product.visible} onChange={handleVisibilityChange} />
-                    No Visible
-                </label>
-            </div>
-
-            <Modal show={edit.description} onHide={() => handleShow(false)} centered dialogClassName={styles.modalDialog}>
+            </td>
+            <td>
+                <Button variant="info" size="sm" onClick={() => handleShow(true)}>Editar</Button>
+            </td>
+                        <Modal show={edit.description} onHide={() => handleShow(false)} centered dialogClassName={styles.modalDialog}>
                 <Modal.Header closeButton>
                     <Modal.Title>Editar descripción</Modal.Title>
                 </Modal.Header>
@@ -153,7 +151,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
                     <span>[ENTER] para aceptar los cambios.</span>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </tr>
+        
     );
 };
 

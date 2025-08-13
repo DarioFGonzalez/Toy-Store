@@ -32,6 +32,7 @@ export interface CardProps
 export interface Product
 {
     id: string,
+    highlighted: boolean,
     name: string,
     description: string,
     price: number,

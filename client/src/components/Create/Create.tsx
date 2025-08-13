@@ -162,13 +162,27 @@ const Create: React.FC = () =>
 					<Form.Control name='name' placeholder='Nombre' value={form.name} onChange={handleChange} />
 				</div>
 
+				<div>
+					<input type='checkbox' />
+					<label> Favorito </label>
+				</div>
+
                 <div>
 					<label>Precio</label>
 					<Form.Control name='price' placeholder='Precio' value={form.price} onChange={handleChange} />
 				</div>
 
                 <div>
-					<input type="file" multiple onChange={handleFileChange} accept="image/*"/>
+					<div className={styles.container}>
+						<div className={styles.folder}>
+							<div className={styles.top}></div>
+							<div className={styles.bottom}></div>
+						</div>
+						<label className={styles.customFileUpload}>
+							<input className={styles.title} type="file" multiple onChange={handleFileChange} accept="image/*" />
+							Choose a file
+						</label>
+					</div>
 					{previewImages.length > 0 && 
 						<div className={styles.imagePreviewGrid}>
 						{previewImages.map((item, index) => (
