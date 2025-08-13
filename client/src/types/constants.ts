@@ -46,5 +46,5 @@ export const emptyEditForm =
     name: false,
     stock: false,
     price: false,
-    detail: false
+    description: false
 }

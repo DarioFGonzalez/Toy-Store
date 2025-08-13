@@ -10,6 +10,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
     const [product, setProduct] = useState<Product>(item);
     const [edit, setEdit] = useState<editForm>(emptyEditForm);
     const [descriptionValue, setDescriptionValue] = useState(item.description || '');
+    const [isFavorite, setIsFavorite] = useState(false);
 
     const nameInputRef = useRef<HTMLInputElement>(null);
     const stockInputRef = useRef<HTMLInputElement>(null);
@@ -22,25 +23,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         if (edit.name && nameInputRef.current) {
             nameInputRef.current.focus();
         }
-    }, [edit.name]);
-
-    useEffect(() => {
         if (edit.stock && stockInputRef.current) {
             stockInputRef.current.focus();
         }
-    }, [edit.stock]);
-
-    useEffect(() => {
         if (edit.price && priceInputRef.current) {
             priceInputRef.current.focus();
         }
-    }, [edit.price]);
-
-    useEffect(() => {
         if (edit.description && descriptionInputRef.current) {
             descriptionInputRef.current.focus();
         }
-    }, [edit.description]);
+    }, [edit]);
 
     const handleVisibilityChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const isVisible = e.target.value === 'true';
@@ -84,6 +76,40 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
         <div className={styles.card}>
             <img src={product.imageUrl[0]} alt={product.name} className={styles.cardImage} onClick={() => console.log(product)} />
 
+            <div className={styles.favoriteButtonContainer}>
+                <input
+                    value="favorite-button"
+                    name="favorite-checkbox"
+                    id={`favorite-${item.id}`}
+                    checked={isFavorite}
+                    type="checkbox"
+                    onChange={() => setIsFavorite(!isFavorite)}
+                    className={styles.favoriteInput}
+                />
+                <label className={styles.favoriteLabel} htmlFor={`favorite-${item.id}`}>
+                    <svg
+                        className={styles.favoriteSvg}
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        height="24"
+                        width="24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                        ></path>
+                    </svg>
+                    <div className={styles.favoriteAction}>
+                        <span className={styles.option1}>Add to Favorites</span>
+                        <span className={styles.option2}>Added to Favorites</span>
+                    </div>
+                </label>
+            </div>
+
             {!edit.name && <span onClick={() => setEdit(prevInfo => ({ ...prevInfo, name: true }))} className={styles.cardName}>{product.name}</span>}
             {edit.name && <input ref={nameInputRef} placeholder={product.name} onKeyDown={handleUpdate} name='name' defaultValue={product.name} />}
 
@@ -110,26 +136,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
 
             <Modal show={edit.description} onHide={() => handleShow(false)} centered dialogClassName={styles.modalDialog}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Editar Descripción</Modal.Title>
+                    <Modal.Title>Editar descripción</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <textarea 
+                    <textarea
                         ref={descriptionInputRef}
-                        name='description' 
-                        className={styles.modalTextarea} 
-                        value={descriptionValue} 
+                        name='description'
+                        className={styles.modalTextarea}
+                        value={descriptionValue}
                         onChange={(e) => setDescriptionValue(e.target.value)}
                         placeholder='Escribe la nueva descripción aquí...'
                         onKeyDown={handleUpdate}
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => handleShow(false)}>
-                        Cerrar
-                    </Button>
-                    <Button variant="primary" onClick={() => handleUpdate({ key: 'Enter', currentTarget: descriptionInputRef.current } as React.KeyboardEvent<HTMLTextAreaElement>)}>
-                        Guardar
-                    </Button>
+                    <span>[ENTER] para aceptar los cambios.</span>
                 </Modal.Footer>
             </Modal>
         </div>
