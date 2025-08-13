@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import type { Product } from '../../types';
 import { URL } from '../../types/constants';
-import Highlight from '../Highlight/Highlight';
 import Paginado from '../Paginado/Paginado';
 import SideBar from '../SideBar/SideBar';
 import Styles from './Shop.module.css';
+import Products from '../Products/Products';
 
 const Shop: React.FC = () => {
     const location = useLocation();
@@ -39,7 +39,7 @@ const Shop: React.FC = () => {
                 <div className={Styles.generalContainer}>
                     <SideBar />
                     <div className={Styles.productsAndHighlightContainer}>
-                        {items.length > 0 && <Highlight items={items} />}
+                        {items.length > 0 && <Products items={items} />}
                         {items.length === 0 && <div className={Styles.gridWrapper}>Sin coincidencias</div>}
                     </div>
                 </div>

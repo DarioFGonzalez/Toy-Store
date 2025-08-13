@@ -1,12 +1,22 @@
+import axios from 'axios';
+import type { Product } from '../../types';
 import Card from '../Card/Card';
-import type { CarruselProps } from '../../types/index';
-import './Carrusel.css';
-import React from 'react';
+import './Highlights.css';
+import React, { useEffect, useState } from 'react';
+import { URL } from '../../types/constants';
 
 
-const Carrusel: React.FC<CarruselProps> = ( { products } ) =>
+const Highlights: React.FC = () =>
 {
+  const [ highlighted, setHighlighted ] = useState<Product[]>( [] );
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect( () =>
+  {
+    axios.get(`${URL}product?highlighted=true`)
+    .then( ( { data } ) => setHighlighted( data ) )
+    .catch( ( err ) => console.log( err ) );
+  }, [])
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
@@ -32,7 +42,7 @@ const Carrusel: React.FC<CarruselProps> = ( { products } ) =>
       <div className="carousel-controls">
         <button onClick={scrollLeft} className="carousel-arrow left">&lt;</button>
         <div className="carousel-container" ref={scrollContainerRef}>
-          {products.map(product => (
+          {highlighted.map(product => (
             <div key={product.id} className="carousel-card-item">
               <Card product={product} />
             </div>
@@ -44,4 +54,4 @@ const Carrusel: React.FC<CarruselProps> = ( { products } ) =>
   );
 };
 
-export default Carrusel;
+export default Highlights;

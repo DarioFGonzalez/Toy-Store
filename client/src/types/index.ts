@@ -47,11 +47,6 @@ export interface ProductCardProps
     item: Product; 
 }
 
-export interface CarruselProps
-{
-    products: Product[]
-}
-
 export interface ContactInfo
 {
     email: string,

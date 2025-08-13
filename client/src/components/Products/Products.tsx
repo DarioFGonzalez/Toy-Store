@@ -1,13 +1,13 @@
 import type { Product } from "../../types";
 import Card from "../Card/Card";
-import './Highlight.css';
+import './Products.css';
 
 interface HighLightProps
 {
     items: Product[]
 }
 
-const Highlight: React.FC<HighLightProps> = ( {items} ) =>
+const Products: React.FC<HighLightProps> = ( {items} ) =>
 {
 
     return(
@@ -21,4 +21,4 @@ const Highlight: React.FC<HighLightProps> = ( {items} ) =>
     )
 }
 
-export default Highlight;
+export default Products;
