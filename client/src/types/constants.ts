@@ -12,13 +12,12 @@ export const emptyCart =
     products: []
 };
 
-export const formProduct =
+export const emptyFormProduct =
 {
     name: '',
     highlighted: false,
     description: '',
     price: 0,
-    imageUrl: [],
     category: '',
     stock: 0
 };

@@ -67,3 +67,21 @@ export interface editForm
     price: boolean,
     description: boolean
 }
+
+export interface DBImagesFormat
+{
+    url: string,
+    public_id: string
+}
+
+export interface FormProduct
+{
+    highlighted?: boolean,
+    name: string,
+    description?: string,
+    price: number,
+    imageUrl?: { url: string, public_id: string}[],
+    category: string,
+    visible?: boolean,
+    stock: number   
+}

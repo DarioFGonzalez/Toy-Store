@@ -3,6 +3,7 @@ const { Products } = require('../../db/db');
 const postProduct = async ( req, res ) =>
 {
     const data = req.body;
+    
     try
     {
         const newProduct = await Products.create( data );

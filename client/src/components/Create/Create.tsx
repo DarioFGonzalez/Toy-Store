@@ -2,14 +2,15 @@ import axios from 'axios';
 import React, {useState} from 'react';
 import { Form } from 'react-bootstrap';
 import styles from './Create.module.css';
-import { formProduct, URL } from '../../types/constants';
+import { emptyFormProduct, URL } from '../../types/constants';
+import type { DBImagesFormat, FormProduct } from '../../types';
 
 const Create: React.FC = () =>
 {
-	const [form, setForm] = useState(formProduct)
+	const [form, setForm] = useState<FormProduct>(emptyFormProduct)
 	const [ images, setImages ] = useState<File[]>( [] );
 	const [ previewImages, setPreviewImages ] = useState<string[]>( [] );
-	const [ errores, setErrores ] = useState(formProduct);
+	const [ errores, setErrores ] = useState<FormProduct>(emptyFormProduct);
 
 	const handleSubmit = async ( e: React.FormEvent<HTMLFormElement> ) =>
     {
@@ -52,18 +53,19 @@ const Create: React.FC = () =>
 
 			setImages( [] );
 			setPreviewImages( [] );
-            setForm(formProduct);
-            setErrores(formProduct);
+            setForm(emptyFormProduct);
+            setErrores(emptyFormProduct);
         }
         catch(error)
         {
             console.log({Error_HandleSubmit: error})
             alert('¡Ocurrió un error!')
         }
+		
 
 	}
 
-	const handleImagesUpload = async (): Promise<string[]> =>
+	const handleImagesUpload = async (): Promise<DBImagesFormat[]> =>
 	{
 		const promises = images.map( file =>
 		{
@@ -75,9 +77,9 @@ const Create: React.FC = () =>
 
 		const responses = await Promise.all( promises );
 
-		const URLs = responses.map( url => url.data.secure_url );
+		const Images = responses.map( response => ( { url: response.data.secure_url, public_id: response.data.public_id } ) );
 
-		return URLs;
+		return Images;
 	}
 
 	const handleChange = ( e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> ) =>
