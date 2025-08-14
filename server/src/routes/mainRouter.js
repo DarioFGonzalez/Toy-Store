@@ -1,6 +1,5 @@
 const {Router} = require("express");
 const productRouter = require('./productsRouter');
-const fillUp = require("../handlers/init/fillUp");
 const checkoutRouter = require("./checkoutRouter");
 const cartRouter = require("./cartRouter");
 const adminRouter = require("./adminRouter");

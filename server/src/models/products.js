@@ -34,9 +34,11 @@ module.exports = ( sequelize ) =>
             },
             imageUrl:
             {
-                type: DataTypes.ARRAY(DataTypes.STRING),
+                type: DataTypes.JSON,
                 defaultValue: () =>
-                    Array.from( { length: 5 }, () => 'https://res.cloudinary.com/violetastore/image/upload/v1755013343/mbg8rgsm0ysgikiwaoko.png' )
+                    Array.from( { length: 5 }, () => ( {
+                        url: 'https://res.cloudinary.com/violetastore/image/upload/v1755013343/mbg8rgsm0ysgikiwaoko.png',
+                        public_id: 'mbg8rgsm0ysgikiwaoko' } ) )
             },
             category:
             {
