@@ -4,6 +4,7 @@ import ProductDashboard from './ProductsDashboard/ProductsDashboard';
 import { useState } from 'react';
 import styles from './Dashboard.module.css';
 import Create from '../Create/Create';
+import CreateBanner from './Banners/CreateBanners';
 
 const Dashboard: React.FC = () =>
 {
@@ -17,6 +18,7 @@ const Dashboard: React.FC = () =>
             <div className={styles.mainContent}>
                 { content === 'products' && <ProductDashboard /> }
                 { content === 'create' && <Create />}
+                { content === 'banners' && <CreateBanner />}
             </div>
         </div>
     );

@@ -14,7 +14,7 @@ const Card: React.FC<CardProps> = ( { product } ) =>
                 <Link className={Styles.link} to={`/detail/${product.id}`}>
                     <img
                     className={Styles.Img}
-                    src={product.imageUrl[0]}
+                    src={product.imageUrl[0].url}
                     alt="Imagen del producto"
                     />
                 </Link>

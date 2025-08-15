@@ -1,10 +1,10 @@
 const { DataTypes } = require('sequelize');
 
-const categories = [ 'ofertas', 'decorativos', 'anuncios', 'otros' ];
+const categories = [ 'descuentos', 'tematico', 'anuncios', 'otros' ];
 
 module.exports = ( sequelize ) =>
 {
-    sequelize.define( "Banner",
+    sequelize.define( "Banners",
     {
         id:
         {

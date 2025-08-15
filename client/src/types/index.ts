@@ -36,7 +36,7 @@ export interface Product
     name: string,
     description: string,
     price: number,
-    imageUrl: string[],
+    imageUrl: { url: string, public_id: string}[],
     category: string,
     visible: boolean,
     stock: number
@@ -84,4 +84,24 @@ export interface FormProduct
     category: string,
     visible?: boolean,
     stock: number   
+}
+
+export interface BannerImages
+{
+    url: string,
+    public_id: string
+}
+
+export interface Banner
+{
+    id: string,
+    imageUrl: BannerImages,
+    category: string,
+    active: boolean
+}
+
+export interface BannerForm {
+    imageUrl: DBImagesFormat;
+    category: string;
+    active: boolean;
 }

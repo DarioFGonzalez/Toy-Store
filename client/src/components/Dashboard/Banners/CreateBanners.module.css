@@ -1,0 +1,95 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 40px;
+}
+
+.formSection {
+    flex: 1;
+    max-width: 500px;
+}
+
+.formSection h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #333;
+}
+
+.form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.previewContainer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.previewImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.bannersSection {
+    flex: 2;
+}
+
+.bannersSection h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.bannersList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.bannerCard {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.bannerImage {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 16 / 9; /* Para mantener una proporción de banner */
+}
+
+.bannerInfo {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bannerInfo p {
+    margin: 0;
+}
+
+.active {
+    color: green;
+    font-weight: bold;
+}
+
+.inactive {
+    color: red;
+    font-weight: bold;
+}
+
+.buttonGroup {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}

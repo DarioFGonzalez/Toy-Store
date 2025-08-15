@@ -87,7 +87,7 @@ const ProductCard: React.FC<Props> = ({ item, isTableRow }) => {
 
     return (
         <tr key={product.id}>
-            <td><img onClick={()=>console.log(product)} src={product.imageUrl?.[0]} alt={product.name} className={styles.tableImage} /></td>
+            <td><img onClick={()=>console.log(product)} src={product.imageUrl[0].url} alt={product.name} className={styles.tableImage} /></td>
             <td onClick={() => setEdit(prevInfo => ({ ...prevInfo, name: true }))}>
                 {edit.name ? (
                     <input ref={nameInputRef} placeholder={product.name} onKeyDown={handleUpdate} name='name' defaultValue={product.name} className={styles.tableInput} />

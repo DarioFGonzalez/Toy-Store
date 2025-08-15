@@ -1,17 +1,19 @@
 import { Carousel } from 'react-bootstrap';
 import Styles from './Banner.module.css';
 import { useEffect, useState } from 'react';
-import type { Product } from '../../types';
+import type { Banner } from '../../types';
 import axios from 'axios';
 import { URL } from '../../types/constants';
 
-const Banner: React.FC = () =>
+const Banners: React.FC = () =>
 {
-    const [ banners, setBanners ] = useState<Product[]>( [] );
+    const [ banners, setBanners ] = useState<Banner[]>( [] );
 
     useEffect( () =>
     {
-        //lamada para buscar los banners.
+        axios.get(`${URL}banner?active=true`)
+        .then( ( { data } ) => setBanners( data ) )
+        .catch( ( err ) => console.log( err ) );
     }, [])
 
     return(
@@ -20,12 +22,7 @@ const Banner: React.FC = () =>
         <Carousel interval={2000} pause="hover">
           {banners.map((item, index) => (
             <Carousel.Item key={index}>
-              <img src={item.imageUrl[0]} alt={item.name} />
-              <Carousel.Caption>
-                <h3>{item.name}</h3>
-                <button onClick={()=>console.log(item)}> INFO </button>
-                <p>{item.description}</p>
-              </Carousel.Caption>
+              <img src={item.imageUrl.url} alt={item.category} onClick={()=>console.log(item)}/>
             </Carousel.Item>
           ))}
         </Carousel>
@@ -34,4 +31,4 @@ const Banner: React.FC = () =>
     )
 }
 
-export default Banner;
+export default Banners;

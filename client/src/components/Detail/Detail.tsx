@@ -78,7 +78,7 @@ const Detail: React.FC = () =>
         <div className={style.imgContainer}>
           <Carousel slide={false} interval={10000} pause="hover">
             {cardDetail.imageUrl && cardDetail.imageUrl.map( (item, index) => {
-              const transformedUrl = item.replace(
+              const transformedUrl = item.url.replace(
                 '/upload/',
                 '/upload/w_465,h_465,c_fill,f_auto,q_auto/'
               );

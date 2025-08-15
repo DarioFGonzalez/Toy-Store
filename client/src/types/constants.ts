@@ -1,4 +1,4 @@
-const offline = true;
+const offline = false;
 
 export const URL = offline ? 'http://localhost:5000/' : "https://toy-store-zw00.onrender.com/";
 export const LOCAL_URL = offline ? 'http://localhost:5173/' : "https://toy-store-tau.vercel.app/";
@@ -49,3 +49,9 @@ export const emptyEditForm =
     price: false,
     description: false
 }
+
+export const emptyBannerForm = {
+    imageUrl: { url: '', public_id: '' },
+    category: 'default',
+    active: false,
+};
