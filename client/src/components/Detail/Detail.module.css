@@ -1,206 +1,146 @@
+.containerDetail {
+    max-width: 1100px;
+    margin-inline: auto;
+    padding: 20px;
+    position: relative;
+}
+
 .backButton {
-  color: rgb(255, 255, 255);
-  margin-bottom: -100px;
-  position: absolute;
-  font-size: 70px;
-  transition: 0.5s;
-  text-decoration: none;
-  background-color: #000000;
-  border-radius: 100%;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 40px;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    z-index: 10;
 }
 
 .backButton:hover {
-  color: #000000;
-  background-color: #ffffff;
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
-.backButton:active {
-  transform: scale(0.9);
+.detailLayout {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Miniaturas a la izquierda, imagen principal a la derecha */
+    gap: 30px;
+    align-items: start;
+    padding-top: 60px;
 }
 
-.containerDetail {
-  max-width: 1100px;
-  height: 100%;
-  margin-top: 50px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 10px;
+/* -------------------- COLUMNA DE MINIATURAS -------------------- */
+.thumbnailColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.detailContainer {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  width: 100%;
+.thumbnail {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
 }
 
-.imgContainer {
-  flex: 2;
-  position: relative;
-  padding: 10px;
-  /* ¡Altura fija para el contenedor del carrusel! */
-  height: 465px; 
+.thumbnail:hover, .activeThumbnail {
+    border-color: #007bff;
 }
 
-.carouselImg {
-  width: 100%;
-  height: 100%; 
-  object-fit: cover;
-  border-radius: 10px;
+/* -------------------- IMAGEN PRINCIPAL Y INFO -------------------- */
+.mainImageContainer {
+    width: 100%;
+    height: 100%;
+}
+
+.mainImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
 }
 
 .detailInfo {
-  flex: 2;
-  border: rgb(209, 209, 209) solid 0.5px;
-  border-radius: 10px;
-  padding: 20px;
+    grid-column: 2; /* Asegura que la info esté en la segunda columna del grid */
+    padding: 20px;
 }
 
-.productName {
-  font-size: 40px;
-  margin-bottom: 7px;
+.infoSection h1 {
+    font-size: 2.5rem;
+    margin: 0;
 }
 
-.priceHolder {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 7px;
+.infoSection p {
+    margin: 0.5rem 0;
 }
 
-.brandHolder {
-  font-size: 20px;
-  font-weight: bold;
+.divider {
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
 }
 
-.detailSize {
-  margin-top: 10px;
-}
-
-.SizeLabel {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 7px;
-}
-
-.sizeSelect {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  margin: auto;
-  width: 150px;
-}
-
-.sizeSelect button {
-  display: flex;
-  background-color: #0a202e;
-  color: white;
-  border: 1px solid black;
-  margin: 3px;
-  justify-content: center;
-  border-radius: 7px;
-  transition: 0.3s;
-}
-
-.sizeSelect button:hover {
-  background-color: #9abfcb;
-  color: black;
-  box-shadow: 0px 0px 10px #9abfcb;
-  border-color: #9abfcb;
-}
-
-.sizeSelect button:active {
-  transform: scale(0.9);
-}
-
-.select {
-  display: "flex";
-  text-align: center;
-  flex-direction: "column";
-  align-items: "center";
-  border: 1px solid black !important;
-}
-
-.cantidad {
-  align-items: center;
-  margin: auto;
-  width: 150px;
-}
-
-.input {
-  display: "flex";
-  text-align: center;
-  flex-direction: "column";
-  align-items: "center";
-  margin-bottom: 10px;
-}
-
-.carrito button {
-  background-color: #0a202e;
-  width: 250px;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 7px;
-  cursor: pointer;
-  box-shadow: 2.5px 3px 0px #1b5579;
-  transition: 0.3s;
-}
-
-.carrito button:active {
-  transform: translate(2px, 0px);
-  box-shadow: 0px 1px 0px #9abfcb;
-}
-
-.carrito button:disabled {
-  background-color: gray;
-  box-shadow: 0px 2px 0px #000000;
+.ctaSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .description {
-  margin-top: 30px;
-  padding: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
 }
 
-.containerReview {
-  border: solid rgb(209, 209, 209) 0.5px;
-  border-radius: 10px;
+.descriptionTitle {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
 }
 
-.reviewInfo {
-  text-align: center;
+/* -------------------- BOTONES Y INPUTS -------------------- */
+.ctaSection input[type='number'] {
+    width: 80px;
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-.buttonActive {
-  background-color: #0a202e;
-  color: #fff;
-  padding: 10px;
-  margin: 10px;
-  width: 130px;
-  text-align: center;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.ctaSection button {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.buttonInactive {
-  background-color: #9abfcb;
-  color: #000000;
-  padding: 10px;
-  margin: 10px;
-  width: 130px;
-  text-align: center;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.ctaSection button:hover {
+    background-color: #333;
 }
 
-.reviewDescription {
-  margin: 50px;
-}
+/* -------------------- MEDIA QUERIES -------------------- */
+@media (max-width: 992px) {
+    .detailLayout {
+        grid-template-columns: 1fr; /* En móvil, una sola columna */
+        justify-items: center;
+        gap: 10px;
+    }
 
-.divSreview {
-  border: solid rgb(209, 209, 209) 0.5px;
-  display: grid;
-  grid-template-columns: 1fr;
+    .thumbnailColumn {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .mainImageContainer {
+        width: 100%;
+    }
+
+    .detailInfo {
+        width: 100%;
+    }
 }

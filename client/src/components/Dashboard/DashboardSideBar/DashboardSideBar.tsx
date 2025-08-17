@@ -11,7 +11,6 @@ const DashboardSideBar: React.FC<SideBarProps> = ( { setContent } ) =>
         <div className={style.sidebarContainer}>
             <button className={style.sidebarButton} onClick={() => setContent('products')}> Productos </button>
             <button className={style.sidebarButton} onClick={() => setContent('banners')}> Banners </button>
-            <button className={style.sidebarButton} onClick={() => setContent('media')}> Medias </button>
             <button className={style.sidebarButton} onClick={() => setContent('create')}> Nuevo ITEM </button>
         </div>
     );

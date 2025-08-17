@@ -5,118 +5,124 @@ import { useEffect, useState } from "react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import React from 'react';
 import { useParams } from "react-router-dom";
-import { Carousel } from 'react-bootstrap';
-import style from "./Detail.module.css"
+import style from "./Detail.module.css";
 
-const Detail: React.FC = () =>
-{
+const Detail: React.FC = () => {
   const { id } = useParams();
 
   const [cardDetail, setCardDetail] = useState<Product>(emptyProduct);
   const [inputValue, setInputValue] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [mainImage, setMainImage] = useState<string | undefined>(undefined);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     axios.get(`${URL}product/${id}`)
-      .then( ( { data } ) => setCardDetail( data ) )
-      .catch( ( err ) => { console.error( err ); console.log( err.message ); } )
+      .then(({ data }) => {
+        setCardDetail(data);
+        if (data.imageUrl && data.imageUrl.length > 0) {
+          setMainImage(data.imageUrl[0].url);
+        }
+      })
+      .catch((err) => { console.error(err); console.log(err.message); });
   }, [id]);
 
   useEffect(() => {
     const price = Number(cardDetail?.price) * 100 || 0;
-    setTotalPrice( (price * inputValue) / 100 );
+    setTotalPrice((price * inputValue) / 100);
   }, [cardDetail?.price, inputValue]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-  {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value);
-    if (!isNaN(value) && value >= 0)
-    {
+    if (!isNaN(value) && value >= 0) {
       setInputValue(value);
     }
   };
 
-  const addToCart = () =>
-  {
+  const addToCart = () => {
     const cartId = localStorage.getItem("cartId");
 
-    if( cartId === null )
-    {
-      axios.post(`${URL}cart`, { productId: cardDetail.id, quantity: inputValue } )
-        .then( ( { data } ) =>
-        {
-          localStorage.setItem("cartId", JSON.stringify( data.id ) );
+    if (cartId === null) {
+      axios.post(`${URL}cart`, { productId: cardDetail.id, quantity: inputValue })
+        .then(({ data }) => {
+          localStorage.setItem("cartId", JSON.stringify(data.id));
           alert('¡Carrito creado!');
         })
-        .catch( ( err ) => console.log( err ) );
-    }
-    else
-    {
-      axios.patch(`${URL}cart/${JSON.parse(cartId)}`, { productId: cardDetail.id, quantity: inputValue } )
-        .then( ( { data } ) =>
-        {
-          localStorage.setItem( 'cartId', JSON.stringify( data.id ) );
+        .catch((err) => console.log(err));
+    } else {
+      axios.patch(`${URL}cart/${JSON.parse(cartId)}`, { productId: cardDetail.id, quantity: inputValue })
+        .then(({ data }) => {
+          localStorage.setItem('cartId', JSON.stringify(data.id));
           alert('¡Item agregado!');
         })
-        .catch( ( err ) => console.log( err ) );
+        .catch((err) => console.log(err));
     }
   };
 
-  const handleBack = () =>
-  {
+  const handleBack = () => {
     window.history.back();
-  }
+  };
 
+  // Función para manejar el clic en las miniaturas
+  const handleThumbnailClick = (url: string) => {
+    setMainImage(url);
+  };
+  
   return (
     <div className={style.containerDetail}>
-      <button onClick={handleBack}>
-        <IoArrowBackCircleOutline className={style.backButton} />
+      <button onClick={handleBack} className={style.backButton}>
+        <IoArrowBackCircleOutline />
       </button>
 
-      <div className={style.detailContainer}>
-        <div className={style.imgContainer}>
-          <Carousel slide={false} interval={10000} pause="hover">
-            {cardDetail.imageUrl && cardDetail.imageUrl.map( (item, index) => {
-              const transformedUrl = item.url.replace(
-                '/upload/',
-                '/upload/w_465,h_465,c_fill,f_auto,q_auto/'
-              );
-              return (
-                <Carousel.Item key={index} style={{ height: '465px' }}>
-                  <img className={style.carouselImg} src={transformedUrl} alt={cardDetail.name} />
-                </Carousel.Item>
-              );
-            })}
-          </Carousel>
+      <div className={style.detailLayout}>
+        {/* Columna de miniaturas a la izquierda */}
+        <div className={style.thumbnailColumn}>
+          {cardDetail.imageUrl && cardDetail.imageUrl.map((item, index) => {
+            const transformedUrl = item.url.replace('/upload/', '/upload/w_100,h_100,c_fill,f_auto,q_auto/');
+            return (
+              <img
+                key={index}
+                src={transformedUrl}
+                alt={`Thumbnail ${index}`}
+                className={`${style.thumbnail} ${mainImage === item.url ? style.activeThumbnail : ''}`}
+                onClick={() => handleThumbnailClick(item.url)}
+              />
+            );
+          })}
+        </div>
+
+        <div className={style.mainImageContainer}>
+          <img
+            src={mainImage?.replace('/upload/', '/upload/w_500,h_500,c_fill,f_auto,q_auto/')}
+            alt={cardDetail.name}
+            className={style.mainImage}
+          />
         </div>
 
         <div className={style.detailInfo}>
-          <div>
+          <div className={style.infoSection}>
             <h1 className={style.productName}>{cardDetail.name}</h1>
-            <p className={style.priceHolder}>$ {cardDetail.price} {'('} {cardDetail.stock} {')'}</p>
+            <p className={style.priceHolder}>$ {cardDetail.price} ({cardDetail.stock})</p>
             <p className={style.brandHolder}>{cardDetail.category}</p>
           </div>
 
-          <hr />
+          <hr className={style.divider} />
 
-          <input type='number' value={inputValue} onChange={handleInputChange} min='1' />
-          <p> SubTotal: ${totalPrice} </p>
+          <div className={style.ctaSection}>
+            <input type='number' value={inputValue} onChange={handleInputChange} min='1' />
+            <p>SubTotal: ${totalPrice}</p>
+            <button onClick={addToCart} disabled={cardDetail.stock <= 0 || inputValue > cardDetail.stock}>
+              Agregar al carrito 🛒
+            </button>
+          </div>
 
-          <div className={style.carrito}>
-            <button onClick={addToCart} disabled={cardDetail.stock<=0 || inputValue>cardDetail.stock}> Agregar al carrito 🛒</button>
+          <div className={style.description}>
+            <h2 className={style.descriptionTitle}>Descripción</h2>
+            <p>{cardDetail.description}</p>
           </div>
         </div>
       </div>
-      
-      <div className={style.containerReview}>
-        <div className={style.description}>
-            {cardDetail.description}
-          {/* <Reviews /> */}
-        </div>
-      </div>
     </div>
-  )
+  );
 };
 
 export default Detail;

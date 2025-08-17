@@ -1,24 +1,21 @@
-import type { Product } from "../../types";
-import Card from "../Card/Card";
-import './Products.css';
+import Card from '../Card/Card.js';
+import type { Product } from '../../types/index.js';
+import styles from './Products.module.css';
 
-interface HighLightProps
-{
-    items: Product[]
+interface ProductsProps {
+  items: Product[];
 }
 
-const Products: React.FC<HighLightProps> = ( {items} ) =>
-{
-
-    return(
-        <div className='gridWrapper'>
-            <div className="productGridContainer">
-
-                { items?.map( (item, index) => (item.visible && <Card product={item} key={index} />) ) }
-
-            </div>
-        </div>
-    )
-}
+const Products: React.FC<ProductsProps> = ({ items }) => {
+  return (
+    <div className={styles.productsGridWrapper}> {/* CLASE RENOMBRADA */}
+      <div className={styles.productGridContainer}>
+        {items?.map((item, index) => (
+          item.visible && <Card product={item} key={index} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default Products;

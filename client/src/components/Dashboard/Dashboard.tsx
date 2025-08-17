@@ -17,8 +17,8 @@ const Dashboard: React.FC = () =>
             </div>
             <div className={styles.mainContent}>
                 { content === 'products' && <ProductDashboard /> }
-                { content === 'create' && <Create />}
                 { content === 'banners' && <CreateBanner />}
+                { content === 'create' && <Create />}
             </div>
         </div>
     );
