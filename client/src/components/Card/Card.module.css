@@ -1,9 +1,10 @@
 .cardContainer {
   position: relative;
-  width: 250px;
-  height: 300px;
+  width: 100%;
+  max-width: 250px;
+  /* height: 300px; */
   border-radius: 10px;
-  border: 0.5px solid #a8acb1;
+  border: 0.5px solid #004ca8;
   overflow: hidden;
   display: flex;
   flex-direction: column;

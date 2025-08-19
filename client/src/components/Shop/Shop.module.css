@@ -8,7 +8,7 @@
 .contentCenteringContainer {
   max-width: 1200px;
   width: 100%;
-  padding: 20px;
+  padding: 15px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -28,22 +28,28 @@
 
 .productsAndHighlightContainer {
   flex-grow: 1;
-  padding-left: 20px;
+  padding-left: 15px;
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;
   min-height: 100%;
 }
 
-.shopGridWrapper { /* CLASE RENOMBRADA */
+.productsWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.shopGridWrapper {
   display: flex;
   justify-content: center;
   border: 1px solid #ddd;
-  padding: 20px;
+  padding: 15px;
   width: 100%;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  background-color: #fcfcfc;
+  background-color: #ffffff;
   box-sizing: border-box;
   min-height: 300px;
   flex-grow: 1;
@@ -73,6 +79,20 @@
 
 .filterButton:hover {
     background-color: #0056b3;
+}
+
+.loadingSentinel {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.noMoreProducts {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2rem;
+  color: #888;
 }
 
 @media (max-width: 768px) {
@@ -115,7 +135,7 @@
     min-height: auto;
   }
 
-  .shopGridWrapper { /* CLASE RENOMBRADA */
+  .shopGridWrapper {
     width: 100%;
     padding: 10px;
   }

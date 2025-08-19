@@ -24,7 +24,7 @@
 
 .detailLayout {
     display: grid;
-    grid-template-columns: auto 1fr; /* Miniaturas a la izquierda, imagen principal a la derecha */
+    grid-template-columns: auto 1fr 1fr; /* Tres columnas: miniaturas, imagen principal, info */
     gap: 30px;
     align-items: start;
     padding-top: 60px;
@@ -51,21 +51,23 @@
     border-color: #007bff;
 }
 
-/* -------------------- IMAGEN PRINCIPAL Y INFO -------------------- */
+/* -------------------- IMAGEN PRINCIPAL -------------------- */
 .mainImageContainer {
+    grid-column: 2; /* Asegura que la imagen principal esté en la segunda columna */
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 .mainImage {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: contain;
     border-radius: 10px;
 }
 
+/* -------------------- COLUMNA DE INFORMACIÓN -------------------- */
 .detailInfo {
-    grid-column: 2; /* Asegura que la info esté en la segunda columna del grid */
+    grid-column: 3; /* Coloca la información en la tercera columna */
     padding: 20px;
 }
 
@@ -126,7 +128,7 @@
 /* -------------------- MEDIA QUERIES -------------------- */
 @media (max-width: 992px) {
     .detailLayout {
-        grid-template-columns: 1fr; /* En móvil, una sola columna */
+        grid-template-columns: 1fr; /* En móvil, vuelve a una sola columna */
         justify-items: center;
         gap: 10px;
     }
@@ -136,11 +138,9 @@
         justify-content: center;
     }
 
-    .mainImageContainer {
+    .mainImageContainer, .detailInfo {
+        grid-column: auto; /* Restablece la posición en la cuadrícula */
         width: 100%;
-    }
-
-    .detailInfo {
-        width: 100%;
+        padding: 0;
     }
 }

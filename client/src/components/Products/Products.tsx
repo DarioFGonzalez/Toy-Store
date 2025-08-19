@@ -8,7 +8,7 @@ interface ProductsProps {
 
 const Products: React.FC<ProductsProps> = ({ items }) => {
   return (
-    <div className={styles.productsGridWrapper}> {/* CLASE RENOMBRADA */}
+    <div className={styles.productsGridWrapper}>
       <div className={styles.productGridContainer}>
         {items?.map((item, index) => (
           item.visible && <Card product={item} key={index} />
