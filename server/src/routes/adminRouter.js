@@ -8,6 +8,7 @@ adminRouter.post('/login', logAdmin );
 
 adminRouter.use( checkToken );
 
+adminRouter.get('/', (req, res)=> res.status(200).send( 'Credenciales válidas' ) );
 adminRouter.post('/init', fillUp );
 
 module.exports = adminRouter;
