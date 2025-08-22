@@ -10,7 +10,6 @@ const Create: React.FC = () =>
 	const [form, setForm] = useState<FormProduct>(emptyFormProduct)
 	const [ images, setImages ] = useState<File[]>( [] );
 	const [ previewImages, setPreviewImages ] = useState<string[]>( [] );
-	const [ errores, setErrores ] = useState<FormProduct>(emptyFormProduct);
 
 	const handleSubmit = async ( e: React.FormEvent<HTMLFormElement> ) =>
     {
@@ -54,7 +53,6 @@ const Create: React.FC = () =>
 			setImages( [] );
 			setPreviewImages( [] );
             setForm(emptyFormProduct);
-            setErrores(emptyFormProduct);
         }
         catch(error)
         {
@@ -90,12 +88,6 @@ const Create: React.FC = () =>
         ({
 			...prevInput,
 			[name]: value,
-		}))
-
-		setErrores(prevErrores =>
-        ({
-			...prevErrores,
-			[name]: undefined,
 		}))
 	}
 
@@ -164,11 +156,6 @@ const Create: React.FC = () =>
 					<Form.Control name='name' placeholder='Nombre' value={form.name} onChange={handleChange} />
 				</div>
 
-				<div>
-					<input type='checkbox' />
-					<label> Favorito </label>
-				</div>
-
                 <div>
 					<label>Precio</label>
 					<Form.Control name='price' placeholder='Precio' value={form.price} onChange={handleChange} />
@@ -221,7 +208,6 @@ const Create: React.FC = () =>
 
                 <div>
 					<Form.Control name='description' placeholder='Descripción' value={form.description} onChange={handleChange} />
-					{errores.description && <p>{errores.description}</p>}
 				</div>
 
 				<button className='btn btn-primary mb-3' type='submit'>
