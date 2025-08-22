@@ -84,3 +84,99 @@
     font-size: 0.9rem;
     color: #6c757d;
 }
+
+/* Contenedor del ojo de visibilidad */
+.eyeContainer {
+    --color-visible: green;
+    --color-hidden: #a5a5b0;
+    --size: 1.5em;
+    position: relative;
+    cursor: pointer;
+    font-size: var(--size);
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--size);
+    height: var(--size);
+}
+
+.eye {
+    fill: var(--color-visible);
+    animation: keyframes-fill .5s;
+}
+
+.eyeSlash {
+    fill: var(--color-hidden);
+    animation: keyframes-fill .5s;
+}
+
+.eyeContainer input:checked ~ .eye {
+    display: block;
+}
+
+.eyeContainer input:checked ~ .eyeSlash {
+    display: none;
+}
+
+.eyeContainer input:not(:checked) ~ .eye {
+    display: none;
+}
+
+.eyeContainer input:not(:checked) ~ .eyeSlash {
+    display: block;
+}
+
+.eyeContainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+@keyframes keyframes-fill {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Botón de Favoritos */
+.favContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.favContainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.favContainer svg {
+    height: 24px;
+    width: 24px;
+    transition: all 0.3s;
+    fill: #666;
+}
+
+.favContainer svg:hover {
+    transform: scale(1.1);
+}
+
+.favContainer input:checked ~ svg {
+    fill: #ffeb49;
+}
+
+/* Alineación de celdas de tabla */
+.cellContainer {
+    vertical-align: middle;
+    text-align: center;
+}

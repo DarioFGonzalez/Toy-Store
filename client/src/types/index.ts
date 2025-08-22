@@ -13,7 +13,7 @@ export interface ProductInCart
     name: string,
     description: string,
     price: string,
-    imageUrl: string[],
+    imageUrl: {url: string, public_id: string}[],
     stock: number,
     CartItem: CartItem
 }

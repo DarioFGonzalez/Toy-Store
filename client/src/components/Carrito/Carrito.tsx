@@ -114,7 +114,7 @@ const Carrito: React.FC = () =>
             {cart.products.map((item) => (
               <li key={item.id} className={styles.cartItem}>
                 <div className={styles.itemImage}>
-                  <img src={item.image} alt={item.name} />
+                  <img src={item.imageUrl[0].url} alt={item.name} />
                 </div>
                 <div className={styles.itemDetails}>
                   <h2 className={styles.itemName}>{item.name}</h2>
