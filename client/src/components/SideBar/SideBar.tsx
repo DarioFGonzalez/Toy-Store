@@ -79,7 +79,7 @@ const Sidebar: React.FC = ( ) =>
         min {'<'} max </p>}
 
       <select value={ filter.category || '' } name='category' onChange={handleChange} >
-        <option value='' disabled selected> Categorías </option>
+        <option value='' disabled> Categorías </option>
         <option value='peluche'> Peluche </option>
         <option value='muñeco'> Muñeco </option>
         <option value='juego de mesa'> Juego de mesa </option>

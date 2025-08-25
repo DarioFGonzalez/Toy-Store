@@ -1,38 +1,38 @@
-import { Link } from "react-router-dom";
-import type { CardProps } from '../../types/index';
-import Styles from "./Card.module.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Styles from './Card.module.css';
+import type { Product } from '../../types/index';
 
-const Card: React.FC<CardProps> = ( { product } ) =>
-{
+interface Props {
+  product: Product;
+}
+
+const Card: React.FC<Props> = ({ product }) => {
+
   const toThumbnail = ( url: string ): string =>
   {
-    const thumbnailUrl = "/upload/h_250,w_250,f_auto,q_auto/";
-    const toThumbnailUrl = url.replace( '/upload/', thumbnailUrl );
+  const thumbnailUrl = "/upload/h_250,w_250,f_auto,q_auto/";
+  const toThumbnailUrl = url.replace( '/upload/', thumbnailUrl );
 
-    return toThumbnailUrl;
+  return toThumbnailUrl;
   }
-
+  
   return (
     <div className={Styles.cardContainer}>
-        <div className={Styles.card}>
-
-          <div className={Styles.imgContainer}>
-            <div className={Styles.imgCard} >
-                <Link className={Styles.link} to={`/detail/${product.id}`}>
-                    <img
-                    className={Styles.Img}
-                    src={toThumbnail(product.imageUrl[0].url)}
-                    alt="Imagen del producto"
-                    />
-                </Link>
-            </div>
-          </div>
-
-          <div className={Styles.InfoContainer}>
-            <h3 className={Styles.title}>{product.name}</h3>
-            <h4 className={Styles.price}>$ {product.price}</h4>
-          </div>
+      <Link to={`/detail/${product.id}`} className={Styles.link}>
+        <div className={Styles.imgContainer}>
+          <img
+            className={Styles.Img}
+            src={toThumbnail(product.imageUrl[0].url)}
+            alt={`Imagen de ${product.name}`}
+          />
         </div>
+        <div className={Styles.infoContainer}>
+          <h3 className={Styles.title}>{product.name}</h3>
+          <h4 className={Styles.price}>$ {product.price}</h4>
+        </div>
+      </Link>
+      <button className={Styles.buyButton}>Comprar</button>
     </div>
   );
 };

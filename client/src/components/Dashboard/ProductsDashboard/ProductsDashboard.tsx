@@ -1,32 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ProductsDashboard.module.css';
 import ProductCard from './ProductCard/ProductCard';
+import ProductFilters from './ProductFilter/ProductFilter';
 import type { Product } from '../../../types';
 import axios from 'axios';
 import { URL } from '../../../types/constants';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-    FormControl,
-    InputGroup,
-    FormSelect,
-    Button,
-    FormCheck
-} from 'react-bootstrap';
-
-// Tipos para los filtros
-interface DashboardFilters {
-    name: string;
-    category: string;
-    highlighted: boolean;
-    visible: boolean;
-}
-
-const emptyFilters: DashboardFilters = {
-    name: '',
-    category: '',
-    highlighted: false,
-    visible: false
-};
+import type { DashboardFilters } from '../../../types';
+import { emptyFilters } from '../../../types/constants';
 
 const ProductDashboard: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -42,31 +23,38 @@ const ProductDashboard: React.FC = () => {
             .catch((err) => console.log(err));
     }, []);
 
-    // Lógica de filtrado
     useEffect(() => {
         const applyFilters = () => {
             let result = products;
 
-            // Filtrar por nombre
             if (filters.name) {
                 result = result.filter(product =>
                     product.name.toLowerCase().includes(filters.name.toLowerCase())
                 );
             }
 
-            // Filtrar por categoría
             if (filters.category) {
                 result = result.filter(product =>
                     product.category.toLowerCase() === filters.category.toLowerCase()
                 );
             }
 
-            // Filtrar por 'Favorito'
+            if (filters.medida) {
+                result = result.filter(product =>
+                    (product as any).measure.toLowerCase() === filters.medida.toLowerCase()
+                );
+            }
+
+            if (filters.material) {
+                result = result.filter(product =>
+                    (product as any).material.toLowerCase() === filters.material.toLowerCase()
+                );
+            }
+
             if (filters.highlighted) {
                 result = result.filter(product => product.highlighted);
             }
 
-            // Filtrar por 'Visible'
             if (filters.visible) {
                 result = result.filter(product => product.visible);
             }
@@ -79,7 +67,6 @@ const ProductDashboard: React.FC = () => {
 
     const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
-
         if (type === 'checkbox') {
             const checked = (e.target as HTMLInputElement).checked;
             setFilters(prev => ({ ...prev, [name]: checked }));
@@ -94,54 +81,11 @@ const ProductDashboard: React.FC = () => {
 
     return (
         <div className={styles.dashboardContainer}>
-            <div className={styles.searchBarContainer}>
-                <InputGroup className="mb-3">
-                    <FormControl
-                        placeholder="Buscar por nombre..."
-                        aria-label="Buscar productos"
-                        name="name"
-                        value={filters.name}
-                        onChange={handleFilterChange}
-                        className={styles.searchInput}
-                    />
-                    <FormSelect
-                        name="category"
-                        value={filters.category}
-                        onChange={handleFilterChange}
-                        className={styles.selectFilter}
-                    >
-                        <option value="">Categoría</option>
-                        <option value="peluche">Peluche</option>
-                        <option value="muñeco">Muñeco</option>
-                        <option value="juego de mesa">Juego de mesa</option>
-                        <option value="otros">Otros</option>
-                    </FormSelect>
-                    <InputGroup.Text>
-                        <FormCheck
-                            type="checkbox"
-                            label="Fav."
-                            name="highlighted"
-                            checked={filters.highlighted}
-                            onChange={handleFilterChange}
-                            className={styles.filterCheck}
-                        />
-                    </InputGroup.Text>
-                    <InputGroup.Text>
-                        <FormCheck
-                            type="checkbox"
-                            label="Visible"
-                            name="visible"
-                            checked={filters.visible}
-                            onChange={handleFilterChange}
-                            className={styles.filterCheck}
-                        />
-                    </InputGroup.Text>
-                    <Button variant="outline-secondary" onClick={handleClearFilters} className={styles.clearButton}>
-                        Limpiar
-                    </Button>
-                </InputGroup>
-            </div>
-
+            <ProductFilters
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                onClearFilters={handleClearFilters}
+            />
             <div className={styles.tableContainer}>
                 {filteredProducts.length > 0 ? (
                     <table className="table table-striped table-hover">

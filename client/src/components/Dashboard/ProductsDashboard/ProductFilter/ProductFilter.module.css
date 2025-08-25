@@ -1,0 +1,34 @@
+.searchBarContainer {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.searchInput {
+    width: 250px;
+}
+
+.selectFilter {
+    width: 150px;
+}
+
+.filterCheck {
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+.clearButton {
+    white-space: nowrap;
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 768px) {
+    .searchBarContainer {
+        flex-direction: column;
+    }
+
+    .searchInput, .selectFilter, .clearButton, .filterCheck {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

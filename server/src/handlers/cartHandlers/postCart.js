@@ -18,7 +18,7 @@ const postCart = async ( req, res ) =>
             {
                 model: Products,
                 as: "products",
-                attributs: [ 'id', 'name', 'price', 'stock'],
+                attributs: [ 'id', 'name', 'price', 'stock' ],
                 through: { attributes: ['quantity', 'priceAtAddition'] }
             } } );
         return res.status(200).json( finishedCart );

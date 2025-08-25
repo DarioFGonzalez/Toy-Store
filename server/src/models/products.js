@@ -1,6 +1,31 @@
 const { DataTypes } = require('sequelize');
 
-const categories = [ 'otros', 'juego de mesa', 'muñeco', 'peluche' ];
+const categories = [ 'otros',
+    'aros',
+    'anillos',
+    'cadenitas',
+    "chokers",
+    'collares',
+    'gargantillas',
+    'pulseras',
+    'tobilleras',
+];
+
+const materials = [ 'acero quirurgico',
+    'alambre con memoria',
+    'cristal checo',
+    'fundicion',
+    'hilo encerado',
+    'madera',
+    'mostacillas',
+    'perlas de vidrio',
+    'perlas acrilicas',
+    'piedras semipreciosas',
+    'tanza de acero',
+    'tanza elastica'
+];
+
+const medidas = [ '30', '40', '50', '60', '70', '80', '90', '100' ];
 
 module.exports = ( sequelize ) =>
 {
@@ -44,6 +69,16 @@ module.exports = ( sequelize ) =>
             {
                 type: DataTypes.ENUM( ...categories ),
                 defaultValue: 'otros'
+            },
+            material:
+            {
+                type: DataTypes.ENUM( ...materials ),
+                defaultValue: 'acero quirurgico'
+            },
+            medidas:
+            {
+                type: DataTypes.ENUM( ...medidas ),
+                allowNull: true
             },
             visible:
             {

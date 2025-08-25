@@ -4,7 +4,13 @@ const { Products } = require('../../db/db');
 
 const getProducts = async (req, res) =>
 {
-    const { name, category, minPrice, maxPrice, highlighted } = req.query;
+    const
+    {
+        name, highlighted, category,
+        minPrice, maxPrice,
+        medidas, materials
+    } = req.query;
+
     let { page } = req.query;
     const limit = 8;
     
@@ -31,6 +37,16 @@ const getProducts = async (req, res) =>
     if(category && category!=='')
     {
         whereClause.category = category;
+    }
+
+    if(medidas && medidas!=='')
+    {
+        whereClause.medidas = medidas;
+    }
+
+    if(materials && materials!=='')
+    {
+        whereClause.materials = materials;
     }
 
     let priceConditions = {};

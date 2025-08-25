@@ -15,7 +15,8 @@ const cleanCart = async ( req, res ) =>
         {
             model: Products,
             as: 'products',
-            attributes: [ 'id', 'name', 'description', 'price', 'imageUrl', 'stock' ],
+            attributes:
+            [ 'id', 'name', 'description', 'price', 'imageUrl', 'stock' ],
             through: { attributes: [ 'quantity', 'priceAtAddition' ] }
         } } );
         

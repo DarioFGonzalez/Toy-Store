@@ -38,6 +38,8 @@ export interface Product
     price: number,
     imageUrl: { url: string, public_id: string}[],
     category: string,
+    material: string,
+    medidas: string,
     visible: boolean,
     stock: number
 }
@@ -82,6 +84,8 @@ export interface FormProduct
     price: number,
     imageUrl?: { url: string, public_id: string}[],
     category: string,
+    material: string,
+    medidas: string,
     visible?: boolean,
     stock: number   
 }
@@ -104,4 +108,13 @@ export interface BannerForm {
     imageUrl: DBImagesFormat;
     category: string;
     active: boolean;
+}
+
+export interface DashboardFilters {
+    name: string;
+    category: string;
+    highlighted: boolean;
+    visible: boolean;
+    medida: string;
+    material: string;
 }

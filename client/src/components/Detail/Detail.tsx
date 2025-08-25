@@ -62,7 +62,6 @@ const Detail: React.FC = () => {
     window.history.back();
   };
 
-  // Función para manejar el clic en las miniaturas
   const handleThumbnailClick = (url: string) => {
     setMainImage(url);
   };
@@ -74,7 +73,6 @@ const Detail: React.FC = () => {
       </button>
 
       <div className={style.detailLayout}>
-        {/* Columna de miniaturas a la izquierda */}
         <div className={style.thumbnailColumn}>
           {cardDetail.imageUrl && cardDetail.imageUrl.map((item, index) => {
             const transformedUrl = item.url.replace('/upload/', '/upload/w_100,h_100,c_fill,f_auto,q_auto/');
@@ -101,8 +99,10 @@ const Detail: React.FC = () => {
         <div className={style.detailInfo}>
           <div className={style.infoSection}>
             <h1 className={style.productName}>{cardDetail.name}</h1>
-            <p className={style.priceHolder}>$ {cardDetail.price} ({cardDetail.stock})</p>
-            <p className={style.brandHolder}>{cardDetail.category}</p>
+            <p className={style.priceHolder}>$ {cardDetail.price} (STOCK: {cardDetail.stock})</p>
+            <p className={style.brandHolder}>{'['}{cardDetail.category}{']'}</p>
+            { cardDetail.medidas && <p className={style.brandHolder}>{'('} {cardDetail.medidas} {' CM)'}</p>}
+            <p className={style.brandHolder}>Material: {cardDetail.material}</p>
           </div>
 
           <hr className={style.divider} />

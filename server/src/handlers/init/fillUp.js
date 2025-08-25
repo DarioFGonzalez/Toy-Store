@@ -5,75 +5,109 @@ const fillUp = async ( req, res ) =>
     const allDummies =
     [
         {
-            name: "Vaso de madera",
-            description: "Un vaso de madera.",
-            price: 666.99,
-            category: "peluche",
+            name: "Collar de madera",
+            description: "Un collar de madera.",
+            price: 6.99,
+            category: "collares",
+            material: 'madera',
+            medidas: '30',
             stock: 100
         },
         {
-            name: "Juguete de madera",
-            description: "Un juguete de madera.",
-            price: 196.99,
-            category: "peluche",
+            name: "Aros de Fundición",
+            description: "Hermosos aros color plateado de fundición, preciosos con ropa a juego.",
+            price: 1.45,
+            category: "aros",
+            meterial: 'fundicion',
+            medidas: '40',
             stock: 100
         },
         {
-            name: "Juego de mesa",
-            description: "Un Juego de mesa.",
-            price: 1000.69,
-            category: "juego de mesa",
+            name: "Anillo de acero quirúrgico importado",
+            description: "Delicados anillos de acero quirúrgico, colección invierno cálido.",
+            price: 1.69,
+            category: "anillos",
+            material: 'acero quirurgico',
+            medidas: '50',
             stock: 100
         },
         {
-            name: "Muñeco de felpa",
-            description: "Un Muñeco de felpa.",
-            price: 43000.00,
-            category: "muñeco",
+            name: "Cadenita de Cristal checo rosado",
+            description: "Una delicada cadenita de cristal checo color rosado suave, femenina, delicada, preciosa.",
+            price: 1.95,
+            category: "cadenitas",
+            material: 'cristal checo',
+            medidas: '60',
             stock: 100
         },
         {
-            name: "Un alien con orejas",
-            description: "Un juguete extraño, dificil de catalogar.",
-            price: 420.13,
-            category: "otros",
+            name: "Choker gótico",
+            description: "Choker estil Gótico con detalles rojos.",
+            price: 1.05,
+            category: "chokers",
+            material: 'hilo encerado',
+            medidas: '70',
             stock: 100
         },
         {
-            name: "Un UNO con orejas",
-            description: "Un juguete aún MÁS extraño, dificil de catalogar.",
-            price: 1111.11,
-            category: "otros",
-            stock: 1
+            name: "Collar de mostacillas",
+            description: "Divertido collar hecho enteramente de mostacillas, color amarillo, largo.",
+            price: 0.75,
+            category: "collares",
+            material: 'mostacillas',
+            medidas: '80',
+            stock: 5
         },
         {
-            name: "DAMAS",
-            description: "Clásico juego de DAMAS.",
-            price: 2500.75,
-            category: "juego de mesa",
+            name: "Gargantilla de perlas",
+            description: "Delicada gargantilla de perlas de vidrio.",
+            price: 1.25,
+            category: "gargantillas",
+            material: 'perlas de vidrio',
+            medidas: '90',
             stock: 50
         },
         {
-            name: "Chucky",
-            description: "Muñeco de Chucky.",
-            price: 1020.00,
-            category: "muñeco",
+            name: "Pulsera de perlas acrilicas naranja",
+            description: ".",
+            price: 1.03,
+            category: "pulseras",
+            material: 'perlas acrilicas',
             stock: 100
         },
         {
-            name: "Peluche de Frotzo",
-            description: "Nadie compra este peluche, se escucha como algo rompiendose.",
-            price: 1.00,
-            category: "peluche",
+            name: "Tobillera de Kristina",
+            description: "Vamo' a volvé ✌😭🍺",
+            price: 9999.95,
+            category: "tobilleras",
+            material: 'alambre con memoria',
             stock: 1000
         },
         {
-            name: "???",
-            description: "Unknown, anon, undefined, null, etc.",
-            price: 9999.00,
-            category: "otros",
+            name: "Pulsera de piedras semipreciosas",
+            description: "Decorada con varias piedras semipreciosas de colores vibrantes, ideal para outfits coloridos",
+            price: 2.00,
+            category: "pulseras",
+            material: 'piedras semipreciosas',
             stock: 1000
-        }
+        },
+        {
+            name: "Collar estilo selvático",
+            description: "Detalles de soga, marrones y toques de selva.",
+            price: 1.49,
+            category: "collares",
+            material: 'tanza de acero',
+            medidas: '90',
+            stock: 100
+        },
+        {
+            name: "Cadenita elástica FIT",
+            description: "Cadenita FIT ideal para running y actividades al aire libre.",
+            price: 1.85,
+            category: "cadenitas",
+            material: "tanza elastica",
+            stock: 100
+        },
     ]
 
     try

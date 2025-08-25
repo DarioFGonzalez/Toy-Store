@@ -1,64 +1,85 @@
 .cardContainer {
   position: relative;
   width: 100%;
-  max-width: 250px;
-  /* height: 300px; */
   border-radius: 10px;
-  border: 0.5px solid #004ca8;
+  border: 1px solid #ddd;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: 0.3s ease-in, transform 0.2s ease-in;
-}
-
-.cardContainer:hover {
-  transform: scale(1.09);
-  box-shadow: 3px 3px 5px #505050;
-  border-color: #8fb0bb;
-}
-
-.cardContainer .link {
-  text-decoration: none;
-}
-
-.card .imgContainer {
-  width: 100%;
-  height: 220px;
-}
-
-.card .Img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.card .title {
-  text-align: center;
-  color: #0a202e;
-  margin-top: 5px;
-}
-
-.title:hover {
-  color: #9abfcb;
-}
-
-.card .price {
-  text-align: center;
-  color: #8fb0bb ;
-}
-
-.buttonContainer {
-  text-align: center;
+  align-items: center; /* Alinea los elementos internos al centro horizontalmente */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   padding: 10px;
 }
 
-.button {
-  padding: 10px 20px;
-  margin-top: 20px;
+.cardContainer:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
   width: 100%;
-  background-color: #0a202e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imgContainer {
+  width: 100%;
+  height: 200px; /* Altura fija para todas las imágenes */
+  margin-bottom: 10px;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.Img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Recorta y centra la imagen */
+}
+
+.infoContainer {
+  width: 100%;
+  text-align: center;
+  flex-grow: 1; /* Permite que este contenedor se estire para mantener el botón abajo */
+}
+
+.title {
+  font-size: 1em;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 5px 0;
+  min-height: 40px; /* Espacio fijo para dos líneas de título */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #28a745;
+  margin: 0;
+}
+
+.buyButton {
+  background-color: #28a745;
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin-top: 15px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 90%; /* Ancho uniforme para todos los botones */
+}
+
+.buyButton:hover {
+  background-color: #218838;
 }

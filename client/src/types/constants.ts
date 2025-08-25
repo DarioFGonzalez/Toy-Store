@@ -19,6 +19,8 @@ export const emptyFormProduct =
     description: '',
     price: 0,
     category: '',
+    medidas: '',
+    material: '',
     stock: 0
 };
 
@@ -31,6 +33,8 @@ export const emptyProduct =
     price: 0,
     imageUrl: [],
     category: '',
+    medidas: '',
+    material: '',
     visible: true,
     stock: 0
 };
@@ -54,4 +58,13 @@ export const emptyBannerForm = {
     imageUrl: { url: '', public_id: '' },
     category: 'default',
     active: false,
+};
+
+export const emptyFilters = {
+    name: '',
+    category: '',
+    highlighted: false,
+    visible: false,
+    medida: '',
+    material: ''
 };
