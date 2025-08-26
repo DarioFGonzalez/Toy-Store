@@ -1,22 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Styles from './Card.module.css';
 import type { Product } from '../../types/index';
+import axios from 'axios';
+import { URL } from '../../types/constants';
 
 interface Props {
   product: Product;
 }
 
 const Card: React.FC<Props> = ({ product }) => {
+  const [cant, setCant] = useState<number>(1);
 
-  const toThumbnail = ( url: string ): string =>
-  {
-  const thumbnailUrl = "/upload/h_250,w_250,f_auto,q_auto/";
-  const toThumbnailUrl = url.replace( '/upload/', thumbnailUrl );
+  const toThumbnail = (url: string): string => {
+    const thumbnailUrl = "/upload/h_250,w_250,f_auto,q_auto/";
+    const toThumbnailUrl = url.replace('/upload/', thumbnailUrl);
+    return toThumbnailUrl;
+  };
 
-  return toThumbnailUrl;
-  }
-  
+  const addToCart = (): void => {
+    const cartId = localStorage.getItem("cartId");
+
+    if (cartId === null) {
+      axios.post(`${URL}cart`, { productId: product.id, quantity: cant })
+        .then(({ data }) => {
+          localStorage.setItem("cartId", JSON.stringify(data.id));
+          alert('¡Item agregado!');
+        })
+        .catch((err) => console.log(err));
+    } else {
+      axios.patch(`${URL}cart/${JSON.parse(cartId)}`, { productId: product.id, quantity: cant })
+        .then(({ data }) => {
+          localStorage.setItem('cartId', JSON.stringify(data.id));
+          alert('¡Item agregado!');
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleCantChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = e.target.value;
+    const number = parseInt(value, 10);
+
+    // Si el valor es una cadena vacía, establece 1. Si es NaN o menor a 1, establece 1.
+    // De lo contrario, establece el número.
+    if (value === '' || isNaN(number) || number < 1) {
+      setCant(1);
+    } else {
+      setCant(number);
+    }
+  };
+
+  const handleIncrement = (): void => {
+    setCant(prevCant => prevCant + 1);
+  };
+
+  const handleDecrement = (): void => {
+    setCant(prevCant => Math.max(1, prevCant - 1));
+  };
+
   return (
     <div className={Styles.cardContainer}>
       <Link to={`/detail/${product.id}`} className={Styles.link}>
@@ -32,7 +74,34 @@ const Card: React.FC<Props> = ({ product }) => {
           <h4 className={Styles.price}>$ {product.price}</h4>
         </div>
       </Link>
-      <button className={Styles.buyButton}>Comprar</button>
+
+      <div className={Styles.counterContainer}>
+        <button
+          className={Styles.counterButton}
+          onClick={handleDecrement}
+          aria-label="Disminuir cantidad"
+        >
+          -
+        </button>
+        <input
+          type="number"
+          className={Styles.counterInput}
+          value={cant}
+          min="1"
+          onChange={handleCantChange}
+        />
+        <button
+          className={Styles.counterButton}
+          onClick={handleIncrement}
+          aria-label="Aumentar cantidad"
+        >
+          +
+        </button>
+      </div>
+
+      <button className={Styles.buyButton} onClick={addToCart}>
+        Comprar
+      </button>
     </div>
   );
 };

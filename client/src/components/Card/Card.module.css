@@ -67,6 +67,56 @@
   margin: 0;
 }
 
+/* --- Estilos para el contador de cantidad --- */
+.counterContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  width: 90%;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  overflow: hidden; /* Para que los bordes redondeados se apliquen a los hijos */
+}
+
+.counterButton {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+  padding: 5px 15px;
+  transition: background-color 0.2s ease;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.counterButton:hover {
+  background-color: #f0f0f0;
+}
+
+.counterInput {
+  text-align: center;
+  border: none;
+  font-size: 1em;
+  width: 50px;
+  height: 40px;
+  outline: none; /* Elimina el contorno al hacer clic */
+  -moz-appearance: textfield; /* Oculta las flechas del input en Firefox */
+  appearance: textfield; /* Versión estándar para otros navegadores */
+}
+
+/* Oculta las flechas del input en Chrome, Safari y Edge */
+.counterInput::-webkit-outer-spin-button,
+.counterInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* --- Estilos para el botón de comprar --- */
 .buyButton {
   background-color: #28a745;
   color: white;
