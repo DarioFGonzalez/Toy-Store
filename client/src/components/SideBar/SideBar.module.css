@@ -9,28 +9,102 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 15px;
+}
+
+.filterSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
-.sidebarButton { width: 100%; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; text-align: center; transition: background-color 0.3s ease; }
+.filterInput, .selectFilter {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+.filterInput:focus, .selectFilter:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.sidebarButton { 
+    width: 100%; 
+    padding: 10px 15px; 
+    background-color: #007bff; 
+    color: white; 
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    text-align: center; 
+    transition: background-color 0.3s ease, transform 0.1s ease; 
+}
 .sidebarButton:hover { background-color: #0056b3; }
-.priceContainer { display: flex; gap: 10px; align-items: center; width: 100%; }
-.priceContainer input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; width: 3px; }
-.priceContainer .priceSeparator { font-weight: bold; font-size: 1.2em; color: #555; }
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
-.errorLabel { color: red; font-weight: bold; }
+.sidebarButton:active { transform: translateY(1px); }
+
+.priceContainer { 
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+    width: 100%; 
+}
+
+/* Fix: Set price inputs to occupy half the width each with the box-sizing property */
+.priceInput { 
+    width: 48%; /* Adjust to occupy less than half to avoid overflow with gap */
+    padding: 10px 12px; 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    box-sizing: border-box; 
+    font-size: 14px;
+}
+.priceContainer .priceSeparator { 
+    font-weight: bold; 
+    font-size: 1.2em; 
+    color: #555; 
+}
+
+input[type="number"]::-webkit-outer-spin-button, 
+input[type="number"]::-webkit-inner-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+input[type="number"] { 
+    -moz-appearance: textfield; 
+    appearance: textfield; 
+}
+
+.errorLabel { 
+    color: red; 
+    font-weight: bold; 
+    font-size: 12px;
+    margin-top: -5px;
+    margin-bottom: 5px;
+}
 
 @media (max-width: 768px) {
     .sidebarContainer {
         width: 100%;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-        background-color: #f0f0f0;
-        padding-top: 60px;
+        height: auto;
+        padding-top: 15px;
+        position: static;
         box-shadow: none;
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .filterSection {
+        gap: 10px;
+    }
+
+    .filterInput, .selectFilter, .priceInput {
+        width: 100%;
+        margin-bottom: 0;
     }
 }

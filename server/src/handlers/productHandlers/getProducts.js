@@ -4,14 +4,9 @@ const { Products } = require('../../db/db');
 
 const getProducts = async (req, res) =>
 {
-    const
-    {
-        name, highlighted, category,
-        minPrice, maxPrice,
-        medidas, materials
-    } = req.query;
-
+    const { name, highlighted, category, minPrice, maxPrice, medidas, material } = req.query;
     let { page } = req.query;
+    
     const limit = 8;
     
     if(highlighted)
@@ -44,9 +39,9 @@ const getProducts = async (req, res) =>
         whereClause.medidas = medidas;
     }
 
-    if(materials && materials!=='')
+    if(material && material!=='')
     {
-        whereClause.materials = materials;
+        whereClause.material = material;
     }
 
     let priceConditions = {};

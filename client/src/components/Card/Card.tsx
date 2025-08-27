@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Styles from './Card.module.css';
-import type { Product } from '../../types/index';
+import type { CardProps } from '../../types/index';
 import axios from 'axios';
 import { URL } from '../../types/constants';
 
-interface Props {
-  product: Product;
-}
-
-const Card: React.FC<Props> = ({ product }) => {
+const Card: React.FC<CardProps> = ( { product } ) =>
+{
   const [cant, setCant] = useState<number>(1);
 
   const toThumbnail = (url: string): string => {
@@ -42,8 +39,6 @@ const Card: React.FC<Props> = ({ product }) => {
     const value = e.target.value;
     const number = parseInt(value, 10);
 
-    // Si el valor es una cadena vacía, establece 1. Si es NaN o menor a 1, establece 1.
-    // De lo contrario, establece el número.
     if (value === '' || isNaN(number) || number < 1) {
       setCant(1);
     } else {
