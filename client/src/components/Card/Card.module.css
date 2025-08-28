@@ -109,7 +109,6 @@
   appearance: textfield; /* Versión estándar para otros navegadores */
 }
 
-/* Oculta las flechas del input en Chrome, Safari y Edge */
 .counterInput::-webkit-outer-spin-button,
 .counterInput::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -117,19 +116,71 @@
 }
 
 /* --- Estilos para el botón de comprar --- */
+
 .buyButton {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  margin-top: 15px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  width: 90%; /* Ancho uniforme para todos los botones */
+    position: relative;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: 1px solid #34974d;
+    background-color: #3aa856;
+    overflow: hidden; /* Esto es clave para que la animación funcione correctamente */
+}
+
+.buyButton,
+.button__icon,
+.button__text {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.button__text {
+    /* Nueva estructura para el texto */
+    position: relative;
+    width: calc(100% - 39px); /* Ocupa el espacio restante del botón */
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
+}
+
+.button__icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 39px;
+    background-color: #34974d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.svg {
+    width: 30px;
+    height: 30px;
+    stroke: #fff;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .buyButton:hover {
-  background-color: #218838;
+    background: #34974d;
+}
+
+.buyButton:hover .button__text {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.buyButton:hover .button__icon {
+    width: 100%;
+    transform: translateX(0);
+}
+
+.buyButton:active .button__icon {
+    background-color: #2e8644;
+}
+
+.buyButton:active {
+    border: 1px solid #2e8644;
 }
