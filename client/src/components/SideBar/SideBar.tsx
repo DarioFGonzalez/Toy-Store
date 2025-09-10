@@ -63,7 +63,6 @@ const Sidebar: React.FC<SideBarProps> = ({ isOpen, closeSidebar, children }) => 
 
   return (
     <>
-      {/* Backdrop solo en mobile y cuando está abierto */}
       {isOpen && (
         <div className={styles.sidebarBackdrop} onClick={closeSidebar} />
       )}

@@ -19,7 +19,7 @@ const Banners: React.FC = () =>
     return(
     <div className={Styles.allCarrusel}>
         
-        <Carousel interval={2000} pause="hover">
+        <Carousel interval={2000} pause="hover" slide={false}>
           {banners.map((item, index) => (
             <Carousel.Item key={index}>
               <img src={item.imageUrl.url} alt={item.category} onClick={()=>console.log(item)}/>

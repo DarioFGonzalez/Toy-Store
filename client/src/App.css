@@ -5,6 +5,7 @@ html, body {
   height: 100%; /* Muy importante para que html y body abarquen la ventana */
   min-height: 100vh; /* Asegura que la altura sea al menos la del viewport */
   overflow-x: hidden; /* Evita scroll horizontal */
+  background: #f5f5f5;
 }
 
 #root {
@@ -19,6 +20,7 @@ html, body {
   flex-grow: 1; /* Permite que este contenedor ocupe todo el espacio restante vertical */
   display: flex;
   flex-direction: column; /* Continúa apilando */
+  background: #f5f5f5;
 }
 
 .main-content-area {
@@ -35,6 +37,13 @@ html, body {
   flex-grow: 1; /* Permite que el wrapper de página ocupe todo el espacio restante */
   display: flex;
   flex-direction: column; /* Es un contenedor flex para shopPageWrapper */
+  background: #f5f5f5;
+}
+
+@media (max-width: 700px) {
+  .app-container-wrapper, .main-content-area, .page-content-wrapper {
+    padding: 0 2vw;
+  }
 }
 
 /* Otros estilos globales si los tienes */
