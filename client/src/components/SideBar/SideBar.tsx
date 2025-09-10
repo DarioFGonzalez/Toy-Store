@@ -18,7 +18,13 @@ const emptyFilter = {
   material: '',
 };
 
-const Sidebar: React.FC = () => {
+interface SideBarProps {
+  isOpen: boolean;
+  closeSidebar: () => void;
+  children?: React.ReactNode;
+}
+
+const Sidebar: React.FC<SideBarProps> = ({ isOpen, closeSidebar, children }) => {
   const navigate = useNavigate();
   const [filter, setFilter] = useState<Filters>(emptyFilter);
 
@@ -56,101 +62,112 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className={styles.sidebarContainer}>
-      <div className={styles.filterSection}>
-        <input
-          onChange={handleChange}
-          value={filter.name}
-          placeholder="Nombre del producto"
-          name={'name'}
-          className={styles.filterInput}
-        />
+    <>
+      {/* Backdrop solo en mobile y cuando está abierto */}
+      {isOpen && (
+        <div className={styles.sidebarBackdrop} onClick={closeSidebar} />
+      )}
 
-        <div className={styles.priceContainer}>
+      <aside
+        className={
+          `${styles.sidebarContainer} ${isOpen ? styles.sidebarOpen : ''}`
+        }
+      >
+        <section className={styles.filterSection}>
           <input
             onChange={handleChange}
-            value={filter.minPrice || ''}
-            placeholder="Min"
-            name={'minPrice'}
-            type="number"
-            className={styles.priceInput}
+            value={filter.name}
+            placeholder="Nombre del producto"
+            name={'name'}
+            className={styles.filterInput}
           />
-          <label className={styles.priceSeparator}> - </label>
-          <input
+
+          <div className={styles.priceContainer}>
+            <input
+              onChange={handleChange}
+              value={filter.minPrice || ''}
+              placeholder="Min"
+              name={'minPrice'}
+              type="number"
+              className={styles.priceInput}
+            />
+            <label className={styles.priceSeparator}> - </label>
+            <input
+              onChange={handleChange}
+              value={filter.maxPrice || ''}
+              placeholder="Max"
+              name={'maxPrice'}
+              type="number"
+              className={styles.priceInput}
+            />
+          </div>
+          {minmaxPrice() && <p className={styles.errorLabel}>min {'<'} max</p>}
+
+          <select
+            value={filter.category}
+            name="category"
             onChange={handleChange}
-            value={filter.maxPrice || ''}
-            placeholder="Max"
-            name={'maxPrice'}
-            type="number"
-            className={styles.priceInput}
-          />
-        </div>
-        {minmaxPrice() && <p className={styles.errorLabel}>min {'<'} max</p>}
+            className={styles.selectFilter}
+          >
+            <option value="">Categorías</option>
+            <option value="aros"> Aros </option>
+            <option value="anillos"> Anillos </option>
+            <option value="cadenitas"> Cadenitas </option>
+            <option value="chokers"> Chokers </option>
+            <option value="collares"> Collares </option>
+            <option value="gargantillas"> Gargantillas </option>
+            <option value="pulseras"> Pulseras </option>
+            <option value="tobilleras"> Tobilleras </option>
+            <option value="otros"> Otros </option>
+          </select>
 
-        <select
-          value={filter.category}
-          name="category"
-          onChange={handleChange}
-          className={styles.selectFilter}
-        >
-          <option value="">Categorías</option>
-          <option value="aros"> Aros </option>
-          <option value="anillos"> Anillos </option>
-          <option value="cadenitas"> Cadenitas </option>
-          <option value="chokers"> Chokers </option>
-          <option value="collares"> Collares </option>
-          <option value="gargantillas"> Gargantillas </option>
-          <option value="pulseras"> Pulseras </option>
-          <option value="tobilleras"> Tobilleras </option>
-          <option value="otros"> Otros </option>
-        </select>
+          <select
+            value={filter.medida}
+            name="medida"
+            onChange={handleChange}
+            className={styles.selectFilter}
+          >
+            <option value="">Medidas</option>
+            <option value="30"> 30 CM </option>
+            <option value="40"> 40 CM </option>
+            <option value="50"> 50 CM </option>
+            <option value="60"> 60 CM </option>
+            <option value="70"> 70 CM </option>
+            <option value="80"> 80 CM </option>
+            <option value="90"> 90 CM </option>
+            <option value="100"> 100 CM </option>
+          </select>
 
-        <select
-          value={filter.medida}
-          name="medida"
-          onChange={handleChange}
-          className={styles.selectFilter}
-        >
-          <option value="">Medidas</option>
-          <option value="30"> 30 CM </option>
-          <option value="40"> 40 CM </option>
-          <option value="50"> 50 CM </option>
-          <option value="60"> 60 CM </option>
-          <option value="70"> 70 CM </option>
-          <option value="80"> 80 CM </option>
-          <option value="90"> 90 CM </option>
-          <option value="100"> 100 CM </option>
-        </select>
+          <select
+            value={filter.material}
+            name="material"
+            onChange={handleChange}
+            className={styles.selectFilter}
+          >
+            <option value="">Materiales</option>
+            <option value="acero quirurgico"> Acero quirúrgico </option>
+            <option value="alambre con memoria"> Alambre con memoria </option>
+            <option value="cristal checo"> Cristal checo </option>
+            <option value="fundicion"> Fundición </option>
+            <option value="hilo encerado"> Hilo encerado </option>
+            <option value="madera"> Madera </option>
+            <option value="mostacillas"> Mostacillas </option>
+            <option value="perlas de vidrio"> Perlas de vidrio </option>
+            <option value="perlas acrilicas"> Perlas acrilicas </option>
+            <option value="piedras semipreciosas"> Piedras semipreciosas </option>
+            <option value="tanza de acero"> Tanza de acero </option>
+            <option value="tanza elastica"> Tanza elástica </option>
+          </select>
 
-        <select
-          value={filter.material}
-          name="material"
-          onChange={handleChange}
-          className={styles.selectFilter}
-        >
-          <option value="">Materiales</option>
-          <option value="acero quirurgico"> Acero quirúrgico </option>
-          <option value="alambre con memoria"> Alambre con memoria </option>
-          <option value="cristal checo"> Cristal checo </option>
-          <option value="fundicion"> Fundición </option>
-          <option value="hilo encerado"> Hilo encerado </option>
-          <option value="madera"> Madera </option>
-          <option value="mostacillas"> Mostacillas </option>
-          <option value="perlas de vidrio"> Perlas de vidrio </option>
-          <option value="perlas acrilicas"> Perlas acrilicas </option>
-          <option value="piedras semipreciosas"> Piedras semipreciosas </option>
-          <option value="tanza de acero"> Tanza de acero </option>
-          <option value="tanza elastica"> Tanza elástica </option>
-        </select>
-      </div>
-
-      <button className={styles.sidebarButton} onClick={buscar}>
-        BUSCAR
-      </button>
-      <button className={styles.sidebarButton} onClick={limpiar}>
-        LIMPIAR
-      </button>
-    </div>
+          <button className={styles.sidebarButton} onClick={buscar}>
+            BUSCAR
+          </button>
+          <button className={styles.sidebarButton} onClick={limpiar}>
+            LIMPIAR
+          </button>
+        </section>
+      </aside>
+    </>
   );
 };
 

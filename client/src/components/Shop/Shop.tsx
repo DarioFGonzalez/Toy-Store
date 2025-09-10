@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { useLocation } from 'react-router-dom';
 import type { Product } from '../../types';
 import { URL } from '../../types/constants';
 import SideBar from '../SideBar/SideBar';
 import Styles from './Shop.module.css';
+import sideBarStyles from '../SideBar/SideBar.module.css';
 import Products from '../Products/Products';
 import { FiFilter } from 'react-icons/fi';
 
@@ -15,6 +17,7 @@ const Shop: React.FC = () => {
     const [hasMore, setHasMore] = useState<boolean>(true);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const observer = useRef<IntersectionObserver | null>(null);
+    const isMobile = useMediaQuery({ maxWidth: 768 });
 
     const lastProductElementRef = useCallback((node: HTMLDivElement) => {
         if (observer.current) observer.current.disconnect();
@@ -28,14 +31,12 @@ const Shop: React.FC = () => {
         if (node) observer.current.observe(node);
     }, [hasMore]);
 
-    // Primer useEffect: reinicia el estado cuando la URL cambia
     useEffect(() => {
-        setItems([]); // Vacía los productos
-        setPage(1); // Reinicia la página a 1
-        setHasMore(true); // Asume que hay más productos
+        setItems([]);
+        setPage(1);
+        setHasMore(true);
     }, [location.search]);
 
-    // Segundo useEffect: carga los productos cuando la página o la URL cambian
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         params.set('page', page.toString());
@@ -52,7 +53,6 @@ const Shop: React.FC = () => {
             })
             .catch((err) => {
                 console.error(err);
-                console.log('error al cargar productos filtrados: ', err.message);
                 setHasMore(false);
             });
     }, [location.search, page]);
@@ -61,17 +61,40 @@ const Shop: React.FC = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
+    const handleCloseSidebar = () => {
+        setIsSidebarOpen(false);
+    };
+
     return (
         <div className={Styles.shopPageWrapper}>
             <div className={Styles.contentCenteringContainer}>
-                <button
-                    onClick={handleToggleSidebar}
-                    className={Styles.filterButton}
-                >
-                    <FiFilter /> Filtros
-                </button>
-                <div className={`${Styles.generalContainer} ${isSidebarOpen ? Styles.sidebarOpen : ''}`}>
-                    <SideBar />
+                {/* Botón solo visible en mobile */}
+                {isMobile && (
+                    <button
+                        onClick={handleToggleSidebar}
+                        className={Styles.filterButton}
+                    >
+                        <FiFilter /> Filtros
+                    </button>
+                )}
+
+                {/* Sidebar y backdrop en mobile */}
+                {isMobile && (
+                    <SideBar isOpen={isSidebarOpen} closeSidebar={handleCloseSidebar}>
+                        {/* Aquí van los filtros, inputs, etc. */}
+                    </SideBar>
+                )}
+
+                {/* Layout principal */}
+                <div className={Styles.generalContainer}>
+                    {/* Sidebar sticky solo en desktop */}
+                    {!isMobile && (
+                        <div className={sideBarStyles.sidebarContainer}>
+                            <SideBar isOpen={true} closeSidebar={() => {}}>
+                                {/* Aquí van los filtros, inputs, etc. */}
+                            </SideBar>
+                        </div>
+                    )}
                     <div className={Styles.productsAndHighlightContainer}>
                         <div className={Styles.productsWrapper}>
                             {items.length > 0 && <Products items={items} />}

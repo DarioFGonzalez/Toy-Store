@@ -26,6 +26,18 @@
   margin-bottom: 20px;
 }
 
+.sidebarContainer {
+  /* Estilos del drawer/sideBar, importados de SideBar.module.css */
+}
+
+.sidebarOpen {
+  /* Se usa para animar la apertura en mobile */
+}
+
+.sidebarBackdrop {
+  /* Se usa para el fondo oscuro detrás del drawer */
+}
+
 .productsAndHighlightContainer {
   flex-grow: 1;
   padding-left: 15px;
@@ -60,21 +72,21 @@
 }
 
 .filterButton {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    padding: 15px 30px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4000;
+  padding: 15px 30px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
 }
 
 .filterButton:hover {
@@ -113,21 +125,7 @@
     min-height: auto;
   }
 
-  .generalContainer > :first-child {
-    display: none;
-    width: 100%;
-    position: fixed;
-    top: 80px;
-    left: 0;
-    height: calc(100vh - 80px);
-    z-index: 999;
-    overflow-y: auto;
-    padding-top: 20px;
-  }
-
-  .sidebarOpen > :first-child {
-    display: block;
-  }
+  /* Eliminado: el sidebar drawer ahora se renderiza fuera del flujo principal en mobile */
 
   .productsAndHighlightContainer {
     padding-left: 0;

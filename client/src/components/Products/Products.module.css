@@ -15,7 +15,7 @@
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
   justify-items: center;
-  align-items: stretch; /* Este es el cambio clave para igualar la altura de las tarjetas */
+  align-items: stretch;
 }
 
 @media (max-width: 1200px) {
@@ -32,8 +32,11 @@
 }
 
 @media (max-width: 600px) {
+  .productsWrapper {
+    padding: 10px;
+  }
   .productGridContainer {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 10px;
   }
 }
