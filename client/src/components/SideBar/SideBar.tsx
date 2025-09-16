@@ -24,7 +24,7 @@ interface SideBarProps {
   children?: React.ReactNode;
 }
 
-const Sidebar: React.FC<SideBarProps> = ({ isOpen, closeSidebar, children }) => {
+const Sidebar: React.FC<SideBarProps> = ({ isOpen, closeSidebar }) => {
   const navigate = useNavigate();
   const [filter, setFilter] = useState<Filters>(emptyFilter);
 
