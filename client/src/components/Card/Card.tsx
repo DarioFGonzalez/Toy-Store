@@ -4,10 +4,12 @@ import Styles from './Card.module.css';
 import type { CardProps } from '../../types/index';
 import axios from 'axios';
 import { URL } from '../../types/constants';
+import { ToastContainer, Toast } from 'react-bootstrap';
 
 const Card: React.FC<CardProps> = ( { product } ) =>
 {
   const [cant, setCant] = useState<number>(1);
+  const [show, setShow] = useState<boolean>(false);
 
   const toThumbnail = (url: string): string => {
     const thumbnailUrl = "/upload/h_250,w_250,f_auto,q_auto/";
@@ -22,14 +24,14 @@ const Card: React.FC<CardProps> = ( { product } ) =>
       axios.post(`${URL}cart`, { productId: product.id, quantity: cant })
         .then(({ data }) => {
           localStorage.setItem("cartId", JSON.stringify(data.id));
-          alert('¡Item agregado!');
+          setShow(true);
         })
         .catch((err) => console.log(err));
     } else {
       axios.patch(`${URL}cart/${JSON.parse(cartId)}`, { productId: product.id, quantity: cant })
         .then(({ data }) => {
           localStorage.setItem('cartId', JSON.stringify(data.id));
-          alert('¡Item agregado!');
+          setShow(true);
         })
         .catch((err) => console.log(err));
     }
@@ -95,6 +97,32 @@ const Card: React.FC<CardProps> = ( { product } ) =>
       </div>
 
       <button type="button" className={Styles.buyButton} onClick={addToCart}>
+
+        <ToastContainer position="top-end" className="p-3">
+          <Toast show={show} autohide delay={1500} onClose={() => setShow(false)} bg="success">
+            <Toast.Body>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 600,
+                fontSize: '1.1rem',
+                color: '#fff',
+                padding: '12px 0',
+                letterSpacing: '0.5px'
+              }}>
+                <span style={{
+                  fontSize: '2rem',
+                  marginBottom: '6px',
+                  display: 'block'
+                }}>🎉</span>
+                <span>¡Producto agregado!</span>
+              </div>
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
+
         <span className={Styles.button__text}>Agregar</span>
         <span className={Styles.button__icon}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" stroke="currentColor" height="24" fill="none" className={Styles.svg}>

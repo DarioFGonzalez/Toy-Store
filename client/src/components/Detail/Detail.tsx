@@ -6,6 +6,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import React from 'react';
 import { useParams } from "react-router-dom";
 import style from "./Detail.module.css";
+import { Toast, ToastContainer } from 'react-bootstrap';
 
 const Detail: React.FC = () => {
   const { id } = useParams();
@@ -14,6 +15,8 @@ const Detail: React.FC = () => {
   const [inputValue, setInputValue] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
   const [mainImage, setMainImage] = useState<string | undefined>(undefined);
+
+  const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get(`${URL}product/${id}`)
@@ -45,14 +48,14 @@ const Detail: React.FC = () => {
       axios.post(`${URL}cart`, { productId: cardDetail.id, quantity: inputValue })
         .then(({ data }) => {
           localStorage.setItem("cartId", JSON.stringify(data.id));
-          alert('¡Carrito creado!');
+          setShow(true);
         })
         .catch((err) => console.log(err));
     } else {
       axios.patch(`${URL}cart/${JSON.parse(cartId)}`, { productId: cardDetail.id, quantity: inputValue })
         .then(({ data }) => {
           localStorage.setItem('cartId', JSON.stringify(data.id));
-          alert('¡Item agregado!');
+          setShow(true);
         })
         .catch((err) => console.log(err));
     }
@@ -75,7 +78,7 @@ const Detail: React.FC = () => {
       <div className={style.detailLayout}>
         <div className={style.thumbnailColumn}>
           {cardDetail.imageUrl && cardDetail.imageUrl.map((item, index) => {
-            const transformedUrl = item.url.replace('/upload/', '/upload/w_100,h_100,c_fill,f_auto,q_auto/');
+            const transformedUrl = item.url.replace('/upload/', '/upload/w_100,h_100,c_fit,f_auto,q_auto/');
             return (
               <img
                 key={index}
@@ -90,7 +93,7 @@ const Detail: React.FC = () => {
 
         <div className={style.mainImageContainer}>
           <img
-            src={mainImage?.replace('/upload/', '/upload/w_500,h_500,c_fill,f_auto,q_auto/')}
+            src={mainImage?.replace('/upload/', '/upload/w_500,h_500,c_fit,f_auto,q_auto/')}
             alt={cardDetail.name}
             className={style.mainImage}
           />
@@ -113,6 +116,30 @@ const Detail: React.FC = () => {
             <button onClick={addToCart} disabled={cardDetail.stock <= 0 || inputValue > cardDetail.stock}>
               Agregar al carrito 🛒
             </button>
+            <ToastContainer position="top-end" className="p-3">
+              <Toast show={show} autohide delay={2500} onClose={() => setShow(false)} bg="success">
+                <Toast.Body>
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                    color: '#fff',
+                    padding: '12px 0',
+                    letterSpacing: '0.5px'
+                  }}>
+                    <span style={{
+                      fontSize: '2rem',
+                      marginBottom: '6px',
+                      display: 'block'
+                    }}>🎉</span>
+                    <span>¡Producto agregado!</span>
+                  </div>
+                </Toast.Body>
+              </Toast>
+            </ToastContainer>
           </div>
 
           <div className={style.description}>
