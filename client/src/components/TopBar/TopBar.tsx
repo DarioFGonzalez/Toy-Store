@@ -14,12 +14,11 @@ const TopBar: React.FC = () =>
 
   return (
     <nav className={Styles.TopBarContainer}>
-      <span>Violeta's</span>
+      <Link to='/home'> <span>Violeta's 🌺</span> </Link>
       <div>
-        <Link to="/home">Inicio</Link>
         <Link to="/shop">Productos</Link>
         <Link to="/carrito">Carrito</Link>
-        {isAdmin && <Link to="/dashboard"> Administración </Link>}
+        {isAdmin && <Link to="/dashboard"> 🔑 </Link>}
       </div>
     </nav>
   );
