@@ -4,12 +4,15 @@ import { Form, Button } from 'react-bootstrap';
 import styles from './CreateBanners.module.css';
 import type { Banner, BannerForm, DBImagesFormat } from '../../../types';
 import { emptyBannerForm, URL } from '../../../types/constants';
+import ImageCropperModal from './ImageCropperModal/ImageCropperModal';
 
 const CreateBanner: React.FC = () => {
     const [banners, setBanners] = useState<Banner[]>([]);
     const [form, setForm] = useState<BannerForm>(emptyBannerForm);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
+    const [showCropper, setShowCropper] = useState<boolean>(false);
+    const [imageToCrop, setImageToCrop] = useState<string | null>(null);
 
     useEffect(() => {
         fetchBanners();
@@ -29,13 +32,17 @@ const CreateBanner: React.FC = () => {
             return;
         }
         const file = e.target.files[0];
-        setImageFile(file);
-
         const reader = new FileReader();
         reader.onloadend = () => {
-            setPreviewImage(reader.result as string);
+            setImageToCrop(reader.result as string);
+            setShowCropper(true);
         };
         reader.readAsDataURL(file);
+    };
+
+    const handleCropComplete = (croppedFile: File) => {
+        setImageFile(croppedFile);
+        setPreviewImage(window.URL.createObjectURL(croppedFile));
     };
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -91,7 +98,6 @@ const CreateBanner: React.FC = () => {
             await axios.post(`${URL}banner`, newBannerData, { headers: { 'Authorization': `Bearer ${adminToken}` } });
             alert('¡Banner creado y subido!');
 
-            // Limpiar el formulario y recargar los banners
             setForm(emptyBannerForm);
             setImageFile(null);
             setPreviewImage(null);
@@ -181,6 +187,15 @@ const CreateBanner: React.FC = () => {
                     )}
                 </div>
             </div>
+
+            {showCropper && (
+                <ImageCropperModal
+                    show={showCropper}
+                    imageSrc={imageToCrop!}
+                    onClose={() => setShowCropper(false)}
+                    onCropComplete={handleCropComplete}
+                />
+            )}
         </div>
     );
 };
