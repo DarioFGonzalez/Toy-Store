@@ -14,7 +14,7 @@ cloudinary.config(
 });
 
 server.use( cors() );
-server.use(express.json());
+server.use( express.json()) ;
 server.use( (req,res,next) =>
 {
     req.mercadoPagoClient = client;
