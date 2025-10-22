@@ -1,12 +1,10 @@
+const axios = require('axios');
 const {Router} = require('express');
 const pudoRouter = Router();
 const PudoTokenManager = require('../services/PudoTokenManager');
+const { getLockerLocations, getLockersByLocation } = require('../handlers/pudoHandlers/getLockers');
 
-pudoRouter.post('/', async (req, res) =>
-{
-    const token = await PudoTokenManager.getValidToken();
-
-    return res.status(200).json( { token } );
-} );
+pudoRouter.get( '/locations', getLockerLocations );
+pudoRouter.get( '/:zone', getLockersByLocation );
 
 module.exports = pudoRouter;

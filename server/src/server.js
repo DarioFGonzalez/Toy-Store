@@ -4,6 +4,7 @@ const cors = require('cors');
 const { MercadoPagoConfig } = require('mercadopago');
 const { v2: cloudinary } = require('cloudinary'); 
 const mainRouter = require('./routes/mainRouter');
+const { initializeLockerManager } = require("./services/PudoLockerManager");
 const client = new MercadoPagoConfig( { accessToken: process.env.MP_ACCESS_TOKEN } );
 
 cloudinary.config(
