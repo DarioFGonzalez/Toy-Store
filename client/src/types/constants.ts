@@ -41,10 +41,24 @@ export const emptyProduct =
 
 export const emptyContactInfo =
 {
-    address: '',
+    name: '',
+    surname: '',
     number: '',
-    email: ''
+    email: ''    
 };
+
+export const packageInfo =
+{
+    "senderLockerId": 0, 
+    "receiverLockerId": 0, 
+    "packageSize": {
+        "width": 0, 
+        "height": 0,
+        "length": 0
+    },
+    "packageWeight": 0,
+    "declaredValue": 0
+}
 
 export const emptyEditForm =
 {

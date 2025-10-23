@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Carrito.module.css';
-import type { Cart, ContactInfo, ProductInCart } from '../../types';
+import type { Cart, ContactInfo, MapaDePesos, ProductInCart, CategoriasJoyeria } from '../../types';
 import axios from 'axios';
 import { emptyCart, emptyContactInfo, URL } from '../../types/constants';
 
@@ -8,13 +8,51 @@ const Carrito: React.FC = () =>
 {
     const [cart, setCart] = useState<Cart>( emptyCart );
     const [ form, setForm ] = useState<ContactInfo>( emptyContactInfo );
+    const [ peso, setPeso ] = useState<number>( 0 );
     const [ showExtra, setShowExtra ] = useState<boolean>( false );
     const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{2,}\.(com|es|ar)$/;
     const [ wrongEmail, setWrongEmail ] = useState<boolean>( false );
-    const [ noAddress, setNoAddress ] = useState<boolean>( false );
+    const [ noName, setNoName ] = useState<boolean>( false );
+    const [ noSurname, setNoSurname ] = useState<boolean>( false );
     const [ noNumber, setNoNumber ] = useState<boolean>( false );
     const [sinStock, setSinStock] = useState<boolean>( false );
     const [subtotal, setSubtotal] = useState(0);
+
+    /*
+    // Espera recibir para la cotización:
+    {
+    "senderLockerId": 123, 
+    "receiverLockerId": 456, 
+    "packageSize": {
+        "width": 300, 
+        "height": 100,
+        "length": 250
+    },
+    "packageWeight": 2.5,
+    "declaredValue": 50000 
+    }
+    //Te devuelve tras una cotización existosa:
+    {
+    "quoteId": "ABCD123-PUDO-456",
+    "deliveryDays": 2,
+    "price": 5850.50,
+    "priceTax": 950.50,
+    "totalPrice": 6801.00,
+    "currency": "ARS"
+    }
+    */
+
+    const pesoPorItem: MapaDePesos =
+    {
+      'aros': 10, 
+      'anillos': 10, 
+      'cadenitas': 10, 
+      'chokers': 10, 
+      'collares': 35, 
+      'gargantillas': 12,
+      'pulseras': 10,
+      'tobilleras': 12
+    };
 
     useEffect((): void =>
     {
@@ -38,7 +76,11 @@ const Carrito: React.FC = () =>
         {
             const sumTotal = cart.products.reduce( (acc, item) => acc + (Number(item.price) * 100) * item.CartItem.quantity , 0);
             const total = sumTotal!==0 ? sumTotal / 100 : 0;
+            const sumPeso = cart.products.reduce( (acc, item) => acc + pesoPorItem[item.category as CategoriasJoyeria] * item.CartItem.quantity , 0);
+            const pesoTotal = sumPeso;
+            
             setSubtotal(total);
+            setPeso(pesoTotal);
         }
     }, [cart]);
 
@@ -54,14 +96,16 @@ const Carrito: React.FC = () =>
     setWrongEmail( !emailRegex.test(form.email) );
     if( showExtra )
     {
-      setNoAddress( form.address=='' ? true : false );
+      setNoName( form.name=='' ? true : false );
+      setNoSurname( form.surname=='' ? true : false );
       setNoNumber( form.number=='' ? true : false );
     }
     
-    if( (showExtra && (form.address=='' || form.number=='') ) || !emailRegex.test(form.email) ) return ;
+    if( (showExtra && (form.name=='' || form.number=='' || form.surname=='') ) || !emailRegex.test(form.email) ) return ;
 
     setWrongEmail( false );
-    setNoAddress( false );
+    setNoName( false );
+    setNoSurname( false );
     setNoNumber( false );
     
     axios.post(`${URL}checkout`, {cart, form}).then( ( { data } ) =>
@@ -112,7 +156,7 @@ const Carrito: React.FC = () =>
         <>
           <ul className={styles.cartItemsList}>
             {cart.products.map((item) => (
-              <li key={item.id} className={styles.cartItem}>
+              <li onClick={()=>console.log(item)} key={item.id} className={styles.cartItem}>
                 <div className={styles.itemImage}>
                   <img src={item.imageUrl[0].url} alt={item.name} />
                 </div>
@@ -137,24 +181,36 @@ const Carrito: React.FC = () =>
 
           <div className={styles.cartSummary}>
             <div className={styles.shippingToggle}>
+              <label htmlFor="showShippingInfo">¡Carrito listo para la parte del envío!</label>
               <input type='checkbox' id="showShippingInfo" onClick={()=>setShowExtra(prev => !prev)}/>
-              <label htmlFor="showShippingInfo">Quiero ingresar datos de envío</label>
             </div>
 
             { showExtra && (
               <div className={styles.shippingInfoFields}>
                 <div className={styles.formGroup}>
-                  <label htmlFor="address">Dirección:</label>
+                  <label htmlFor="name">Nombre:</label>
                   <input
                     type="text"
-                    id="address"
-                    value={form.address}
+                    id="name"
+                    value={form.name}
                     onChange={handleChange}
-                    name='address'
+                    name='name'
                     className={styles.inputField}
                   />
                 </div>
-                {noAddress && <p className={styles.errorMessage}>Ingrese una dirección de entrega.</p>}
+                {noName && <p className={styles.errorMessage}>Ingrese un nombre de destinatario.</p>}
+                <div className={styles.formGroup}>
+                  <label htmlFor="surname">Nombre:</label>
+                  <input
+                    type="text"
+                    id="surname"
+                    value={form.surname}
+                    onChange={handleChange}
+                    name='surname'
+                    className={styles.inputField}
+                  />
+                </div>
+                {noSurname && <p className={styles.errorMessage}>Ingrese el appelido del destinatario.</p>}
                 <div className={styles.formGroup}>
                   <label htmlFor="number">Teléfono:</label>
                   <input
@@ -167,25 +223,26 @@ const Carrito: React.FC = () =>
                   />
                 </div>
                 {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
+                <div className={styles.formGroup}>
+                  <label htmlFor="email">Email:</label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    name='email'
+                    className={styles.inputField}
+                  />
+                </div>
+                {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
               </div>
             )}
             
-            <div className={styles.formGroup}>
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                id="email"
-                value={form.email}
-                onChange={handleChange}
-                name='email'
-                className={styles.inputField}
-              />
-            </div>
-            {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
             
             <hr className={styles.summarySeparator}/>
 
             <p className={styles.subtotal}>Subtotal ({cart.products.length} items): <span>${subtotal.toFixed(2)}</span></p>
+            <button onClick={()=> console.log( "Peso total: ", peso )}> PESO </button>
             <button onClick={handleCheckout} className={styles.checkoutButton} disabled={sinStock}>Ir al Checkout</button>
             <button onClick={clearCart} className={styles.clearCartButton}>Vaciar Carrito</button>
           </div>

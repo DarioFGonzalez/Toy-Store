@@ -7,6 +7,13 @@ export interface Cart
     products: ProductInCart[]
 }
 
+export type CategoriasJoyeria =
+'aros' | 'anillos' | 'cadenitas' | 'chokers' | 'collares' | 'gargantillas' | 'pulseras' | 'tobilleras';
+
+export type MapaDePesos = {
+    [key in CategoriasJoyeria]: number
+} 
+
 export interface ProductInCart
 {
     id: string,
@@ -14,6 +21,7 @@ export interface ProductInCart
     description: string,
     price: string,
     imageUrl: {url: string, public_id: string}[],
+    category: string,
     stock: number,
     CartItem: CartItem
 }
@@ -51,9 +59,23 @@ export interface ProductCardProps
 
 export interface ContactInfo
 {
+    name: string,
+    surname: string,
     email: string,
-    address: string,
     number: string
+}
+
+export interface packageInfo
+{
+    "senderLockerId": number, 
+    "receiverLockerId": 456, 
+    "packageSize": {
+        "width": number, 
+        "height": number,
+        "length": number
+    },
+    "packageWeight": number,
+    "declaredValue": number
 }
 
 export interface PaginadoProps

@@ -12,13 +12,13 @@ const postCart = async ( req, res ) =>
         const newCart = await Carts.create();
         if(!newCart) throw new Error( `Error al crear carrito` );
 
-        await newCart.addProduct( thisProduct, { through: { quantity: quantity, priceAtAddition: thisProduct.price } } );
+        await newCart.addProduct( thisProduct, { through: { quantity: quantity,  priceAtAddition: thisProduct.price } } );
 
         const finishedCart = await Carts.findByPk( newCart.id, { include:
             {
                 model: Products,
                 as: "products",
-                attributs: [ 'id', 'name', 'price', 'stock' ],
+                attributs: [ 'id', 'name', 'category', 'price', 'stock' ],
                 through: { attributes: ['quantity', 'priceAtAddition'] }
             } } );
         return res.status(200).json( finishedCart );

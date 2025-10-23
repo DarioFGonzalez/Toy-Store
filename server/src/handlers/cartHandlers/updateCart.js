@@ -12,7 +12,7 @@ const updateCart = async ( req, res ) =>
                 {
                     model: Products,
                     as: 'products',
-                    attributes: [ 'id', 'name', 'description', 'price', 'imageUrl', 'stock' ],
+                    attributes: [ 'id', 'name', 'description', 'category', 'price', 'imageUrl', 'stock' ],
                     through: { attributes: ['quantity', 'priceAtAddition'] }
                 }
             ]
@@ -31,7 +31,7 @@ const updateCart = async ( req, res ) =>
                     {
                         model: Products,
                         as: 'products',
-                        attributes: [ 'id', 'name', 'description', 'price', 'imageUrl', 'stock' ],
+                        attributes: [ 'id', 'name', 'description', 'category', 'price', 'imageUrl', 'stock' ],
                         through: { attributes: ['quantity', 'priceAtAddition'] }
                     }
                 ] } );
@@ -49,7 +49,7 @@ const updateCart = async ( req, res ) =>
                     {
                         model: Products,
                         as: 'products',
-                        attributes: [ 'id', 'name', 'description', 'price', 'imageUrl', 'stock' ],
+                        attributes: [ 'id', 'name', 'description', 'category', 'price', 'imageUrl', 'stock' ],
                         through: { attributes: ['quantity', 'priceAtAddition'] }
                     }
                 ]
@@ -60,14 +60,14 @@ const updateCart = async ( req, res ) =>
 
         const thisProduct = await Products.findByPk( productId );
 
-        await thisCart.addProduct( thisProduct, { through: { quantity: quantity, priceAtAddition: thisProduct.price } } );
+        await thisCart.addProduct( thisProduct, { through: { quantity: quantity, category, priceAtAddition: thisProduct.price } } );
 
         const thisCartUpdated = await thisCart.reload( { include:
             [
                 {
                     model: Products,
                     as: 'products',
-                    attributes: [ 'id', 'name', 'description', 'price', 'imageUrl', 'stock' ],
+                    attributes: [ 'id', 'name', 'description', 'category', 'price', 'imageUrl', 'stock' ],
                     through: { attributes: ['quantity', 'priceAtAddition'] }
                 }
             ]
