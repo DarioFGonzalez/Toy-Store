@@ -3,6 +3,7 @@ import styles from './Carrito.module.css';
 import type { Cart, ContactInfo, MapaDePesos, ProductInCart, CategoriasJoyeria } from '../../types';
 import axios from 'axios';
 import { emptyCart, emptyContactInfo, URL } from '../../types/constants';
+import { PudoSelectionMap } from './PudoSelectionMap/PudoSelectionMap';
 
 const Carrito: React.FC = () =>
 {
@@ -21,8 +22,8 @@ const Carrito: React.FC = () =>
     /*
     // Espera recibir para la cotización:
     {
-    "senderLockerId": 123, 
-    "receiverLockerId": 456, 
+    "senderLockerId": 24, // Carrefour en 202 y acceso.
+    "receiverLockerId": 456,  // Locker destino.
     "packageSize": {
         "width": 300, 
         "height": 100,
@@ -40,6 +41,10 @@ const Carrito: React.FC = () =>
     "totalPrice": 6801.00,
     "currency": "ARS"
     }
+    //Tamaño del paquete:
+    Profundidad: 29 cm
+    Ancho: 22 cm
+    Alto: 6.5 cm
     */
 
     const pesoPorItem: MapaDePesos =
@@ -186,58 +191,61 @@ const Carrito: React.FC = () =>
             </div>
 
             { showExtra && (
-              <div className={styles.shippingInfoFields}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="name">Nombre:</label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    name='name'
-                    className={styles.inputField}
-                  />
+              <>
+                <div className={styles.shippingInfoFields}>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="name">Nombre:</label>
+                    <input
+                      type="text"
+                      id="name"
+                      value={form.name}
+                      onChange={handleChange}
+                      name='name'
+                      className={styles.inputField}
+                    />
+                  </div>
+                  {noName && <p className={styles.errorMessage}>Ingrese un nombre de destinatario.</p>}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="surname">Apellido:</label>
+                    <input
+                      type="text"
+                      id="surname"
+                      value={form.surname}
+                      onChange={handleChange}
+                      name='surname'
+                      className={styles.inputField}
+                    />
+                  </div>
+                  {noSurname && <p className={styles.errorMessage}>Ingrese el appelido del destinatario.</p>}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="number">Teléfono:</label>
+                    <input
+                      type="text"
+                      id="number"
+                      value={form.number}
+                      onChange={handleChange}
+                      name='number'
+                      className={styles.inputField}
+                    />
+                  </div>
+                  {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
+                  <div className={styles.formGroup}>
+                    <label htmlFor="email">Email:</label>
+                    <input
+                      type="email"
+                      id="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      name='email'
+                      className={styles.inputField}
+                    />
+                  </div>
+                  {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
                 </div>
-                {noName && <p className={styles.errorMessage}>Ingrese un nombre de destinatario.</p>}
-                <div className={styles.formGroup}>
-                  <label htmlFor="surname">Nombre:</label>
-                  <input
-                    type="text"
-                    id="surname"
-                    value={form.surname}
-                    onChange={handleChange}
-                    name='surname'
-                    className={styles.inputField}
-                  />
-                </div>
-                {noSurname && <p className={styles.errorMessage}>Ingrese el appelido del destinatario.</p>}
-                <div className={styles.formGroup}>
-                  <label htmlFor="number">Teléfono:</label>
-                  <input
-                    type="text"
-                    id="number"
-                    value={form.number}
-                    onChange={handleChange}
-                    name='number'
-                    className={styles.inputField}
-                  />
-                </div>
-                {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
-                <div className={styles.formGroup}>
-                  <label htmlFor="email">Email:</label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    name='email'
-                    className={styles.inputField}
-                  />
-                </div>
-                {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
-              </div>
+                <PudoSelectionMap key={showExtra.toString()}/>
+              </>
             )}
-            
+
             
             <hr className={styles.summarySeparator}/>
 

@@ -1,5 +1,6 @@
 const axios = require('axios');
 const PudoTokenManager = require('./PudoTokenManager');
+const normalizeText = require('../controllers/normalizeText');
 
 const API_LOCKER_URL = process.env.NODE_ENV === 'production' 
 ? 'https://ecommerceapipudo.azurewebsites.net/api/v1/Lockers' 
@@ -20,7 +21,7 @@ const fetchLockers = async () =>
 
         _masterLockers = response.data;
 
-        _masterLockers.forEach( locker => _masterUbications.add(locker.lockerAddress.city) );
+        _masterLockers.forEach( locker => _masterUbications.add( normalizeText(locker.lockerAddress.city) ) );
 
         return true;
     }

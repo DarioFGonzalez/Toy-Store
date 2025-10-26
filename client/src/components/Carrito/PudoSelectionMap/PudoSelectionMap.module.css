@@ -1,0 +1,49 @@
+/* PudoSelectionMap.module.css */
+
+.lockerMapContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 15px;
+}
+
+.lockerMapSubtitle,
+.lockerMapTitle {
+    margin: 0;
+}
+
+.zoneSelect {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    min-width: 250px;
+}
+
+.mapWrapper {
+    width: 100%;
+    max-width: 700px;
+    height: 400px; /* Altura necesaria para que el mapa se muestre */
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leafletMap {
+    height: 100%;
+    width: 100%;
+}
+
+.continueButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.continueButton:hover {
+    background-color: #0056b3;
+}

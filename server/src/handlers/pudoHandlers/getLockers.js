@@ -1,3 +1,4 @@
+const normalizeText = require('../../controllers/normalizeText');
 const { getLockerZones, getMasterLockers } = require('../../services/PudoLockerManager');
 
 const getLockerLocations = async (req, res) =>
@@ -22,7 +23,7 @@ const getLockersByLocation = async (req, res) =>
     try
     {
         const allLockers =  await getMasterLockers();
-        const filteredLockers = allLockers.filter( locker => locker.lockerAddress.city === zone );
+        const filteredLockers = allLockers.filter( locker => normalizeText(locker.lockerAddress.city) === zone );
 
         if(filteredLockers.length===0)
         {
