@@ -1,5 +1,6 @@
 const axios = require('axios');
-const moment = require('moment'); 
+const moment = require('moment');
+const { AUTH_URL } = require('../config/pudoApiConfig');
 
 class PudoTokenManager {
     static instance = null;
@@ -8,10 +9,6 @@ class PudoTokenManager {
     #expiresAt = null; 
     
     #EXPIRATION_BUFFER = 300;
-
-    #AUTH_URL = process.env.NODE_ENV === 'production' 
-        ? 'https://ecommerceapipudo.azurewebsites.net/api/token' 
-        : 'https://ecommerceapipudo-sandbox.azurewebsites.net/api/token';
 
     constructor() {
         if (PudoTokenManager.instance) {
@@ -38,7 +35,7 @@ class PudoTokenManager {
         
         try {
             const response = await axios.post(
-                this.#AUTH_URL,
+                AUTH_URL,
                 params, 
                 { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
             );
@@ -61,6 +58,14 @@ class PudoTokenManager {
         }
         
         return this.#accessToken;
+    }
+
+    async getValidHeader() {
+        if (this.#isTokenExpiredOrNearingExpiration()) {
+            await this.#fetchNewToken();
+        }
+        
+        return { headers: { 'Authorization': `Bearer ${this.#accessToken}` } };
     }
 }
 

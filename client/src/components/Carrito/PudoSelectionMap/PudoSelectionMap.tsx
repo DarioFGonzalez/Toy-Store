@@ -5,6 +5,7 @@ import L from 'leaflet';
 import styles from './PudoSelectionMap.module.css';
 import axios from 'axios';
 import { URL } from '../../../types/constants';
+import type { mapProps } from '../../../types/index';
 
 (L.Icon.Default.prototype as any)._getIconUrl = function () {
     return (
@@ -57,8 +58,8 @@ const MapController: React.FC<{ lockers: LockerInfo[] }> = ({ lockers }) => {
     return null; 
 };
 
-export const PudoSelectionMap: React.FC = () => {
-    const [lockerSeleccionadoId, setLockerSeleccionadoId] = useState<number | null>(null);
+export const PudoSelectionMap: React.FC<mapProps> = ( { setDestinationLocker } ) => {
+    // const [ lockerSeleccionadoId, setLockerSeleccionadoId ] = useState<number | null>(null);
     const [ availableZones, setAvailableZones ] = useState<string[]>();
     const [ selectedZone, setSelectedZone ] = useState<string>('');
     const [ lockersData, setLockersData ] = useState<LockerInfo[]>([]);
@@ -85,16 +86,29 @@ export const PudoSelectionMap: React.FC = () => {
         }
     }, [ selectedZone ] );
 
-    const captureLockerId = (locker: LockerInfo) => {
-        setLockerSeleccionadoId(locker.id);
-    };
-
     const initialCenter: [number, number] = [-34.4544, -58.5764];
     const initialZoom = 12;
 
     const mapCenter = lockersData.length > 0
         ? [lockersData[0].latitude, lockersData[0].longitude] as [number, number]
         : initialCenter;
+
+    const captureLockerInfo = ( locker: any ) =>
+    {
+        const Address = locker.lockerAddress;
+        if(!Address) throw new Error( 'No address found' );
+
+        setDestinationLocker(
+            ({
+                address: Address.address,
+                number: locker.id,
+                country: 'AR',
+                city: Address.city,
+                province: Address.province,
+                postalCode: Address.zipCode.replace(/\D/g, '')
+            })
+        )
+    }
 
 
     return (
@@ -105,7 +119,7 @@ export const PudoSelectionMap: React.FC = () => {
                     <option key={index} value={zone.toLowerCase()}>{zone}</option>
                 ) )}
             </select>
-            <h3 className={styles.lockerMapTitle}>Locker seleccionado: {lockerSeleccionadoId ? lockerSeleccionadoId : 'Ninguno'}</h3>
+            {/* <h3 className={styles.lockerMapTitle}>Locker seleccionado: {lockerSeleccionadoId ? lockerSeleccionadoId : 'Ninguno'}</h3> */}
             
             <div className={styles.mapWrapper}> 
                 <MapContainer 
@@ -125,7 +139,7 @@ export const PudoSelectionMap: React.FC = () => {
                         <Marker 
                             key={locker.id} 
                             position={ [ locker.latitude, locker.longitude ] } 
-                            eventHandlers={{ click: () => captureLockerId(locker) }} 
+                            eventHandlers={{ click: () => captureLockerInfo( locker ) }} 
                         >
                             <Popup>
                                 {locker.name} <br />
@@ -137,7 +151,7 @@ export const PudoSelectionMap: React.FC = () => {
             </div>
             
             <button className={styles.continueButton} onClick={()=>console.log(lockersData)}>
-                Continuar con ubicación
+                All lockers
             </button>
         </div>
     );

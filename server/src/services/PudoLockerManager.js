@@ -1,10 +1,7 @@
 const axios = require('axios');
 const PudoTokenManager = require('./PudoTokenManager');
+const { LOCKERS_URL } = require('../config/pudoApiConfig');
 const normalizeText = require('../controllers/normalizeText');
-
-const API_LOCKER_URL = process.env.NODE_ENV === 'production' 
-? 'https://ecommerceapipudo.azurewebsites.net/api/v1/Lockers' 
-: 'https://ecommerceapipudo-sandbox.azurewebsites.net/api/v1/Lockers';
 
 let _masterLockers = [];
 let _masterUbications = new Set();
@@ -15,9 +12,9 @@ const fetchLockers = async () =>
 {
     try
     {
-        const token = await PudoTokenManager.getValidToken();
+        const header = await PudoTokenManager.getValidHeader();
 
-        const response = await axios.get( API_LOCKER_URL, { headers: { 'Authorization': `Bearer ${token}` } } );
+        const response = await axios.get( LOCKERS_URL, header );
 
         _masterLockers = response.data;
 

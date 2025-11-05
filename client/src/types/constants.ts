@@ -1,3 +1,5 @@
+import type { DestinationLocker } from '../types/index';
+
 export const URL = import.meta.env.DEV ? 'http://localhost:5000/' : "https://toy-store-zw00.onrender.com/";
 export const LOCAL_URL = import.meta.env.DEV ? 'http://localhost:5173/' : "https://toy-store-tau.vercel.app/";
 
@@ -80,3 +82,13 @@ export const emptyFilters = {
     medida: '',
     material: ''
 };
+
+export const destinationLockerInfo: DestinationLocker =
+{
+    address: '', 
+    number: 0,
+    country: "AR",
+    city: "",
+    province: "",
+    postalCode: ''
+}

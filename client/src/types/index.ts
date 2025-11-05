@@ -140,3 +140,31 @@ export interface DashboardFilters {
     medida: string;
     material: string;
 }
+
+export type DestinationLocker =
+{
+    address: string, 
+    number: number,
+    country: string,
+    city: string,
+    province: string,
+    postalCode: string
+}
+
+export interface mapProps
+{
+    setDestinationLocker: React.Dispatch<React.SetStateAction<DestinationLocker>>
+}
+
+export type normalizedProduct =
+{
+    sku: string,
+    name: string,
+    price: number,
+    widthInMm: number,
+    heightInMm: number,
+    depthInMm: number,
+    weightInGrams: number,
+    quantity: number,
+    freeShipping: boolean
+}

@@ -1,50 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Carrito.module.css';
-import type { Cart, ContactInfo, MapaDePesos, ProductInCart, CategoriasJoyeria } from '../../types';
+import type { Cart, ContactInfo, MapaDePesos, ProductInCart, normalizedProduct, DestinationLocker , CategoriasJoyeria } from '../../types';
 import axios from 'axios';
-import { emptyCart, emptyContactInfo, URL } from '../../types/constants';
+import { emptyCart, emptyContactInfo, destinationLockerInfo, URL } from '../../types/constants';
 import { PudoSelectionMap } from './PudoSelectionMap/PudoSelectionMap';
 
 const Carrito: React.FC = () =>
 {
     const [cart, setCart] = useState<Cart>( emptyCart );
     const [ form, setForm ] = useState<ContactInfo>( emptyContactInfo );
-    const [ peso, setPeso ] = useState<number>( 0 );
-    const [ showExtra, setShowExtra ] = useState<boolean>( false );
+    const [ normalizedProducts, setNormalizedProducts ] = useState<normalizedProduct[]>( [] ); 
+    const [ destinationLocker, setDestinationLocker ] = useState<DestinationLocker>( destinationLockerInfo );
+    const [ quoteAnswer, setQuoteAnswer ] = useState<any>( );
+    const [ chooseLocker, setChooseLocker ] = useState<boolean>( false );
+    const [ confirmPurchase, setConfirmPurchase ] = useState<boolean>( false );
     const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{2,}\.(com|es|ar)$/;
-    const [ wrongEmail, setWrongEmail ] = useState<boolean>( false );
-    const [ noName, setNoName ] = useState<boolean>( false );
-    const [ noSurname, setNoSurname ] = useState<boolean>( false );
-    const [ noNumber, setNoNumber ] = useState<boolean>( false );
+    // const [ wrongEmail, setWrongEmail ] = useState<boolean>( false );
+    // const [ noName, setNoName ] = useState<boolean>( false );
+    // const [ noSurname, setNoSurname ] = useState<boolean>( false );
+    // const [ noNumber, setNoNumber ] = useState<boolean>( false );
     const [sinStock, setSinStock] = useState<boolean>( false );
     const [subtotal, setSubtotal] = useState(0);
 
     /*
     // Espera recibir para la cotización:
     {
-    "senderLockerId": 24, // Carrefour en 202 y acceso.
-    "receiverLockerId": 456,  // Locker destino.
-    "packageSize": {
-        "width": 300, 
-        "height": 100,
-        "length": 250
-    },
-    "packageWeight": 2.5,
-    "declaredValue": 50000 
+      "destination": {
+          "address": null, 
+          "number": null,
+          "country": "AR",
+          "city": "CABA",
+          "province": "Ciudad Autónoma de Buenos Aires",
+          "postalCode": "1051" // <--- CP del locker elegido
+      },
+      "items": [{
+          "sku": "ANILLO-001",
+          "name": "Anillo de Plata",
+          "price": 500.00,
+          "widthInMm": 10,
+          "heightInMm": 10,
+          "depthInMm": 10,
+          "weightInGrams": 50,
+          "quantity": 1,
+          "freeShipping": false
+      }]
     }
-    //Te devuelve tras una cotización existosa:
-    {
-    "quoteId": "ABCD123-PUDO-456",
-    "deliveryDays": 2,
-    "price": 5850.50,
-    "priceTax": 950.50,
-    "totalPrice": 6801.00,
-    "currency": "ARS"
-    }
-    //Tamaño del paquete:
-    Profundidad: 29 cm
-    Ancho: 22 cm
-    Alto: 6.5 cm
+
     */
 
     const pesoPorItem: MapaDePesos =
@@ -85,7 +86,7 @@ const Carrito: React.FC = () =>
             const pesoTotal = sumPeso;
             
             setSubtotal(total);
-            setPeso(pesoTotal);
+            // setQuoteData( prev => ( {...prev, packageWeight: pesoTotal, declaredValue: total } ) );
         }
     }, [cart]);
 
@@ -98,20 +99,20 @@ const Carrito: React.FC = () =>
 
   const handleCheckout = (): void =>
   {
-    setWrongEmail( !emailRegex.test(form.email) );
-    if( showExtra )
-    {
-      setNoName( form.name=='' ? true : false );
-      setNoSurname( form.surname=='' ? true : false );
-      setNoNumber( form.number=='' ? true : false );
-    }
+    // setWrongEmail( !emailRegex.test(form.email) );
+    // if( chooseLocker )
+    // {
+    //   setNoName( form.name=='' ? true : false );
+    //   setNoSurname( form.surname=='' ? true : false );
+    //   setNoNumber( form.number=='' ? true : false );
+    // }
     
-    if( (showExtra && (form.name=='' || form.number=='' || form.surname=='') ) || !emailRegex.test(form.email) ) return ;
+    if( (chooseLocker && (form.name=='' || form.number=='' || form.surname=='') ) || !emailRegex.test(form.email) ) return ;
 
-    setWrongEmail( false );
-    setNoName( false );
-    setNoSurname( false );
-    setNoNumber( false );
+    // setWrongEmail( false );
+    // setNoName( false );
+    // setNoSurname( false );
+    // setNoNumber( false );
     
     axios.post(`${URL}checkout`, {cart, form}).then( ( { data } ) =>
     {
@@ -121,11 +122,11 @@ const Carrito: React.FC = () =>
     .catch( ( err ) => console.log( err ) );
   };
 
-  const handleChange = ( e: React.ChangeEvent<HTMLInputElement> ) =>
-  {
-    const { name, value } = e.target;
-    setForm( prev => ({ ...prev, [name]: value }) );
-  };
+  // const handleChange = ( e: React.ChangeEvent<HTMLInputElement> ) =>
+  // {
+  //   const { name, value } = e.target;
+  //   setForm( prev => ({ ...prev, [name]: value }) );
+  // };
 
   const clearCart = (): void =>
   {
@@ -150,6 +151,35 @@ const Carrito: React.FC = () =>
     if( quantity + difference > totalAmmount ) return true;
     return false;
   };
+
+  const normalizeCartItems = () =>
+  {
+    let products: normalizedProduct[] = cart.products.map( item =>
+    ({
+      sku: item.id,
+      name: item.name,
+      price: parseFloat(item.price),
+      widthInMm: 10,
+      heightInMm: 10,
+      depthInMm: 10,
+      weightInGrams: pesoPorItem[item.category as CategoriasJoyeria] * item.CartItem.quantity,
+      quantity: item.CartItem.quantity,
+      freeShipping: false
+    }) );
+
+    setNormalizedProducts( products );
+    setChooseLocker( true );
+
+  }
+
+  const pedirPresupuesto = async () =>
+  {
+    const cotizationBody = { destination: destinationLocker, items: normalizedProducts };
+
+    axios.post(`${URL}pudo/quote`, cotizationBody )
+    .then( ( data ) => { setQuoteAnswer( data ); console.log("Hizo algo: ", data); setConfirmPurchase( true ); } )
+    .catch( ( err ) => console.error( err ) );
+  }
 
   return (
     <div className={styles.cartContainer}>
@@ -187,62 +217,64 @@ const Carrito: React.FC = () =>
           <div className={styles.cartSummary}>
             <div className={styles.shippingToggle}>
               <label htmlFor="showShippingInfo">¡Carrito listo para la parte del envío!</label>
-              <input type='checkbox' id="showShippingInfo" onClick={()=>setShowExtra(prev => !prev)}/>
+              <input type='checkbox' id="showShippingInfo" onClick={normalizeCartItems}/>
             </div>
 
-            { showExtra && (
+            {/* <div className={styles.shippingInfoFields}>
+              <div className={styles.formGroup}>
+                <label htmlFor="name">Nombre:</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  name='name'
+                  className={styles.inputField}
+                />
+              </div>
+              {noName && <p className={styles.errorMessage}>Ingrese un nombre de destinatario.</p>}
+              <div className={styles.formGroup}>
+                <label htmlFor="surname">Apellido:</label>
+                <input
+                  type="text"
+                  id="surname"
+                  value={form.surname}
+                  onChange={handleChange}
+                  name='surname'
+                  className={styles.inputField}
+                />
+              </div>
+              {noSurname && <p className={styles.errorMessage}>Ingrese el appelido del destinatario.</p>}
+              <div className={styles.formGroup}>
+                <label htmlFor="number">Teléfono:</label>
+                <input
+                  type="text"
+                  id="number"
+                  value={form.number}
+                  onChange={handleChange}
+                  name='number'
+                  className={styles.inputField}
+                />
+              </div>
+              {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
+              <div className={styles.formGroup}>
+                <label htmlFor="email">Email:</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  name='email'
+                  className={styles.inputField}
+                />
+              </div>
+              {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
+            </div> */}
+            
+            { ( chooseLocker && !confirmPurchase ) && (
               <>
-                <div className={styles.shippingInfoFields}>
-                  <div className={styles.formGroup}>
-                    <label htmlFor="name">Nombre:</label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      name='name'
-                      className={styles.inputField}
-                    />
-                  </div>
-                  {noName && <p className={styles.errorMessage}>Ingrese un nombre de destinatario.</p>}
-                  <div className={styles.formGroup}>
-                    <label htmlFor="surname">Apellido:</label>
-                    <input
-                      type="text"
-                      id="surname"
-                      value={form.surname}
-                      onChange={handleChange}
-                      name='surname'
-                      className={styles.inputField}
-                    />
-                  </div>
-                  {noSurname && <p className={styles.errorMessage}>Ingrese el appelido del destinatario.</p>}
-                  <div className={styles.formGroup}>
-                    <label htmlFor="number">Teléfono:</label>
-                    <input
-                      type="text"
-                      id="number"
-                      value={form.number}
-                      onChange={handleChange}
-                      name='number'
-                      className={styles.inputField}
-                    />
-                  </div>
-                  {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
-                  <div className={styles.formGroup}>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      name='email'
-                      className={styles.inputField}
-                    />
-                  </div>
-                  {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
-                </div>
-                <PudoSelectionMap key={showExtra.toString()}/>
+                <PudoSelectionMap key={chooseLocker.toString()} setDestinationLocker={ setDestinationLocker } />
+                <button disabled={destinationLocker.number===0} onClick={ pedirPresupuesto }> Pedir cotizatión </button>
               </>
             )}
 
@@ -250,7 +282,9 @@ const Carrito: React.FC = () =>
             <hr className={styles.summarySeparator}/>
 
             <p className={styles.subtotal}>Subtotal ({cart.products.length} items): <span>${subtotal.toFixed(2)}</span></p>
-            <button onClick={()=> console.log( "Peso total: ", peso )}> PESO </button>
+            <button onClick={()=> console.log( destinationLocker )}> Destination locker info </button>
+            <button onClick={()=> console.log( normalizedProducts ) }> Productos normalizados </button>
+            <button onClick={()=> console.log( quoteAnswer ) }> Respuesta de cotización </button>
             <button onClick={handleCheckout} className={styles.checkoutButton} disabled={sinStock}>Ir al Checkout</button>
             <button onClick={clearCart} className={styles.clearCartButton}>Vaciar Carrito</button>
           </div>
