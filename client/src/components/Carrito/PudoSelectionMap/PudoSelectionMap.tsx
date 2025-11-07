@@ -98,16 +98,19 @@ export const PudoSelectionMap: React.FC<mapProps> = ( { setDestinationLocker } )
         const Address = locker.lockerAddress;
         if(!Address) throw new Error( 'No address found' );
 
-        setDestinationLocker(
-            ({
-                address: Address.address,
-                number: locker.id,
-                country: 'AR',
-                city: Address.city,
-                province: Address.province,
-                postalCode: Address.zipCode.replace(/\D/g, '')
-            })
-        )
+        setDestinationLocker( ( {
+                shippingMethodId: 1,
+                lockerId: locker.id,
+                destination:
+                {
+                    address: Address.address,
+                    province: Address.province,
+                    country: 'AR',
+                    city: Address.city,
+                    postalCode: Address.zipCode.replace(/\D/g, '')
+                }
+            }
+        ) );
     }
 
 

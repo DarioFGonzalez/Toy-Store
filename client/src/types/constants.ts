@@ -42,8 +42,7 @@ export const emptyProduct =
 export const emptyContactInfo =
 {
     name: '',
-    surname: '',
-    number: '',
+    phoneNumber: '',
     email: ''    
 };
 
@@ -85,10 +84,14 @@ export const emptyFilters = {
 
 export const destinationLockerInfo: DestinationLocker =
 {
-    address: '', 
-    number: 0,
-    country: "AR",
-    city: "",
-    province: "",
-    postalCode: ''
-}
+    shippingMethodId: 1, 
+    lockerId: 0,
+    destination:
+    {
+        address: '', 
+        province: '',
+        country: 'AR',
+        city: '',
+        postalCode: 0
+    }
+};

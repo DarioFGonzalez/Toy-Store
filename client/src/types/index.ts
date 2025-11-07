@@ -57,27 +57,6 @@ export interface ProductCardProps
     item: Product; 
 }
 
-export interface ContactInfo
-{
-    name: string,
-    surname: string,
-    email: string,
-    number: string
-}
-
-export interface packageInfo
-{
-    "senderLockerId": number, 
-    "receiverLockerId": 456, 
-    "packageSize": {
-        "width": number, 
-        "height": number,
-        "length": number
-    },
-    "packageWeight": number,
-    "declaredValue": number
-}
-
 export interface PaginadoProps
 {
     currentPage: number,
@@ -143,12 +122,16 @@ export interface DashboardFilters {
 
 export type DestinationLocker =
 {
-    address: string, 
-    number: number,
-    country: string,
-    city: string,
-    province: string,
-    postalCode: string
+    shippingMethodId: number, 
+    lockerId: number,
+    destination:
+    {
+        address: string, 
+        province: string,
+        country: string,
+        city: string,
+        postalCode: number
+    }
 }
 
 export interface mapProps
@@ -167,4 +150,42 @@ export type normalizedProduct =
     weightInGrams: number,
     quantity: number,
     freeShipping: boolean
+}
+
+export interface ContactInfo
+{
+    name: string,
+    email: string,
+    phoneNumber: string
+}
+
+export type finalPudoForm =
+{
+   platformOrderId: string,
+   platformOrderNumber: string, 
+   
+   customer: ContactInfo,
+   
+   shippingInfo: {
+      shippingMethodId: number, 
+      lockerId: number,
+      destination: {
+         address: string, 
+         province: string,
+         country: string,
+         city: string,
+         postalCode: number
+      }
+   },
+   
+   createReserve: boolean,
+   
+   metrics: {
+      widthInMm: number,
+      heightInMm: number, 
+      depthInMm: number,
+      weightInGrams: number
+   },
+   
+   items: normalizedProduct[]
 }

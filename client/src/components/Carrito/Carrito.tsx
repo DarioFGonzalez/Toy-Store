@@ -107,7 +107,7 @@ const Carrito: React.FC = () =>
     //   setNoNumber( form.number=='' ? true : false );
     // }
     
-    if( (chooseLocker && (form.name=='' || form.number=='' || form.surname=='') ) || !emailRegex.test(form.email) ) return ;
+    if( (chooseLocker && (form.name=='' || form.phoneNumber=='') ) || !emailRegex.test(form.email) ) return ;
 
     // setWrongEmail( false );
     // setNoName( false );
@@ -174,7 +174,7 @@ const Carrito: React.FC = () =>
 
   const pedirPresupuesto = async () =>
   {
-    const cotizationBody = { destination: destinationLocker, items: normalizedProducts };
+    const cotizationBody = { destination: destinationLocker.destination, items: normalizedProducts };
 
     axios.post(`${URL}pudo/quote`, cotizationBody )
     .then( ( data ) => { setQuoteAnswer( data ); console.log("Hizo algo: ", data); setConfirmPurchase( true ); } )
@@ -274,7 +274,7 @@ const Carrito: React.FC = () =>
             { ( chooseLocker && !confirmPurchase ) && (
               <>
                 <PudoSelectionMap key={chooseLocker.toString()} setDestinationLocker={ setDestinationLocker } />
-                <button disabled={destinationLocker.number===0} onClick={ pedirPresupuesto }> Pedir cotizatión </button>
+                <button disabled={destinationLocker.lockerId===0} onClick={ pedirPresupuesto }> Pedir cotizatión </button>
               </>
             )}
 
