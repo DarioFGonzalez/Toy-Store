@@ -124,6 +124,7 @@ export type DestinationLocker =
 {
     shippingMethodId: number, 
     lockerId: number,
+    price: number,
     destination:
     {
         address: string, 
@@ -166,17 +167,7 @@ export type finalPudoForm =
    
    customer: ContactInfo,
    
-   shippingInfo: {
-      shippingMethodId: number, 
-      lockerId: number,
-      destination: {
-         address: string, 
-         province: string,
-         country: string,
-         city: string,
-         postalCode: number
-      }
-   },
+   shippingInfo: DestinationLocker,
    
    createReserve: boolean,
    

@@ -46,18 +46,13 @@ export const emptyContactInfo =
     email: ''    
 };
 
-export const packageInfo =
+export const packageMeasures =
 {
-    "senderLockerId": 0, 
-    "receiverLockerId": 0, 
-    "packageSize": {
-        "width": 0, 
-        "height": 0,
-        "length": 0
-    },
-    "packageWeight": 0,
-    "declaredValue": 0
-}
+    widthInMm: 300,
+    heightInMm: 300, 
+    depthInMm: 500,
+    weightInGrams: 0
+};
 
 export const emptyEditForm =
 {
@@ -86,6 +81,7 @@ export const destinationLockerInfo: DestinationLocker =
 {
     shippingMethodId: 1, 
     lockerId: 0,
+    price: 0,
     destination:
     {
         address: '', 

@@ -3,6 +3,7 @@ const productModel = require('../models/products.js');
 const cartModel = require('../models/Carts.js');
 const cartItemModel = require('../models/CartItem.js');
 const bannerModel = require('../models/Banners.js');
+const orderModel = require('../models/Orders.js');
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
 const isProduction = process.env.NODE_ENV === 'production' || DB_HOST !== 'localhost';
@@ -41,8 +42,9 @@ productModel(sequelize);
 cartModel(sequelize);
 cartItemModel(sequelize);
 bannerModel(sequelize);
+orderModel(sequelize);
 
-const { Products, Carts, CartItem, Banners } = sequelize.models;
+const { Products, Carts, CartItem, Banners, Orders } = sequelize.models;
 
 //Tabla intermedio
 Products.hasMany( CartItem, { foreignKey: 'productId', as: 'cartItems' } );
@@ -67,5 +69,19 @@ Carts.belongsToMany( Products,
         otherKey: 'productId',
         as: 'products'
     } );
+
+Orders.belongsTo( Carts,
+    {
+        foreignKey: 'platformOrderNumber',
+        as: 'cart'
+    }
+)
+
+Carts.hasOne( Orders, 
+    {
+        foreignKey: 'platformOrderNumber',
+        as: 'order'
+    }
+)
 
 module.exports = { ...sequelize.models, conn: sequelize };

@@ -101,6 +101,7 @@ export const PudoSelectionMap: React.FC<mapProps> = ( { setDestinationLocker } )
         setDestinationLocker( ( {
                 shippingMethodId: 1,
                 lockerId: locker.id,
+                price: 0,
                 destination:
                 {
                     address: Address.address,
@@ -152,10 +153,6 @@ export const PudoSelectionMap: React.FC<mapProps> = ( { setDestinationLocker } )
                     )}
                 </MapContainer>
             </div>
-            
-            <button className={styles.continueButton} onClick={()=>console.log(lockersData)}>
-                All lockers
-            </button>
         </div>
     );
 }

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Carrito.module.css';
-import type { Cart, ContactInfo, MapaDePesos, ProductInCart, normalizedProduct, DestinationLocker , CategoriasJoyeria } from '../../types';
+import type { Cart, ContactInfo, MapaDePesos, ProductInCart,
+  normalizedProduct, DestinationLocker , CategoriasJoyeria, finalPudoForm } from '../../types';
 import axios from 'axios';
-import { emptyCart, emptyContactInfo, destinationLockerInfo, URL } from '../../types/constants';
+import { emptyCart, emptyContactInfo, destinationLockerInfo, URL,
+  packageMeasures } from '../../types/constants';
 import { PudoSelectionMap } from './PudoSelectionMap/PudoSelectionMap';
 
 const Carrito: React.FC = () =>
@@ -15,38 +17,11 @@ const Carrito: React.FC = () =>
     const [ chooseLocker, setChooseLocker ] = useState<boolean>( false );
     const [ confirmPurchase, setConfirmPurchase ] = useState<boolean>( false );
     const emailRegex = /^[a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]{2,}\.(com|es|ar)$/;
-    // const [ wrongEmail, setWrongEmail ] = useState<boolean>( false );
-    // const [ noName, setNoName ] = useState<boolean>( false );
-    // const [ noSurname, setNoSurname ] = useState<boolean>( false );
-    // const [ noNumber, setNoNumber ] = useState<boolean>( false );
+    const [ wrongEmail, setWrongEmail ] = useState<boolean>( false );
+    const [ noName, setNoName ] = useState<boolean>( false );
+    const [ noNumber, setNoNumber ] = useState<boolean>( false );
     const [sinStock, setSinStock] = useState<boolean>( false );
     const [subtotal, setSubtotal] = useState(0);
-
-    /*
-    // Espera recibir para la cotización:
-    {
-      "destination": {
-          "address": null, 
-          "number": null,
-          "country": "AR",
-          "city": "CABA",
-          "province": "Ciudad Autónoma de Buenos Aires",
-          "postalCode": "1051" // <--- CP del locker elegido
-      },
-      "items": [{
-          "sku": "ANILLO-001",
-          "name": "Anillo de Plata",
-          "price": 500.00,
-          "widthInMm": 10,
-          "heightInMm": 10,
-          "depthInMm": 10,
-          "weightInGrams": 50,
-          "quantity": 1,
-          "freeShipping": false
-      }]
-    }
-
-    */
 
     const pesoPorItem: MapaDePesos =
     {
@@ -82,11 +57,8 @@ const Carrito: React.FC = () =>
         {
             const sumTotal = cart.products.reduce( (acc, item) => acc + (Number(item.price) * 100) * item.CartItem.quantity , 0);
             const total = sumTotal!==0 ? sumTotal / 100 : 0;
-            const sumPeso = cart.products.reduce( (acc, item) => acc + pesoPorItem[item.category as CategoriasJoyeria] * item.CartItem.quantity , 0);
-            const pesoTotal = sumPeso;
             
             setSubtotal(total);
-            // setQuoteData( prev => ( {...prev, packageWeight: pesoTotal, declaredValue: total } ) );
         }
     }, [cart]);
 
@@ -99,34 +71,24 @@ const Carrito: React.FC = () =>
 
   const handleCheckout = (): void =>
   {
-    // setWrongEmail( !emailRegex.test(form.email) );
-    // if( chooseLocker )
-    // {
-    //   setNoName( form.name=='' ? true : false );
-    //   setNoSurname( form.surname=='' ? true : false );
-    //   setNoNumber( form.number=='' ? true : false );
-    // }
-    
-    if( (chooseLocker && (form.name=='' || form.phoneNumber=='') ) || !emailRegex.test(form.email) ) return ;
+    let pudoInfo = createFinalOrder();
+    console.log( "Pudo INFO: ", pudoInfo );
+    if(!pudoInfo) return ;
 
-    // setWrongEmail( false );
-    // setNoName( false );
-    // setNoSurname( false );
-    // setNoNumber( false );
-    
-    axios.post(`${URL}checkout`, {cart, form}).then( ( { data } ) =>
+
+    axios.post(`${URL}checkout`, {cart, pudoInfo}).then( ( { data } ) =>
     {
       alert('¡Gracias por su compra!');
-      window.location.replace(data.URL);
+      window.location.replace(data);
     })
     .catch( ( err ) => console.log( err ) );
   };
 
-  // const handleChange = ( e: React.ChangeEvent<HTMLInputElement> ) =>
-  // {
-  //   const { name, value } = e.target;
-  //   setForm( prev => ({ ...prev, [name]: value }) );
-  // };
+  const handleChange = ( e: React.ChangeEvent<HTMLInputElement> ) =>
+  {
+    const { name, value } = e.target;
+    setForm( prev => ({ ...prev, [name]: value }) );
+  };
 
   const clearCart = (): void =>
   {
@@ -177,100 +139,92 @@ const Carrito: React.FC = () =>
     const cotizationBody = { destination: destinationLocker.destination, items: normalizedProducts };
 
     axios.post(`${URL}pudo/quote`, cotizationBody )
-    .then( ( data ) => { setQuoteAnswer( data ); console.log("Hizo algo: ", data); setConfirmPurchase( true ); } )
+    .then( ( { data } ) =>
+      {
+        data.forEach( (x: any) =>
+          {
+            if(x.shippingMethodId===1)
+            {
+              setDestinationLocker( prev => ( {...prev, price: x.price } ) )
+              setConfirmPurchase( true );
+            }
+          } )
+      } )
     .catch( ( err ) => console.error( err ) );
+  }
+
+  const createFinalOrder = (): finalPudoForm | false =>
+  {
+    if( form.name!='' && form.phoneNumber!='' && emailRegex.test(form.email) )
+    {
+      return(
+        {
+          platformOrderId: cart.id,
+          platformOrderNumber: cart.id, 
+          
+          customer: form,
+          
+          shippingInfo: destinationLocker,
+          
+          createReserve: true,
+          
+          metrics: {...packageMeasures, weightInGrams: cart.products.reduce( ( acc, x ) =>
+            acc + pesoPorItem[x.category as CategoriasJoyeria] * x.CartItem.quantity, 0 ) },
+          
+          items: normalizedProducts
+        }
+      )
+    }
+
+    setNoName( form.name == '' );
+    setNoNumber( form.phoneNumber == '' );
+    setWrongEmail( emailRegex.test(form.email) )
+
+    return false;
   }
 
   return (
     <div className={styles.cartContainer}>
       <h1 className={styles.cartTitle}>Carrito de Compras</h1>
 
-      {cart.products.length === 0 ? (
-        <p className={styles.emptyCartMessage}>Tu carrito está vacío.</p>
-      ) : (
+      {cart.products.length === 0
+      ? ( <p className={styles.emptyCartMessage}>Tu carrito está vacío.</p> )
+      : (
         <>
-          <ul className={styles.cartItemsList}>
-            {cart.products.map((item) => (
-              <li onClick={()=>console.log(item)} key={item.id} className={styles.cartItem}>
-                <div className={styles.itemImage}>
-                  <img src={item.imageUrl[0].url} alt={item.name} />
-                </div>
-                <div className={styles.itemDetails}>
-                  <h2 className={styles.itemName}>{item.name}</h2>
-                  <p className={styles.itemPrice}>${item.price}</p>
-                  <div className={styles.quantityControl}>
-                    <button onClick={() => updateQuantity(item.id, item.CartItem.quantity - 1)}
-                      disabled={validQuantity(item.CartItem.quantity, -1, item.stock)}>-</button>
-                    <span className={styles.itemQuantity}>{item.CartItem.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.CartItem.quantity + 1)} 
-                      disabled={validQuantity(item.CartItem.quantity, +1, item.stock)}>+</button>
+          { !chooseLocker && (<div>
+            <ul className={styles.cartItemsList}>
+              {cart.products.map((item) => (
+                <li onClick={()=>console.log(item)} key={item.id} className={styles.cartItem}>
+                  <div className={styles.itemImage}>
+                    <img src={item.imageUrl[0].url} alt={item.name} />
                   </div>
-                </div>
-                <div className={styles.itemActions}>
-                  <p className={styles.itemSubtotal}>Subtotal: ${decimalTreatment(item.price, item.CartItem.quantity)}</p>
-                  <button onClick={() => updateQuantity(item.id, 0)} className={styles.removeButton}>Eliminar</button>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  <div className={styles.itemDetails}>
+                    <h2 className={styles.itemName}>{item.name}</h2>
+                    <p className={styles.itemPrice}>${item.price}</p>
+                    <div className={styles.quantityControl}>
+                      <button onClick={() => updateQuantity(item.id, item.CartItem.quantity - 1)}
+                        disabled={validQuantity(item.CartItem.quantity, -1, item.stock)}>-</button>
+                      <span className={styles.itemQuantity}>{item.CartItem.quantity}</span>
+                      <button onClick={() => updateQuantity(item.id, item.CartItem.quantity + 1)} 
+                        disabled={validQuantity(item.CartItem.quantity, +1, item.stock)}>+</button>
+                    </div>
+                  </div>
+                  <div className={styles.itemActions}>
+                    <p className={styles.itemSubtotal}>Subtotal: ${decimalTreatment(item.price, item.CartItem.quantity)}</p>
+                    <button onClick={() => updateQuantity(item.id, 0)} className={styles.removeButton}>Eliminar</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
 
-          <div className={styles.cartSummary}>
             <div className={styles.shippingToggle}>
               <label htmlFor="showShippingInfo">¡Carrito listo para la parte del envío!</label>
               <input type='checkbox' id="showShippingInfo" onClick={normalizeCartItems}/>
             </div>
+          </div>) }
 
-            {/* <div className={styles.shippingInfoFields}>
-              <div className={styles.formGroup}>
-                <label htmlFor="name">Nombre:</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  name='name'
-                  className={styles.inputField}
-                />
-              </div>
-              {noName && <p className={styles.errorMessage}>Ingrese un nombre de destinatario.</p>}
-              <div className={styles.formGroup}>
-                <label htmlFor="surname">Apellido:</label>
-                <input
-                  type="text"
-                  id="surname"
-                  value={form.surname}
-                  onChange={handleChange}
-                  name='surname'
-                  className={styles.inputField}
-                />
-              </div>
-              {noSurname && <p className={styles.errorMessage}>Ingrese el appelido del destinatario.</p>}
-              <div className={styles.formGroup}>
-                <label htmlFor="number">Teléfono:</label>
-                <input
-                  type="text"
-                  id="number"
-                  value={form.number}
-                  onChange={handleChange}
-                  name='number'
-                  className={styles.inputField}
-                />
-              </div>
-              {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
-              <div className={styles.formGroup}>
-                <label htmlFor="email">Email:</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  name='email'
-                  className={styles.inputField}
-                />
-              </div>
-              {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
-            </div> */}
-            
+            <div className={styles.cartSummary}>
+
             { ( chooseLocker && !confirmPurchase ) && (
               <>
                 <PudoSelectionMap key={chooseLocker.toString()} setDestinationLocker={ setDestinationLocker } />
@@ -278,13 +232,54 @@ const Carrito: React.FC = () =>
               </>
             )}
 
+            { confirmPurchase && 
+              <div className={styles.shippingInfoFields}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="name">Nombre:</label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    name='name'
+                    className={styles.inputField}
+                  />
+                </div>
+                {noName && <p className={styles.errorMessage}>Ingrese un nombre de destinatario.</p>}
+                <div className={styles.formGroup}>
+                  <label htmlFor="phoneNumber">Teléfono:</label>
+                  <input
+                    type="text"
+                    id="phoneNumber"
+                    value={form.phoneNumber}
+                    onChange={handleChange}
+                    name='phoneNumber'
+                    className={styles.inputField}
+                  />
+                </div>
+                {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
+                <div className={styles.formGroup}>
+                  <label htmlFor="email">Email:</label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    name='email'
+                    className={styles.inputField}
+                  />
+                </div>
+                {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
+              </div>
+            }
+
             
             <hr className={styles.summarySeparator}/>
 
             <p className={styles.subtotal}>Subtotal ({cart.products.length} items): <span>${subtotal.toFixed(2)}</span></p>
-            <button onClick={()=> console.log( destinationLocker )}> Destination locker info </button>
-            <button onClick={()=> console.log( normalizedProducts ) }> Productos normalizados </button>
-            <button onClick={()=> console.log( quoteAnswer ) }> Respuesta de cotización </button>
+            <p className={styles.itemSubtotal}>Envío: ${destinationLocker.price}</p>
+            <p className={styles.itemSubtotal}>Total a pagar: {destinationLocker.price ? '$'+( destinationLocker.price + subtotal ).toFixed(2) : 'Falta el presupuesto' }</p>
+            
             <button onClick={handleCheckout} className={styles.checkoutButton} disabled={sinStock}>Ir al Checkout</button>
             <button onClick={clearCart} className={styles.clearCartButton}>Vaciar Carrito</button>
           </div>

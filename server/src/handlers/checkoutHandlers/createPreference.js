@@ -1,10 +1,10 @@
 const { Op } = require('sequelize');
 const { Preference }= require('mercadopago');
-const { conn, Products, Carts } = require('../../db/db');
+const { conn, Products, Carts, Orders } = require('../../db/db');
 
 const createPreference = async ( req, res ) =>
 {
-    const { cart, form } = req.body;
+    const { cart, pudoInfo } = req.body;
     const mpClient = req.mercadoPagoClient;
 
     const t = await conn.transaction();
@@ -15,9 +15,9 @@ const createPreference = async ( req, res ) =>
         {
             items: [],
             payer: {
-                email: form.email,
-                address: { street_name: form.address },
-                phone: { number: form.number } },
+                email: pudoInfo.customer.email,
+                address: { street_name: '' },
+                phone: { number: pudoInfo.customer.phoneNumber } },
             back_urls:
             {   success: 'https://toy-store-tau.vercel.app/home',
                 failure: 'https://toy-store-tau.vercel.app/failure',
@@ -64,9 +64,13 @@ const createPreference = async ( req, res ) =>
         const updateCart = await Carts.update( { preferenceId }, { where: { id: cart.id }, transaction: t } );
         if(updateCart[0]==0) throw new Error( `No se pudo agregar el preferenceId al carrito` );
 
+        await Orders.destroy( { where: { platformOrderId: cart.id }, transaction: t } );
+
+        const newOrder = await Orders.create( pudoInfo, { transaction: t } ); 
+
         await t.commit();
 
-        return res.status(200).json( { URL: `${initPoint}` } );
+        return res.status(200).json( initPoint );
     }
     catch(err)
     {
