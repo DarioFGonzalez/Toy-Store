@@ -8,6 +8,15 @@ const LOCKERS_URL = `${PUDO_BASE_URL}/v1/Lockers`;
 
 const QUOTE_URL = `${PUDO_BASE_URL}/v1/ShippingRates`;
 
-const SHIPMENT_URL = `${PUDO_BASE_URL}/v1/shipments`;
+const SHIPMENT_URL = `${PUDO_BASE_URL}/v1/Order`;
 
-module.exports = { PUDO_BASE_URL, AUTH_URL, LOCKERS_URL, QUOTE_URL, SHIPMENT_URL };
+const TRACKING_URL = `${PUDO_BASE_URL}/v1/trackingurl/`;
+
+const LABEL_URL = `${PUDO_BASE_URL}/v1/labels/`;
+
+module.exports =
+{
+    PUDO_BASE_URL, AUTH_URL, LOCKERS_URL,
+    QUOTE_URL, SHIPMENT_URL,
+    TRACKING_URL, LABEL_URL
+ };

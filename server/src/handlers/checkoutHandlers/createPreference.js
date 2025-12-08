@@ -15,7 +15,7 @@ const createPreference = async ( req, res ) =>
         {
             items: [],
             payer: {
-                email: pudoInfo.customer.email,
+                email: pudoInfo.customer.mail,
                 address: { street_name: '' },
                 phone: { number: pudoInfo.customer.phoneNumber } },
             back_urls:
@@ -64,10 +64,10 @@ const createPreference = async ( req, res ) =>
         const updateCart = await Carts.update( { preferenceId }, { where: { id: cart.id }, transaction: t } );
         if(updateCart[0]==0) throw new Error( `No se pudo agregar el preferenceId al carrito` );
 
-        await Orders.destroy( { where: { platformOrderId: cart.id }, transaction: t } );
-
-        const newOrder = await Orders.create( pudoInfo, { transaction: t } ); 
-
+        await Orders.destroy( { where: { internalCartId: cart.id }, transaction: t } );
+        
+        const newOrder = await Orders.create( pudoInfo, { transaction: t } );
+                
         await t.commit();
 
         return res.status(200).json( initPoint );

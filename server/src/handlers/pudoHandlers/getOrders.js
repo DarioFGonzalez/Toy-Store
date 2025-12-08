@@ -21,7 +21,7 @@ const getOrderById = async ( req, res ) =>
 
     try
     {
-        const thisOrder = await Orders.findByPk( id );
+        const thisOrder = await Orders.findOne( { where : { internalCartId: id } }  );
 
         return res.status(200).json( thisOrder );
     }

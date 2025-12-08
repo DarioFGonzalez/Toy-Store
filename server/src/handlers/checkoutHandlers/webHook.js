@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const { Payment } = require('mercadopago')
-const { conn, Products, Carts } = require( '../../db/db');
+const postOrder = require('../../handlers/pudoHandlers/postOrder');
+const { conn, Products, Carts, Orders } = require( '../../db/db');
 
 const webHook = async ( req, res ) =>
 {
@@ -43,9 +44,10 @@ const webHook = async ( req, res ) =>
 
         await Carts.update( { status: 'purchased' }, { where: { id: paymentData.external_reference }, transaction: t } );
 
-        await t.commit();
+        const orderPosted = await postOrder( cart.id );
+        if(!orderPosted) throw new Error( `[webHook] Fallo al crear orden PUDO.` );
 
-        console.log("Terminé, teóricamente, de descontar stock y archivar el carrito");
+        await t.commit();
 
         return res.status(200).json( { success: 'Stock actualizado' } );
     }

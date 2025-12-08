@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Carrito.module.css';
 import type { Cart, ContactInfo, MapaDePesos, ProductInCart,
-  normalizedProduct, DestinationLocker , CategoriasJoyeria, finalPudoForm } from '../../types';
+  NormalizedProduct, DestinationLocker , CategoriasJoyeria, FinalDbOrder } from '../../types';
 import axios from 'axios';
 import { emptyCart, emptyContactInfo, destinationLockerInfo, URL,
   packageMeasures } from '../../types/constants';
@@ -11,7 +11,7 @@ const Carrito: React.FC = () =>
 {
     const [cart, setCart] = useState<Cart>( emptyCart );
     const [ form, setForm ] = useState<ContactInfo>( emptyContactInfo );
-    const [ normalizedProducts, setNormalizedProducts ] = useState<normalizedProduct[]>( [] ); 
+    const [ normalizedProducts, setNormalizedProducts ] = useState<NormalizedProduct[]>( [] ); 
     const [ destinationLocker, setDestinationLocker ] = useState<DestinationLocker>( destinationLockerInfo );
     const [ quoteAnswer, setQuoteAnswer ] = useState<any>( );
     const [ chooseLocker, setChooseLocker ] = useState<boolean>( false );
@@ -72,14 +72,14 @@ const Carrito: React.FC = () =>
   const handleCheckout = (): void =>
   {
     let pudoInfo = createFinalOrder();
-    console.log( "Pudo INFO: ", pudoInfo );
-    if(!pudoInfo) return ;
 
+    if(!pudoInfo) return ;
 
     axios.post(`${URL}checkout`, {cart, pudoInfo}).then( ( { data } ) =>
     {
-      alert('¡Gracias por su compra!');
-      window.location.replace(data);
+      alert( `deberías habersido redirigido a : ${data}` );
+      // alert('¡Gracias por su compra!');
+      // window.location.replace(data);
     })
     .catch( ( err ) => console.log( err ) );
   };
@@ -116,11 +116,11 @@ const Carrito: React.FC = () =>
 
   const normalizeCartItems = () =>
   {
-    let products: normalizedProduct[] = cart.products.map( item =>
+    let products: NormalizedProduct[] = cart.products.map( item =>
     ({
       sku: item.id,
       name: item.name,
-      price: parseFloat(item.price),
+      price: item.price,
       widthInMm: 10,
       heightInMm: 10,
       depthInMm: 10,
@@ -139,13 +139,19 @@ const Carrito: React.FC = () =>
     const cotizationBody = { destination: destinationLocker.destination, items: normalizedProducts };
 
     axios.post(`${URL}pudo/quote`, cotizationBody )
-    .then( ( { data } ) =>
+    .then( ( res ) =>
       {
-        data.forEach( (x: any) =>
+        res?.data.forEach( (x: any) =>
           {
             if(x.shippingMethodId===1)
             {
-              setDestinationLocker( prev => ( {...prev, price: x.price } ) )
+              x.options.find( (locker: any) => locker.lockerId === destinationLocker.lockerId && setDestinationLocker( prev =>
+              ({
+                ...prev,
+                city: locker.city.trim(),
+                province: locker.province.trim()
+              }) ) )
+              setDestinationLocker( prev => ( {...prev, price: x.price.toFixed(2) } ) )
               setConfirmPurchase( true );
             }
           } )
@@ -153,18 +159,45 @@ const Carrito: React.FC = () =>
     .catch( ( err ) => console.error( err ) );
   }
 
-  const createFinalOrder = (): finalPudoForm | false =>
+  const createFinalOrder = (): FinalDbOrder | false =>
   {
-    if( form.name!='' && form.phoneNumber!='' && emailRegex.test(form.email) )
+    if( form.name!='' && form.phoneNumber!='' && emailRegex.test(form.mail) )
     {
-      return(
+      const timestamp = Date.now().toString();
+      const randomSuffix = Math.floor(Math.random() * 900) + 100;
+      const uniqueIdString = timestamp + randomSuffix.toString();
+      const finalOrderId = uniqueIdString.substring(0, 16);
+
+      console.log(
         {
-          platformOrderId: cart.id,
-          platformOrderNumber: cart.id, 
+          platformOrderId: finalOrderId,
+          platformOrderNumber: finalOrderId,
+          
+          internalCartId: cart.id,
           
           customer: form,
           
-          shippingInfo: destinationLocker,
+          shippingInfo: { ...destinationLocker, price: destinationLocker.price },
+          
+          createReserve: true,
+          
+          metrics: {...packageMeasures, weightInGrams: cart.products.reduce( ( acc, x ) =>
+            acc + pesoPorItem[x.category as CategoriasJoyeria] * x.CartItem.quantity, 0 ) },
+          
+          items: normalizedProducts
+        }
+      );
+
+      return(
+        {
+          platformOrderId: finalOrderId,
+          platformOrderNumber: finalOrderId,
+          
+          internalCartId: cart.id,
+          
+          customer: form,
+          
+          shippingInfo: { ...destinationLocker, price: destinationLocker.price },
           
           createReserve: true,
           
@@ -177,10 +210,37 @@ const Carrito: React.FC = () =>
     }
 
     setNoName( form.name == '' );
+    setWrongEmail( emailRegex.test(form.mail) )
     setNoNumber( form.phoneNumber == '' );
-    setWrongEmail( emailRegex.test(form.email) )
 
     return false;
+  }
+
+  const postOrder = async () =>
+  {
+    const res = await axios.post( `${URL}pudo/order/${cart.id}`);
+    if(!res) console.log('Algo falló al postear la order: ', res );
+    console.log( "Respuesta del postOrder: ", res );
+  }
+
+  const fetchOrder = async () =>
+  {
+    const res = await axios.get(`${URL}pudo/orders/${cart.id}`);
+    setQuoteAnswer( res );
+    console.log( res );
+  }
+
+  const showTotal = (): number | string =>
+  {
+    if(destinationLocker.price)
+    {
+      const priceToNumber = parseInt(destinationLocker.price);
+      const total = priceToNumber + subtotal;
+
+      return total;
+    }
+
+    return 'Falta el presupuesto';
   }
 
   return (
@@ -229,6 +289,8 @@ const Carrito: React.FC = () =>
               <>
                 <PudoSelectionMap key={chooseLocker.toString()} setDestinationLocker={ setDestinationLocker } />
                 <button disabled={destinationLocker.lockerId===0} onClick={ pedirPresupuesto }> Pedir cotizatión </button>
+                <button onClick={()=>console.log(destinationLocker)}> locker elegido </button>
+
               </>
             )}
 
@@ -259,17 +321,18 @@ const Carrito: React.FC = () =>
                 </div>
                 {noNumber && <p className={styles.errorMessage}>Ingrese un teléfono de contacto.</p>}
                 <div className={styles.formGroup}>
-                  <label htmlFor="email">Email:</label>
+                  <label htmlFor="Mail">Email:</label>
                   <input
                     type="email"
-                    id="email"
-                    value={form.email}
+                    id="mail"
+                    value={form.mail}
                     onChange={handleChange}
-                    name='email'
+                    name='mail'
                     className={styles.inputField}
                   />
                 </div>
                 {wrongEmail && <p className={styles.errorMessage}>Ingrese un Email válido, por favor.</p>}
+                <button onClick={()=>console.log(form)}> form </button>
               </div>
             }
 
@@ -278,8 +341,12 @@ const Carrito: React.FC = () =>
 
             <p className={styles.subtotal}>Subtotal ({cart.products.length} items): <span>${subtotal.toFixed(2)}</span></p>
             <p className={styles.itemSubtotal}>Envío: ${destinationLocker.price}</p>
-            <p className={styles.itemSubtotal}>Total a pagar: {destinationLocker.price ? '$'+( destinationLocker.price + subtotal ).toFixed(2) : 'Falta el presupuesto' }</p>
+            <p className={styles.itemSubtotal}>Total a pagar: { showTotal() }</p>
             
+            <button onClick={()=>createFinalOrder()}> Orden final </button>
+            { confirmPurchase && <button onClick={postOrder}> POST ORDER </button>}
+            { confirmPurchase && <button onClick={fetchOrder}> Orden relacionada al carrito </button> }
+            <button onClick={()=>console.log((quoteAnswer))}> quoteAnswer </button>
             <button onClick={handleCheckout} className={styles.checkoutButton} disabled={sinStock}>Ir al Checkout</button>
             <button onClick={clearCart} className={styles.clearCartButton}>Vaciar Carrito</button>
           </div>

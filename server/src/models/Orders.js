@@ -6,17 +6,17 @@ module.exports = ( sequelize ) =>
         {
             platformOrderId:
             {
-                type: DataTypes.UUID,
+                type: DataTypes.BIGINT,
                 primaryKey: true
             },
             platformOrderNumber:
             {
-                type: DataTypes.UUID,
+                type: DataTypes.BIGINT,
                 allowNull: false
             },
-            sticker:
+            internalCartId:
             {
-                type: DataTypes.JSONB,
+                type: DataTypes.UUID,
                 allowNull: true
             },
             trackingUrl:

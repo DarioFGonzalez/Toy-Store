@@ -4,7 +4,7 @@ const server = require('./src/server');
 const { conn } = require('./src/db/db');
 const { PORT } = process.env;
 
-conn.sync( {force: false} )
+conn.sync( { force: false } )
 .then( () => { return initializeLockerManager() } )
 .then( () =>
 {

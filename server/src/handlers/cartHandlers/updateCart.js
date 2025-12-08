@@ -60,7 +60,7 @@ const updateCart = async ( req, res ) =>
 
         const thisProduct = await Products.findByPk( productId );
 
-        await thisCart.addProduct( thisProduct, { through: { quantity: quantity, category, priceAtAddition: thisProduct.price } } );
+        await thisCart.addProduct( thisProduct, { through: { quantity: quantity, priceAtAddition: thisProduct.price } } );
 
         const thisCartUpdated = await thisCart.reload( { include:
             [

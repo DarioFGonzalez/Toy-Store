@@ -101,19 +101,18 @@ export const PudoSelectionMap: React.FC<mapProps> = ( { setDestinationLocker } )
         setDestinationLocker( ( {
                 shippingMethodId: 1,
                 lockerId: locker.id,
-                price: 0,
+                price: '',
                 destination:
                 {
-                    address: Address.address,
-                    province: Address.province,
+                    address: Address.address.trim(),
+                    province: Address.province.trim(),
                     country: 'AR',
-                    city: Address.city,
+                    city: Address.city.trim(),
                     postalCode: Address.zipCode.replace(/\D/g, '')
                 }
             }
         ) );
     }
-
 
     return (
         <div className={styles.lockerMapContainer}>

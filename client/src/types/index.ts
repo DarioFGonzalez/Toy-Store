@@ -124,46 +124,56 @@ export type DestinationLocker =
 {
     shippingMethodId: number, 
     lockerId: number,
-    price: number,
+    price: string,
     destination:
     {
         address: string, 
+        city: string,
         province: string,
         country: string,
-        city: string,
         postalCode: number
     }
-}
+};
 
 export interface mapProps
 {
     setDestinationLocker: React.Dispatch<React.SetStateAction<DestinationLocker>>
 }
 
-export type normalizedProduct =
+export type NormalizedProduct =
 {
     sku: string,
     name: string,
-    price: number,
+    price: string,
+    quantity: number,
     widthInMm: number,
     heightInMm: number,
     depthInMm: number,
     weightInGrams: number,
-    quantity: number,
     freeShipping: boolean
 }
 
 export interface ContactInfo
 {
     name: string,
-    email: string,
+    mail: string,
     phoneNumber: string
 }
 
-export type finalPudoForm =
+export interface PackageMeasures
+{
+    widthInMm: number,
+    heightInMm: number,
+    depthInMm: number,
+    weightInGrams: number
+}
+
+export type FinalDbOrder =
 {
    platformOrderId: string,
-   platformOrderNumber: string, 
+   platformOrderNumber: string,
+   
+   internalCartId: string,
    
    customer: ContactInfo,
    
@@ -171,12 +181,7 @@ export type finalPudoForm =
    
    createReserve: boolean,
    
-   metrics: {
-      widthInMm: number,
-      heightInMm: number, 
-      depthInMm: number,
-      weightInGrams: number
-   },
+   metrics: PackageMeasures,
    
-   items: normalizedProduct[]
+   items: NormalizedProduct[]
 }

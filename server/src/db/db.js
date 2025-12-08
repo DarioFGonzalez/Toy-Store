@@ -72,14 +72,14 @@ Carts.belongsToMany( Products,
 
 Orders.belongsTo( Carts,
     {
-        foreignKey: 'platformOrderNumber',
+        foreignKey: 'internalCartId',
         as: 'cart'
     }
 )
 
 Carts.hasOne( Orders, 
     {
-        foreignKey: 'platformOrderNumber',
+        foreignKey: 'internalCartId',
         as: 'order'
     }
 )
