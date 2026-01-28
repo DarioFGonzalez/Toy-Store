@@ -24,7 +24,15 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-server.use( cors() );
+const corsOptions =
+{
+  origin: 'https://toy-store-tau.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  optionsSuccessStatus: 204
+};
+
+server.use( process.env.NODE_ENV === 'prouction' ? cors(corsOptions) : cors() );
+
 server.use( express.json()) ;
 server.use( (req,res,next) =>
 {

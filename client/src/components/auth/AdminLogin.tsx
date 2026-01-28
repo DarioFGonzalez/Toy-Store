@@ -46,10 +46,10 @@ const AdminLogin: React.FC = () => {
             />
           </div>
           {errorMessage && <p className={Styles.errorMessage}>{errorMessage}</p>}
-          <button type='button' onClick={handleLogout}> Log OUT </button>
           <button type="submit" className={Styles.submitButton}>
             Acceder
           </button>
+          <button type='button' onClick={handleLogout}> Log OUT </button>
         </form>
       </div>
     </div>
