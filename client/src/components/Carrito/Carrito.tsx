@@ -168,26 +168,6 @@ const Carrito: React.FC = () =>
       const uniqueIdString = timestamp + randomSuffix.toString();
       const finalOrderId = uniqueIdString.substring(0, 16);
 
-      console.log(
-        {
-          platformOrderId: finalOrderId,
-          platformOrderNumber: finalOrderId,
-          
-          internalCartId: cart.id,
-          
-          customer: form,
-          
-          shippingInfo: { ...destinationLocker, price: destinationLocker.price },
-          
-          createReserve: true,
-          
-          metrics: {...packageMeasures, weightInGrams: cart.products.reduce( ( acc, x ) =>
-            acc + pesoPorItem[x.category as CategoriasJoyeria] * x.CartItem.quantity, 0 ) },
-          
-          items: normalizedProducts
-        }
-      );
-
       return(
         {
           platformOrderId: finalOrderId,

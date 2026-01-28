@@ -19,7 +19,6 @@ pudoRouter.post( '/order/:id', async (req, res) =>
     try
     {
         const mailer = req.mailerTransporter;
-        console.log( "mailer: ", mailer, "true?: ", mailer?'true':'false');
         const orderPosted = await postOrder( {id, mailer} );
 
         return res.status(200).json( { postOrderRoute: 'Order creada' } );

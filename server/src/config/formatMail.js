@@ -1,5 +1,17 @@
-function generateOrderEmailHtml(thisOrder) {
+const { getLabelPdf } = require('./getOrderDetails');
+
+async function generateOrderEmailHtml(thisOrder) {
     let totalPrice = 0;
+    let stickerResponse = '';
+
+    try
+    {
+        stickerResponse = await getLabelPdf( formatedOrder.platformOrderId );
+    }
+    catch( err )
+    {
+        throw new Error( err );
+    }
 
     const itemsTableRows = thisOrder.items.map(item => {
         const unitPrice = parseFloat(item.price);
@@ -42,6 +54,7 @@ function generateOrderEmailHtml(thisOrder) {
                 <h2 style="color: #007bff; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 5px;">Detalles de la Transacción</h2>
                 <p style="font-size: 16px; margin-bottom: 5px;"><strong>ID de Orden (Plataforma):</strong> ${thisOrder.platformOrderNumber}</p>
                 <p style="font-size: 16px; margin-bottom: 5px;"><strong>ID Interno del Carrito:</strong> ${thisOrder.internalCartId}</p>
+                <p style="font-size: 16px; margin-bottom: 5px;"><strong>Sticker de la orden:</strong> ${stickerResponse}</p>
                 
                 <div style="text-align: right; background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-top: 15px;">
                     <h3 style="margin: 0; font-size: 20px;">TOTAL DE LA VENTA: <span style="font-size: 28px;">$${totalVenta}</span></h3>

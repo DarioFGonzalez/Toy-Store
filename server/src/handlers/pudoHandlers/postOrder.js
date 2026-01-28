@@ -98,9 +98,8 @@ const postOrder = async ( { id, mailer } ) =>
         if (orderCreatedSuccessfully)
         {
             trackingUrlResponse = await getTrackingNumber( formatedOrder.platformOrderId );
-            stickerResponse = await getLabelPdf( formatedOrder.platformOrderId );
-            
-            await thisOrder.update( { sticker: stickerResponse, trackingUrl: trackingUrlResponse } );
+
+            await thisOrder.update( { trackingUrl: trackingUrlResponse } );
             
             const formatedMail = generateOrderEmailHtml(thisOrder);
             const STORE_NAME = "Violeta's store";
@@ -108,7 +107,7 @@ const postOrder = async ( { id, mailer } ) =>
             const mailOptions =
             {
                 from: `"${STORE_NAME}" <no-reply@violetas.com>`,
-                to: 'Sebavoh@gmail.com',
+                to: 'dario.zerobyte@gmail.com',
                 subject: `Nueva Venta PUDO: Orden #${formatedOrder.platformOrderId}`,
                 html: formatedMail
             };
