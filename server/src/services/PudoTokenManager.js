@@ -29,9 +29,13 @@ class PudoTokenManager {
 
     async #fetchNewToken() {
         const params = new URLSearchParams();
+
+        const pudoClient = process.env.NODE_ENV==='production' ? process.env.PUDO_CLIENT_ID : process.env.PUDO_CLIENT_SANDBOX_ID;
+        const pudoSecret = process.env.NODE_ENV==='production' ? process.env.PUDO_CLIENT_SECRET : process.env.PUDO_CLIENT_SANDBOX_SECRET;
+
         params.append('grant_type', 'client_credentials');
-        params.append('client_id', process.env.PUDO_CLIENT_ID);
-        params.append('client_secret', process.env.PUDO_CLIENT_SECRET);
+        params.append('client_id', pudoClient);
+        params.append('client_secret', pudoSecret);
         
         try {
             const response = await axios.post(
