@@ -1,6 +1,6 @@
 import type { DestinationLocker, ContactInfo, PackageMeasures } from '../types/index';
 
-export const URL = import.meta.env.DEV ? 'http://localhost:5000/' : "https://toy-store-zw00.onrender.com/";
+export const URL = import.meta.env.DEV ? 'http://localhost:5000/' : "https://toy-store-4w7x.onrender.com/";
 export const LOCAL_URL = import.meta.env.DEV ? 'http://localhost:5173/' : "https://toy-store-tau.vercel.app/";
 
 export const emptyCart =
