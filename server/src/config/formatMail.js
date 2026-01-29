@@ -10,6 +10,7 @@ async function generateOrderEmailHtml(thisOrder) {
     }
     catch( err )
     {
+        console.log( 'Error en formatMail: ', err );
         throw new Error( err );
     }
 
