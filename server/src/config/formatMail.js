@@ -1,6 +1,6 @@
 const { getLabelPdf } = require('./getOrderDetails');
 
-async function generateOrderEmailHtml(thisOrder) {
+async function generateOrderEmailHtml(thisOrder, formatedOrder) {
     let totalPrice = 0;
     let stickerResponse = '';
 

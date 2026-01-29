@@ -101,7 +101,7 @@ const postOrder = async ( { id, mailer } ) =>
 
             await thisOrder.update( { trackingUrl: trackingUrlResponse } );
             
-            const formatedMail = generateOrderEmailHtml(thisOrder);
+            const formatedMail = generateOrderEmailHtml(thisOrder, formatedOrder);
             const STORE_NAME = "Violeta's store";
 
             const mailOptions =
