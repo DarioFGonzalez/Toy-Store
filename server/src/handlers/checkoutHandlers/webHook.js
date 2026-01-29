@@ -5,14 +5,11 @@ const { conn, Products, Carts, Orders } = require( '../../db/db');
 
 const webHook = async ( req, res ) =>
 {
-    console.log('Inicio de comunicación con el webhook');
     const paymentId = req.query.id;
-    console.log("El paymentId es: ", paymentId);
     
     const paymentClient = new Payment(req.mercadoPagoClient);
     
     const paymentData = await paymentClient.get( { id: paymentId } );
-    console.log("La data del pago es: ", JSON.stringify(paymentData));
     
     const t = await conn.transaction();
 
@@ -27,7 +24,6 @@ const webHook = async ( req, res ) =>
             attributes: [ 'id', 'name', 'stock' ],
             through: { attributes: [ 'quantity', 'priceAtAddition' ] }
         }, transaction: t } );
-        console.log('traje el carrito.')
 
         const promises = thisCart.products.map( item =>
         {
@@ -38,7 +34,6 @@ const webHook = async ( req, res ) =>
             }
             return Products.update( { stock: newStock }, { where: { id: item.id }, transaction: t } );
         } );
-        console.log('checkié stocks.');
 
         await Promise.all( promises );
 

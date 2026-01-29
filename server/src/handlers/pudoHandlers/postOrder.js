@@ -5,8 +5,9 @@ const { SHIPMENT_URL } = require('../../config/pudoApiConfig');
 const generateOrderEmailHtml = require('../../config/formatMail');
 const { Orders } = require('../../db/db');
 
-const postOrder = async ( { id, mailer } ) =>
+const postOrder = async ( { id } ) =>
 {
+    let mailer = req.mailerTransporter;
     let trackingUrlResponse = null;
     let stickerResponse = null;
     let orderCreatedSuccessfully = false; 

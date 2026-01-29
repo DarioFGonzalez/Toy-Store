@@ -126,6 +126,10 @@ async function generateOrderEmailHtml(thisOrder) {
                 
                 <p style="margin-top: 20px; text-align: center; color: #777; font-size: 12px;">Recuerde imprimir el sticker proporcionado por PUDO.</p>
             </div>
+            <div>
+                Hablando mal y pronto, sería esto:
+                <div> ${thisOrder} </div>
+            </div
         </div>
     `;
 
