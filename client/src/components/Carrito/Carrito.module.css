@@ -1,28 +1,30 @@
 /* Carrito.module.css */
 
 .cartContainer {
-    max-width: 960px;
+    max-width: 1000px;
     margin: 40px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-sizing: border-box; /* Asegura que el padding no cause desbordamiento */
+    padding: 32px;
+    background-color: var(--white);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    font-family: inherit;
+    box-sizing: border-box;
 }
 
 .cartTitle {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 30px;
+    font-size: 2.2rem;
+    color: var(--primary-black);
+    margin-bottom: 32px;
     text-align: center;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .emptyCartMessage {
     font-size: 1.1rem;
-    color: #777;
+    color: var(--gray-600);
     text-align: center;
-    padding: 50px 0;
+    padding: 60px 20px;
 }
 
 .cartItemsList {
@@ -36,7 +38,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--gray-200);
+    gap: 20px;
 }
 
 .cartItem:last-child {
@@ -46,10 +49,11 @@
 .itemImage {
     width: 120px;
     height: 120px;
-    border-radius: 6px;
+    border-radius: 4px;
     overflow: hidden;
     margin-right: 20px;
     flex-shrink: 0;
+    border: 1px solid var(--gray-200);
 }
 
 .itemImage img {
@@ -67,14 +71,15 @@
 }
 
 .itemName {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 5px;
+    font-size: 1.15rem;
+    color: var(--primary-black);
+    margin-bottom: 8px;
+    font-weight: 600;
 }
 
 .itemPrice {
     font-size: 1rem;
-    color: #555;
+    color: var(--gray-600);
     margin-bottom: 10px;
 }
 
@@ -84,31 +89,37 @@
 }
 
 .quantityControl button {
-    background: none;
-    border: 1px solid #ccc;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
     border-radius: 4px;
-    padding: 6px 10px;
-    margin: 0 5px;
+    padding: 6px 12px;
+    margin: 0 8px;
     cursor: pointer;
     font-size: 1rem;
-    color: #333;
-    transition: border-color 0.2s ease;
+    color: var(--primary-black);
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
 .quantityControl button:hover {
-    border-color: #999;
+    border-color: var(--primary-gold);
+    background-color: var(--primary-gold);
+    color: var(--primary-black);
 }
 
 .quantityControl button:disabled {
-    background-color: gray;
-    border-color: #000000;
+    background-color: var(--gray-200);
+    border-color: var(--gray-200);
+    color: var(--gray-600);
+    cursor: not-allowed;
 }
 
 .itemQuantity {
     font-size: 1rem;
-    font-weight: bold;
-    min-width: 30px;
+    font-weight: 700;
+    min-width: 40px;
     text-align: center;
+    color: var(--primary-black);
 }
 
 .itemActions {
@@ -122,25 +133,28 @@
 }
 
 .itemSubtotal {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #333;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary-gold);
     margin-bottom: 10px;
 }
 
 .removeButton {
-    background-color: #f44336;
-    color: white;
-    border: none;
+    background-color: #e53e3e;
+    color: var(--white);
+    border: 2px solid #e53e3e;
     border-radius: 4px;
-    padding: 8px 15px;
+    padding: 8px 16px;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: background-color 0.2s ease;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
 .removeButton:hover {
-    background-color: #d32f2f;
+    background-color: #c53030;
+    border-color: #c53030;
+    transform: translateY(-2px);
 }
 
 .cartSummary {

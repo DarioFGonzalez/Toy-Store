@@ -22,6 +22,21 @@ module.exports = ( sequelize ) =>
             {
                 type: DataTypes.STRING,
                 allowNull: true
+            },
+            customerEmail:
+            {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            customerPhone:
+            {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
+            customerName:
+            {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         }, { timestamps: true }
     );

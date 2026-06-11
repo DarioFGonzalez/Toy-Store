@@ -2,36 +2,37 @@
 
 .loginContainer {
   display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center; /* Centra verticalmente */
-  min-height: calc(100vh - 80px); /* Ajusta para la altura del viewport menos el TopBar si lo necesitas */
-  /* Si el contenedor padre ya maneja la altura, puedes quitar min-height o ajustarlo */
-  background-color: #f0f2f5; /* Fondo suave */
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  background-color: var(--white);
   padding: 20px;
   box-sizing: border-box;
 }
 
 .loginCard {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  background-color: var(--white);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 40px;
   width: 100%;
-  max-width: 400px; /* Ancho máximo para la tarjeta de login */
+  max-width: 420px;
   text-align: center;
+  border: 1px solid var(--gray-200);
 }
 
 .title {
-  color: #333333;
-  margin-bottom: 30px;
-  font-size: 1.8em;
-  font-weight: 600;
+  color: var(--primary-black);
+  margin-bottom: 32px;
+  font-size: 2em;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .loginForm {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Espacio entre los elementos del formulario */
+  gap: 20px;
 }
 
 .inputGroup {
@@ -39,39 +40,42 @@
 }
 
 .label {
-  display: block; /* Asegura que la etiqueta esté en su propia línea */
+  display: block;
   margin-bottom: 8px;
-  color: #555555;
-  font-weight: 500;
+  color: var(--gray-600);
+  font-weight: 600;
   font-size: 0.95em;
+  letter-spacing: 0.2px;
 }
 
 .input {
   width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #cccccc;
-  border-radius: 6px;
+  padding: 12px 14px;
+  border: 2px solid var(--gray-200);
+  border-radius: 4px;
   font-size: 1em;
-  color: #333333;
-  box-sizing: border-box; /* Incluye padding en el ancho total */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  color: var(--primary-black);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  font-family: inherit;
 }
 
 .input:focus {
-  border-color: #007bff; /* Color azul al enfocar */
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Sombra de enfoque */
-  outline: none; /* Quita el outline por defecto del navegador */
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  outline: none;
 }
 
 .input:disabled {
-  background-color: #e9ecef;
+  background-color: var(--gray-100);
   cursor: not-allowed;
+  color: var(--gray-600);
 }
 
 .errorMessage {
-  color: #dc3545; /* Rojo para mensajes de error */
+  color: #e53e3e;
   font-size: 0.9em;
-  margin-top: -10px; /* Ajusta el margen superior para que esté cerca del input */
+  margin-top: -15px;
   margin-bottom: 0;
 }
 

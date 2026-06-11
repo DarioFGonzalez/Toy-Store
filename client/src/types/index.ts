@@ -120,68 +120,9 @@ export interface DashboardFilters {
     material: string;
 }
 
-export type DestinationLocker =
-{
-    shippingMethodId: number, 
-    lockerId: number,
-    price: string,
-    destination:
-    {
-        address: string, 
-        city: string,
-        province: string,
-        country: string,
-        postalCode: number
-    }
-};
-
-export interface mapProps
-{
-    setDestinationLocker: React.Dispatch<React.SetStateAction<DestinationLocker>>
-}
-
-export type NormalizedProduct =
-{
-    sku: string,
-    name: string,
-    price: string,
-    quantity: number,
-    widthInMm: number,
-    heightInMm: number,
-    depthInMm: number,
-    weightInGrams: number,
-    freeShipping: boolean
-}
-
 export interface ContactInfo
 {
     name: string,
     mail: string,
     phoneNumber: string
-}
-
-export interface PackageMeasures
-{
-    widthInMm: number,
-    heightInMm: number,
-    depthInMm: number,
-    weightInGrams: number
-}
-
-export type FinalDbOrder =
-{
-   platformOrderId: string,
-   platformOrderNumber: string,
-   
-   internalCartId: string,
-   
-   customer: ContactInfo,
-   
-   shippingInfo: DestinationLocker,
-   
-   createReserve: boolean,
-   
-   metrics: PackageMeasures,
-   
-   items: NormalizedProduct[]
 }

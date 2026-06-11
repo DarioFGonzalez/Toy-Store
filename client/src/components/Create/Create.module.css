@@ -20,25 +20,29 @@
 }
 
 .formChild {
-    width: 550px;
-    background-color: #9abfcb;
-    margin-top: 40px;
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--white);
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    border: 1px solid rgb(121, 121, 121);
-    border-radius: 20px;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-bottom: 20px;
+    gap: 24px;
+    border: 1px solid var(--gray-200);
+    border-radius: 4px;
+    padding: 40px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .formChild h1 {
-    border-bottom: 1px solid rgb(46, 45, 45);
-    color: rgb(46, 45, 45);
+    border-bottom: 2px solid var(--primary-gold);
+    color: var(--primary-black);
     display: flex;
     flex-direction: row;
     justify-content: center;
+    padding-bottom: 16px;
+    margin: 0 0 16px 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .imageContainer {
@@ -46,12 +50,12 @@
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 16px;
 }
 
 .imageContainer input {
     height: 220px;
-    background-color: aliceblue;
+    background-color: transparent;
     cursor: pointer;
     margin-left: -228px;
     max-width: 220px;
@@ -62,20 +66,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 150%;
+    font-size: 3em;
     width: 220px;
     height: 220px;
-    border: solid 2px black;
-    border-radius: 5px;
+    border: 2px dashed var(--primary-gold);
+    border-radius: 4px;
     object-fit: cover;
+    background-color: var(--gray-50);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--primary-gold);
+}
+
+.imageContainer label:hover {
+    background-color: var(--gray-100);
+    border-color: var(--primary-black);
 }
 
 .imageContainer img {
     width: 220px;
     height: 220px;
     object-fit: cover;
-    border-radius: 5px;
-    border: solid 2px rgb(46, 45, 45);
+    border-radius: 4px;
+    border: 2px solid var(--primary-gold);
 }
 
 .imgAndButton {
@@ -86,63 +99,73 @@
 .imgAndButton button {
     margin-bottom: -30px;
     position: absolute;
-    border-radius: 5px;
-    border: .5px solid white;
-    background-color: rgba(0, 0, 0, 0.284);
-    color: white;
-    transition: 0.3s;
-    width: 30px;
-    height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    background-color: #e53e3e;
+    color: var(--white);
+    transition: all 0.2s ease;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .imgAndButton button:hover {
-    background-color: rgb(255, 0, 0);
-    color: black;
-    border: .5px solid black;
+    background-color: #c53030;
+    transform: scale(1.1);
 }
 
 .userType {
-    margin-top: -20px;
+    margin-top: 0;
     display: flex;
     flex-direction: row;
-    gap: 15px;
+    gap: 20px;
     width: 100%;
 }
 
 .userType input {
-    margin-right: 3px;
+    margin-right: 8px;
 }
 
 .userTypeContainer {
-    border: 1px solid rgb(46, 45, 45);
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #6b848d;
-    color: white;
+    border: 2px solid var(--primary-gold);
+    padding: 12px;
+    border-radius: 4px;
+    background-color: var(--gray-50);
+    color: var(--primary-black);
     height: 100%;
+    flex-grow: 1;
+    font-weight: 500;
 }
 
 .nameAndSurname {
     display: flex;
     flex-direction: column;
     height: 100%;
-    gap: 20px;
+    gap: 16px;
 }
 
 .dashNameSurname {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
 }
 
 .passWord {
     display: flex;
+    position: relative;
 }
 
 .faEye {
-    margin-left: -30px;
+    margin-left: -40px;
     margin-top: 12px;
     cursor: pointer;
+    color: var(--primary-gold);
+    z-index: 10;
+    font-size: 1.2em;
 }
 
 .imagePreviewGrid {

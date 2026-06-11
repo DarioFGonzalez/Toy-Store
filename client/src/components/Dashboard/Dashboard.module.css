@@ -1,21 +1,23 @@
 .dashboardContainer {
   display: flex;
   min-height: 100vh;
-  background-color: #f0f4f8;
+  background-color: var(--gray-50);
 }
 
 .sidebar {
-  width: 250px;
-  background-color: #1a202c;
-  color: white;
-  padding: 1.5rem;
+  width: 260px;
+  background-color: var(--primary-black);
+  color: var(--white);
+  padding: 20px;
   flex-shrink: 0;
+  border-right: 1px solid var(--gray-200);
 }
 
 .mainContent {
   flex-grow: 1;
-  padding: 2rem;
+  padding: 24px;
   overflow-y: auto;
+  background: var(--white);
 }
 
 @media (max-width: 768px) {
@@ -26,6 +28,10 @@
   .sidebar {
     width: 100%;
     height: auto;
-    padding: 1rem;
+    padding: 16px;
+  }
+  
+  .mainContent {
+    padding: 16px;
   }
 }

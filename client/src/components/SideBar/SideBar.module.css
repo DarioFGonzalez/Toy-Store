@@ -4,19 +4,19 @@
   width: 220px;
   min-width: 180px;
   max-width: 95vw;
-  padding: 18px 14px;
-  background: #f8f9fa;
-  border-right: 1px solid #e0e0e0;
-  box-shadow: 2px 0 12px rgba(0,0,0,0.07);
+  padding: 20px 16px;
+  background: var(--gray-50);
+  border-right: 1px solid var(--gray-200);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
   max-height: calc(100vh - 80px);
   overflow-y: auto;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  border-radius: 0 18px 18px 0;
-  transition: box-shadow 0.2s, transform 0.2s;
+  gap: 16px;
+  border-radius: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 2001;
 }
 
@@ -83,40 +83,49 @@
 .filterInput, .selectFilter {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #cfd8dc;
-  border-radius: 8px;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
   box-sizing: border-box;
-  font-size: 15px;
-  background: #f7f7f7;
-  transition: border-color 0.2s;
+  font-size: 0.95em;
+  background: var(--white);
+  transition: all 0.2s ease;
+  color: var(--primary-black);
 }
 
 .filterInput:focus, .selectFilter:focus {
   outline: none;
-  border-color: #1db954;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
 .sidebarButton {
   width: 100%;
-  padding: 10px 0;
-  background: linear-gradient(90deg,#1db954 60%,#159c43 100%);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
+  padding: 12px 0;
+  background: var(--primary-black);
+  color: var(--white);
+  border: 2px solid var(--primary-black);
+  border-radius: 4px;
   cursor: pointer;
   text-align: center;
   font-weight: 600;
-  font-size: 1.05em;
-  margin-top: 4px;
-  margin-bottom: 2px;
-  transition: background 0.2s, transform 0.1s;
-  box-shadow: 0 2px 8px rgba(30,185,84,0.07);
+  font-size: 1em;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.3px;
 }
+
 .sidebarButton:hover {
-  background: #159c43;
+  background: var(--primary-gold);
+  border-color: var(--primary-gold);
+  color: var(--primary-black);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
 .sidebarButton:active {
-  transform: translateY(1px);
+  transform: translateY(0);
 }
 
 .priceContainer {

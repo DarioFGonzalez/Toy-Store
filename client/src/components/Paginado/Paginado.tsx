@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { PaginadoProps } from '../../types/index';
+import styles from './Paginado.module.css';
 
 const Paginado: React.FC<PaginadoProps> = ( { totalPages, currentPage }) =>
 {
@@ -17,20 +18,12 @@ const Paginado: React.FC<PaginadoProps> = ( { totalPages, currentPage }) =>
     }
 
     return(
-        <div>
+        <div className={styles.paginationContainer}>
             {paginas.map( page => (
                 <button
-                    key={page} // ¡Es importante para React cuando mapeas elementos!
-                    onClick={() => swapPage(page)} // Llama a swapPage con el número de página
-                    style={ {
-                        color: currentPage === page ? 'red' : 'black', // Resalta la página actual
-                        fontWeight: currentPage === page ? 'bold' : 'normal',
-                        margin: '0 5px', // Pequeño margen entre botones
-                        cursor: 'pointer',
-                        background: 'none',
-                        border: 'none',
-                        padding: '5px 10px'
-                    }}
+                    key={page}
+                    onClick={() => swapPage(page)}
+                    className={`${styles.pageButton} ${currentPage === page ? styles.active : ''}`}
                 >
                     {page}
                 </button>

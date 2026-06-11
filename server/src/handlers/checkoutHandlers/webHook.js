@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const { Payment } = require('mercadopago')
-const postOrder = require('../../handlers/pudoHandlers/postOrder');
 const { conn, Products, Carts, Orders } = require( '../../db/db');
+const generateOrderEmailHtml = require('../../config/formatMail');
 
 const webHook = async ( req, res ) =>
 {
@@ -24,7 +24,7 @@ const webHook = async ( req, res ) =>
         {
             model: Products,
             as: 'products',
-            attributes: [ 'id', 'name', 'stock' ],
+            attributes: [ 'id', 'name', 'price', 'stock' ],
             through: { attributes: [ 'quantity', 'priceAtAddition' ] }
         }, transaction: t } );
         console.log('traje el carrito.')
@@ -44,12 +44,32 @@ const webHook = async ( req, res ) =>
 
         await Carts.update( { status: 'purchased' }, { where: { id: paymentData.external_reference }, transaction: t } );
 
-        const orderPosted = await postOrder( cart.id );
-        if(!orderPosted) throw new Error( `[webHook] Fallo al crear orden PUDO.` );
+        // Preparar datos para el email
+        const orderData = {
+            id: thisCart.id,
+            customerName: thisCart.customerName,
+            customerEmail: thisCart.customerEmail,
+            customerPhone: thisCart.customerPhone,
+            products: thisCart.products,
+            total: thisCart.products.reduce((acc, item) => acc + (Number(item.price) * item.CartItem.quantity), 0)
+        };
+
+        // Enviar email al dueño del local con los detalles del pedido
+        const emailHtml = generateOrderEmailHtml(orderData);
+        
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: process.env.EMAIL_USER, // Enviar al mismo email del negocio
+            subject: `Nueva Orden de Venta - ${paymentData.external_reference}`,
+            html: emailHtml
+        };
+
+        // Usar el transporter que ya está configurado en server.js
+        await req.mailerTransporter.sendMail(mailOptions);
 
         await t.commit();
 
-        return res.status(200).json( { success: 'Stock actualizado' } );
+        return res.status(200).json( { success: 'Stock actualizado y email enviado' } );
     }
     catch( err )
     {

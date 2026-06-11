@@ -1,95 +1,111 @@
 .container {
     display: flex;
     justify-content: space-around;
-    padding: 20px;
+    padding: 24px;
     gap: 40px;
+    flex-wrap: wrap;
 }
 
 .formSection {
     flex: 1;
-    max-width: 500px;
+    min-width: 280px;
+    max-width: 520px;
 }
 
 .formSection h1 {
     margin-bottom: 20px;
-    font-size: 2rem;
-    color: #333;
+    font-size: 2em;
+    color: var(--primary-black);
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--white);
+    padding: 24px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--gray-200);
 }
 
 .previewContainer {
-    margin-top: 15px;
+    margin-top: 16px;
     text-align: center;
 }
 
 .previewImage {
     max-width: 100%;
     height: auto;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    border-radius: 4px;
+    border: 1px solid var(--gray-200);
 }
 
 .bannersSection {
     flex: 2;
+    min-width: 300px;
 }
 
 .bannersSection h2 {
     margin-bottom: 20px;
-    font-size: 1.8rem;
-    color: #333;
+    font-size: 1.8em;
+    color: var(--primary-black);
+    font-weight: 700;
 }
 
 .bannersList {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px;
 }
 
 .bannerCard {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--white);
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    border: 1px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.bannerCard:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
 }
 
 .bannerImage {
     width: 100%;
     height: auto;
     object-fit: cover;
-    aspect-ratio: 16 / 9; /* Para mantener una proporción de banner */
+    aspect-ratio: 16 / 9;
 }
 
 .bannerInfo {
-    padding: 15px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 .bannerInfo p {
     margin: 0;
+    color: var(--gray-600);
+    font-size: 0.95em;
 }
 
 .active {
-    color: green;
-    font-weight: bold;
+    color: var(--primary-gold);
+    font-weight: 700;
 }
 
 .inactive {
-    color: red;
-    font-weight: bold;
+    color: #e53e3e;
+    font-weight: 700;
 }
 
 .buttonGroup {
-    margin-top: 10px;
+    margin-top: 12px;
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }

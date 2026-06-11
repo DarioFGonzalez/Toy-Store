@@ -2,55 +2,69 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%; /* Muy importante para que html y body abarquen la ventana */
-  min-height: 100vh; /* Asegura que la altura sea al menos la del viewport */
-  overflow-x: hidden; /* Evita scroll horizontal */
-  background: #f5f5f5;
+  height: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--white);
 }
 
 #root {
   width: 100%;
-  min-height: 100vh; /* Permite que #root se estire a la altura del viewport */
+  min-height: 100vh;
   display: flex;
-  flex-direction: column; /* Apila el contenido verticalmente */
+  flex-direction: column;
 }
 
 .app-container-wrapper {
   width: 100%;
-  flex-grow: 1; /* Permite que este contenedor ocupe todo el espacio restante vertical */
+  flex-grow: 1;
   display: flex;
-  flex-direction: column; /* Continúa apilando */
-  background: #f5f5f5;
+  flex-direction: column;
+  background: var(--white);
 }
 
 .main-content-area {
-  flex-grow: 1; /* Permite que el área de contenido principal se estire */
+  flex-grow: 1;
   width: 100%;
   display: flex;
-  flex-direction: column; /* Continúa apilando */
+  flex-direction: column;
 }
 
 .page-content-wrapper {
-  margin-top: 80px; /* Espacio para tu TopBar */
+  margin-top: 80px;
   width: 100%;
   box-sizing: border-box;
-  flex-grow: 1; /* Permite que el wrapper de página ocupe todo el espacio restante */
+  flex-grow: 1;
   display: flex;
-  flex-direction: column; /* Es un contenedor flex para shopPageWrapper */
-  background: #f5f5f5;
+  flex-direction: column;
+  background: var(--white);
 }
 
-@media (max-width: 700px) {
-  .app-container-wrapper, .main-content-area, .page-content-wrapper {
-    padding: 0 2vw;
+@media (max-width: 768px) {
+  .page-content-wrapper {
+    margin-top: 70px;
+    padding: 0 16px;
   }
 }
 
-/* Otros estilos globales si los tienes */
-.logo { height: 6em; padding: 1.5em; will-change: filter; transition: filter 300ms; }
-.logo:hover { filter: drop-shadow(0 0 2em #646cffaa); }
-.logo.react:hover { filter: drop_shadow(0 0 2em #61dafbaa); }
-@keyframes logo-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: no-preference) { a:nth-of-type(2) .logo { animation: logo-spin infinite 20s linear; } }
-.card { padding: 2em; }
-.read-the-docs { color: #888; }
+@media (max-width: 600px) {
+  .page-content-wrapper {
+    margin-top: 60px;
+    padding: 0 12px;
+  }
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms ease;
+}
+
+.logo:hover {
+  filter: brightness(1.1);
+}
+
+.card {
+  padding: 2em;
+}
