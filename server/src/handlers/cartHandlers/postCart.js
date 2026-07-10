@@ -8,6 +8,7 @@ const postCart = async ( req, res ) =>
     {
         const thisProduct = await Products.findByPk( productId );
         if(!thisProduct) throw new Error( `Product with that ID not found in DB`);
+        console.log("Encontramos el producto: ", thisProduct.dataValues);
 
         const newCart = await Carts.create();
         if(!newCart) throw new Error( `Error al crear carrito` );
@@ -21,11 +22,13 @@ const postCart = async ( req, res ) =>
                 attributs: [ 'id', 'name', 'category', 'price', 'stock' ],
                 through: { attributes: ['quantity', 'priceAtAddition'] }
             } } );
+
+            console.log("Carrito terminado: ", finishedCart);
         return res.status(200).json( finishedCart );
     }
     catch( err )
     {
-        console.error( err );
+        console.error( "Error creando carrito, ", err.message );
         return res.status(500).json( { postCart: err.message } );
     }
 }

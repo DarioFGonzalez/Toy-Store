@@ -1,5 +1,7 @@
 import type { ContactInfo } from '../types/index';
 
+console.log( "Import meta env dev: ", import.meta.env.DEV );
+
 export const URL = import.meta.env.DEV ? 'http://localhost:5000/' : "https://toy-store-zw00.onrender.com/";
 export const LOCAL_URL = import.meta.env.DEV ? 'http://localhost:5173/' : "https://toy-store-tau.vercel.app/";
 
